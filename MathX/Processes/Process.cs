@@ -5,7 +5,7 @@ using Base.Api;
 
 namespace MathX.Processes
 {
-    public class Process
+    public class Process : IDisposable
     {
         public Dictionary<string, Variable> Variables { get; set; }
 
@@ -38,7 +38,8 @@ namespace MathX.Processes
 
         public void ExecuteStatement(string statement, out BaseStatus status)
         {
-            new Statement(statement, this).Execute(out status);
+            if (!Running) throw new Exception("Process is not running");
+            new Statement(this, statement).Execute(out StatementInfo info, out status);
         }
 
         public void WriteToOutput(string data)
@@ -46,11 +47,15 @@ namespace MathX.Processes
             if (!Running) throw new Exception("Process is not running");
             else if (string.IsNullOrEmpty(data)) return;
 
-            long position = Output.Position;
-            OutputWriter.Write(data);
+            OutputWriter.WriteLine(data);
             OutputWriter.Flush();
-            Output.Seek(position, SeekOrigin.Begin);
         }
 
+        public void Dispose()
+        {
+            this.Output.Dispose();
+            this.OutputReader.Dispose();
+            this.OutputWriter.Dispose();
+        }
     }
 }

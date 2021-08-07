@@ -14,21 +14,18 @@ namespace MathX
         private int _position;
         private Process _process;
 
-        public Expression(string expression)
+       
+        public Expression(Process process, string expression)
         {
             _expression = expression;
             _position = -1;
-        }
-
-        public Expression(string expression, Process process) : this(expression)
-        {
             this._process = process;
         }
 
-        public object Evaluate(out BaseStatus status)
+        public Variable Evaluate(out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
-            object result = 0;
+            Variable result = null;
             try
             {
                 result = Evaluate();
@@ -40,19 +37,35 @@ namespace MathX
             return result;
         }
 
-        private object Evaluate(int operatorPriority = 0)
+        private Variable Evaluate(int operatorPriority = 0)
         {
-            object result = null;
-
+            Variable result = new Variable(Variable.DataTypeEnum.None, "_");
             while ((++_position) < _expression.Length)
             {
                 char expChar = _expression[_position];
-                if (
+                if (expChar == '$')
+                {
+                    string functionName = ReadFuncitonName();
+                    List<Variable> parameters = new List<Variable>();
+                    ++_position; // (
+                    while (_expression[_position] != ')')
+                    {
+                        Variable parameter = Evaluate();
+                        parameters.Add(parameter);
+                    }
+                    var function = new Function(functionName, parameters.ToArray());
+                    result = function.Call();
+                }
+                else if (expChar == ';')
+                {
+                    return result;
+                }
+                else if (
                     char.IsLetter(expChar)
                     || expChar == '_')
                 {
                     string variableName = ReadVariableName();
-                    result = GetVariableValue(variableName);
+                    result = GetVariable(variableName);
                 }
                 else if (
                     char.IsDigit(expChar)
@@ -60,6 +73,7 @@ namespace MathX
                     || (expChar == '-' && _expression[_position - 1] == '('))
                 {
                     result = ReadNumber();
+                    result.DataType = Variable.DataTypeEnum.Double;
                 }
                 else if (expChar == '(')
                 {
@@ -81,33 +95,47 @@ namespace MathX
                     }
                     else
                     {
-                        object expResult = Evaluate(expOperatorPriority);
+                        Variable expResult = Evaluate(expOperatorPriority);
 
                         if (expOperator == '+')
                         {
-                            result = Add(result, expResult);
+                            result = Operation.Add(result, expResult);
                         }
                         else if (expOperator == '-')
                         {
-                            result = Subtract(result, expResult);
+                            result = Operation.Subtract(result, expResult);
                         }
                         else if (expOperator == '*')
                         {
-                            result = Multiply(result, expResult);
+                            result = Operation.Multiply(result, expResult);
                         }
                         else if (expOperator == '/')
                         {
-                            result = Divide(result, expResult);
+                            result = Operation.Divide(result, expResult);
                         }
                         else if (expOperator == '^')
                         {
-                            result = Caret(result, expResult);
+                            result = Operation.Power(result, expResult);
                         }
                     }
                 }
             }
 
+            if (result == null) throw new Exception("Expression is null");
+            else if (result.DataType == Variable.DataTypeEnum.None) throw new Exception("Expression datatype is None");
             return result;
+        }
+
+        private string ReadFuncitonName()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(_expression[_position]);
+            while (_position + 1 < _expression.Length && char.IsLetter(_expression[_position + 1]))
+            {
+                _position++;
+                sb.Append(_expression[_position]);
+            }
+            return sb.ToString();
         }
 
         private string ReadVariableName()
@@ -136,10 +164,10 @@ namespace MathX
             return result;
         }
 
-        private object GetVariableValue(string variableName)
+        private Variable GetVariable(string variableName)
         {
             if (!_process.Variables.ContainsKey(variableName)) throw new Exception($"Undefined variable {variableName}");
-            return _process.Variables[variableName].Value;
+            return _process.Variables[variableName];
         }
 
         private int GetPriority(char expOperator)
@@ -155,29 +183,5 @@ namespace MathX
             return 0;
         }
 
-        private object Add(object addend1, object addend2)
-        {
-            return (double)addend1 + (double)addend2;
-        }
-
-        private object Subtract(object minued, object subtrahend)
-        {
-            return (double)minued - (double)subtrahend;
-        }
-
-        private object Multiply(object factor1, object factor2)
-        {
-            return (double)factor1 * (double)factor2;
-        }
-
-        private object Divide(object dividend, object divisor)
-        {
-            return (double)dividend / (double)divisor;
-        }
-        
-        private object Caret(object o1, object o2)
-        {
-            return MathX.Pwr((double)o1, (double)o2);
-        }
     }
 }

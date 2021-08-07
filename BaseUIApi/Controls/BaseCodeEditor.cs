@@ -12,46 +12,65 @@ namespace Base.UI.Api.Controls
 {
     public partial class BaseCodeEditor : UserControl
     {
-        public override string Text
-        {
-            get { return txt.Text; }
-            set { txt.Text = value; }
-        }
-
         [Browsable(true)]
         public new event EventHandler TextChanged;
+
+        public override string Text { get => txt.Text ; set => txt.Text = value; }
 
         public BaseCodeEditor()
         {
             InitializeComponent();
         }
 
-        private void ParseLine(ref string line, int lineNumber)
+        public void WriteLine(string line)
         {
-            int lineStart = txt.GetFirstCharIndexFromLine(lineNumber);
-            
-            for (int i = 0; i < line.Length; i++)
+            txt.Text += $"{Environment.NewLine}{line}";
+            ParseLine(txt.Lines.Length - 1);
+        }
+
+        public void WriteText(string text)
+        {
+            txt.Text = text;
+            for (int i = 0; i < txt.Lines.Length; i++)
             {
-                char c = line[i];
-                if (c == '=')
-                {
-                    ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Green, txt.BackColor);
-                }
-                else if (c == '+' || c == '-' || c == '*' || c == '/')
-                {
-                    ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Blue, txt.BackColor);
-                }
+                ParseLine(i);
             }
         }
 
-        private void ChangeTextStyle(int startIndex, int length, int lineEnd, Color foreColor, Color backColor)
+        private void ParseLine(int lineIndex)
+        {
+            string line = txt.Lines[lineIndex];
+            int lineStart = txt.GetFirstCharIndexFromLine(lineIndex);
+            
+            //for (int i = 0; i < line.Length; i++)
+            //{
+            //    char c = line[i];
+            //    if (c == '=')
+            //    {
+            //        ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Green, txt.BackColor);
+            //    }
+            //    else if (c == '+' || c == '-' || c == '*' || c == '/')
+            //    {
+            //        ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Blue, txt.BackColor);
+            //    }
+            //    else if(i > 1)
+            //    {
+            //        if(c == 'r' && line[i - 1] == 'o' && line[i - 2] == 'f')
+            //        {
+            //            ChangeTextStyle(lineStart + i - 2, 3, lineStart + line.Length, Color.Blue, txt.BackColor);
+            //        }
+            //    }
+            //}
+        }
+
+        private void ChangeTextStyle(int startIndex, int length, int lineEndIndex, Color foreColor, Color backColor)
         {
             txt.SelectionStart = startIndex;
             txt.SelectionLength = length;
             txt.SelectionColor = foreColor;
             txt.SelectionBackColor = backColor;
             txt.SelectionLength = 0;
-            txt.SelectionStart = lineEnd;
+            txt.SelectionStart = lineEndIndex;
             txt.SelectionColor = txt.ForeColor;
             txt.SelectionBackColor = txt.BackColor;
         }
@@ -61,7 +80,7 @@ namespace Base.UI.Api.Controls
             int lineNumber = txt.GetLineFromCharIndex(txt.SelectionStart);
             if (lineNumber >= 0 && lineNumber < txt.Lines.Length)
             {
-                ParseLine(ref txt.Lines[lineNumber], lineNumber);
+                ParseLine(lineNumber);
             }
 
             TextChanged?.Invoke(this, e);

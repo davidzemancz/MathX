@@ -1,9 +1,9 @@
 ﻿# Issues
 
 # TODO
+* Desetinna cisla
 * Klavesove zkratky
 * Vlakna a procesy
-* Desetinna cisla
 * Pocitani s vektory, resp. tenzory
 * Cykly, podminky
 
@@ -24,3 +24,9 @@
 * Koncept procesu, ktery si drzi promenne
 * Output stream procesu, ktery vraci data
 * Do promenne muzu priradit expression
+
+# Struktura jazyka
+* Prirazeni do promene varName=[expression]
+* Volani funkce varName=$fncName(param1;param2)
+    * Funkce je vzdy [expression], tj. neco vraci
+* Labely #label

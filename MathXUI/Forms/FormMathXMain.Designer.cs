@@ -239,7 +239,7 @@ namespace MathX.UI.Forms
             this.btnShortcutConsole.Name = "btnShortcutConsole";
             this.btnShortcutConsole.Size = new System.Drawing.Size(143, 23);
             this.btnShortcutConsole.TabIndex = 0;
-            this.btnShortcutConsole.Text = "Start console";
+            this.btnShortcutConsole.Text = "Console";
             this.btnShortcutConsole.UseVisualStyleBackColor = true;
             this.btnShortcutConsole.Click += new System.EventHandler(this.shortcutButton_Click);
             // 

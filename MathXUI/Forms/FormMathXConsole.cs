@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MathX.Processes;
+using System.IO;
 
 namespace MathX.UI
 {
@@ -43,7 +44,6 @@ namespace MathX.UI
 
         #region PRIVATE METHODS
 
-
         #region Form
 
         private void FormMathXConsole_Load(object sender, EventArgs e)
@@ -56,16 +56,18 @@ namespace MathX.UI
             if (e.KeyCode == Keys.Enter)
             {
                 string statement = txtCommandLine.Text;
+                long readerPosition = _consoleProcess.OutputReader.BaseStream.Position;
                 _consoleProcess.ExecuteStatement(statement, out BaseStatus status);
+                _consoleProcess.OutputReader.BaseStream.Seek(readerPosition, SeekOrigin.Begin);
 
                 if (status.State == BaseStatus.StateEnum.Ok)
                 {
-                    txtCommandLineLog.Text += $">   {statement}\n";
-                    txtCommandLineLog.Text += $"        {_consoleProcess.OutputReader.ReadToEnd()}\n";
+                    txtOutput.Text += $">   {statement}\n";
+                    txtOutput.Text += $"        {_consoleProcess.OutputReader.ReadToEnd()}";
                 }
                 else
                 {
-                    txtCommandLineLog.Text += $">   {status.Text}\n";
+                    txtOutput.Text += $">   {status.Text}\n";
                 }
 
                 txtCommandLine.Text = "";

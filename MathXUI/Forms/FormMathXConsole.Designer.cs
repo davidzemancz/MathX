@@ -29,7 +29,7 @@ namespace MathX.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtCommandLineLog = new System.Windows.Forms.RichTextBox();
+            this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.txtCommandLine = new System.Windows.Forms.TextBox();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,20 +37,20 @@ namespace MathX.UI
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtCommandLineLog
+            // txtOutput
             // 
-            this.txtCommandLineLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.txtCommandLineLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtCommandLineLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCommandLineLog.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtCommandLineLog.ForeColor = System.Drawing.Color.White;
-            this.txtCommandLineLog.Location = new System.Drawing.Point(0, 25);
-            this.txtCommandLineLog.Margin = new System.Windows.Forms.Padding(0);
-            this.txtCommandLineLog.Name = "txtCommandLineLog";
-            this.txtCommandLineLog.ReadOnly = true;
-            this.txtCommandLineLog.Size = new System.Drawing.Size(984, 511);
-            this.txtCommandLineLog.TabIndex = 0;
-            this.txtCommandLineLog.Text = "";
+            this.txtOutput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.txtOutput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtOutput.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtOutput.ForeColor = System.Drawing.Color.White;
+            this.txtOutput.Location = new System.Drawing.Point(0, 25);
+            this.txtOutput.Margin = new System.Windows.Forms.Padding(0);
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.ReadOnly = true;
+            this.txtOutput.Size = new System.Drawing.Size(984, 511);
+            this.txtOutput.TabIndex = 0;
+            this.txtOutput.Text = "";
             // 
             // txtCommandLine
             // 
@@ -99,7 +99,7 @@ namespace MathX.UI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(984, 561);
-            this.Controls.Add(this.txtCommandLineLog);
+            this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.txtCommandLine);
             this.Name = "FormMathXConsole";
@@ -114,7 +114,7 @@ namespace MathX.UI
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox txtCommandLineLog;
+        private System.Windows.Forms.RichTextBox txtOutput;
         private System.Windows.Forms.TextBox txtCommandLine;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

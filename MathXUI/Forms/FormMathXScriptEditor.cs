@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Base.UI.Api.Controls;
+using Base.Api;
+using MathX.Processes;
 
 namespace MathX.UI.Forms
 {
@@ -43,13 +45,14 @@ namespace MathX.UI.Forms
                 if(valueChanged) UpdateTitleText();
             }
         }
-
+       
         #endregion
 
         #region FIELDS
 
         private string _fileName;
         private bool _unsavedChanges;
+        private bool _supressTextChanged;
 
         #endregion
 
@@ -111,19 +114,21 @@ namespace MathX.UI.Forms
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 FileName = ofd.FileName;
-                codeEditor.Text = File.ReadAllText(FileName, Settings.Encoding);
+                _supressTextChanged = true;
+                codeEditor.WriteText(File.ReadAllText(FileName, Settings.Encoding));
+                _supressTextChanged = false;
             }
         }
 
         private void SaveFile()
         {
-            if (string.IsNullOrEmpty(FileName) || !File.Exists(FileName))
+            if (string.IsNullOrEmpty(_fileName) || !File.Exists(_fileName))
             {
                 this.SaveFileAs();
             }
             else
             {
-                File.WriteAllText(FileName, codeEditor.Text, Settings.Encoding);
+                File.WriteAllText(_fileName, codeEditor.Text, Settings.Encoding);
                 UnsavedChanges = false;
             }
         }
@@ -136,8 +141,31 @@ namespace MathX.UI.Forms
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 FileName = sfd.FileName;
-                File.WriteAllText(FileName, codeEditor.Text, Settings.Encoding);
+                File.WriteAllText(_fileName, codeEditor.Text, Settings.Encoding);
                 UnsavedChanges = false;
+            }
+        }
+
+        private void Run()
+        {
+            if (this.UnsavedChanges)
+            {
+                MessageBox.Show("Save changes before running the script.", "Unsaved changes", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                using (Process process = new Process())
+                {
+                    process.Start();
+                    
+                    Interpreter interpreter = new Interpreter(process, FileName);
+                    interpreter.Run(out BaseStatus status);
+                    process.OutputReader.BaseStream.Seek(0, SeekOrigin.Begin);
+                    string output = process.OutputReader.ReadToEnd();
+                    txtOutput.Text = output + status.ToString();
+                    
+                    process.Stop();
+                }
             }
         }
 
@@ -149,6 +177,12 @@ namespace MathX.UI.Forms
         {
             FileName = "";
             UnsavedChanges = false;
+
+            if (((Input)this.FormInput).ShowOpenFileDialog)
+            {
+                this.OpenFile();
+            }
+            
         }
 
         private void FormMathXScriptEditor_KeyDown(object sender, KeyEventArgs e)
@@ -169,6 +203,10 @@ namespace MathX.UI.Forms
             {
                 this.SaveFileAs();
             }
+            else if (e.KeyCode == Keys.F5)
+            {
+                this.Run();
+            }
         }
 
         private void FormMathXScriptEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -179,10 +217,13 @@ namespace MathX.UI.Forms
 
         private void codeEditor_TextChanged(object sender, EventArgs e)
         {
-            this.UnsavedChanges = true;
+            if (!_supressTextChanged)
+            {
+                this.UnsavedChanges = true;
+            }
         }
 
-        private void menuStrip_ItemClicked(object sender, System.EventArgs e)
+        private void menuStrip_ItemClicked(object sender, EventArgs e)
         {
             if (sender == tsmiFileNew)
             {
@@ -200,14 +241,24 @@ namespace MathX.UI.Forms
             {
                 this.SaveFileAs();
             }
+            else if (sender == tsmiRun)
+            {
+                this.Run();
+            }
         }
 
-
-
         #endregion
 
         #endregion
 
-       
+        #region CLASSES
+
+        public class Input : BaseInput
+        {
+            public bool ShowOpenFileDialog { get; set; }
+        }
+
+        #endregion
+
     }
 }

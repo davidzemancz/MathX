@@ -31,6 +31,11 @@ namespace Base.Api
             this.Exception = exception;
         }
 
+        public override string ToString()
+        {
+            return $"[Status {State}] {Text}";
+        }
+
         public enum StateEnum
         {
             Ok = 1,

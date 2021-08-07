@@ -35,9 +35,13 @@ namespace MathX.UI.Forms
             form.Show();
         }
 
-        private void ShowScriptEditorForm()
+        private void ShowScriptEditorForm(bool shwoOpenFileDialog)
         {
             var form = new FormMathXScriptEditor();
+            form.FormInput = new FormMathXScriptEditor.Input()
+            {
+                ShowOpenFileDialog = shwoOpenFileDialog,
+            };
             form.Show();
         }
 
@@ -61,15 +65,15 @@ namespace MathX.UI.Forms
             }
             else if (sender == btnShortcutNewScript)
             {
-                this.ShowScriptEditorForm();
+                this.ShowScriptEditorForm(false);
             }
             else if (sender == btnShortcutOpenScript)
             {
-                this.ShowScriptEditorForm();
+                this.ShowScriptEditorForm(true);
             }
             else if (sender == btnShortcutLastScript)
             {
-                this.ShowScriptEditorForm();
+                this.ShowScriptEditorForm(false);
             }
         }
 

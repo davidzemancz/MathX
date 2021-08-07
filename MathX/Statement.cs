@@ -14,19 +14,16 @@ namespace MathX
         private string _statement;
         private Process _process;
 
-        public Statement(string statement)
+        public Statement(Process process, string statement)
         {
             _statement = statement;
+            _process = process;
         }
 
-        public Statement(string statement, Process process) : this(statement)
-        {
-            this._process = process;
-        }
-
-        public void Execute(out BaseStatus status)
+        public void Execute(out StatementInfo info, out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
+            info = new StatementInfo();
             try
             {
                 if (_statement.Length > 0)
@@ -34,32 +31,70 @@ namespace MathX
                     string output = null;
                     bool complete = false;
 
-                    // Looking for key chars
-                    for (int i = 0; i < _statement.Length; i++)
+                    // Looking for keywords
+                    if (_statement.StartsWith("if")) // Condition
                     {
-                        char c = _statement[i];
-                        if (c == '=') // Assignment to variable
+                        bool result = false;
+
+                        string conditonExpression = _statement.Substring(3);
+                        Variable variable = new Expression(_process, conditonExpression).Evaluate(out status);
+                        if (variable.DataType == Variable.DataTypeEnum.Double) 
                         {
-                            string variableName = _statement.Substring(0, i);
-                            string varibaleValueExpr = _statement.Substring(i + 1);
-                            object variableValue = new Expression(varibaleValueExpr, _process).Evaluate(out status);
-
-                            _process.Variables[variableName] = new Variable(variableName, variableValue);
-                            output = $"{variableName} = {_process.Variables[variableName].Value}";
-                            
-                            complete = true;
+                            result = (double)variable.Value > 0;
                         }
-                    }
 
-                    // If si not any type of statement -> maybe its just expression 
-                    if (!complete) 
+                        info.IsCondition = true;
+                        info.ConditionResult = result;
+
+                        output = $"= {result.ToString()}";
+                        complete = true;
+                    }
+                    else if (_statement.StartsWith("$")) // Function
                     {
-                        string expression = _statement;
-                        output = $"= {new Expression(expression, _process).Evaluate(out status).ToString()}";
-                       
                         complete = true;
                     }
 
+                    // If no keywords at beginning found
+                    if (!complete)
+                    {
+                        // Looking for key chars
+                        for (int i = 0; i < _statement.Length; i++)
+                        {
+                            char c = _statement[i];
+                            if (c == '=') // Assignment to variable
+                            {
+                                string variableName = _statement.Substring(0, i);
+                                string varibaleValueExpr = _statement.Substring(i + 1);
+                                Variable variable = new Expression(_process, varibaleValueExpr).Evaluate(out status);
+                                if (variable != null)
+                                {
+                                    variable.Name = variableName;
+                                    _process.Variables[variableName] = variable;
+                                    output = $"{variableName} = {_process.Variables[variableName].Value}";
+
+                                }
+                                complete = true;
+                                break;
+                            }
+                            else if (c == '#') // Label
+                            {
+                                string labelName = _statement.Substring(i + 1);
+                                info.IsLabel = true;
+                                info.LabelName = labelName;
+
+                                complete = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // If still not recognized -> maybe its just expression 
+                    if (!complete) 
+                    {
+                        string expression = _statement;
+                        output = $"= {new Expression(_process, expression).Evaluate(out status)?.Value}";
+                        complete = true;
+                    }
                     _process.WriteToOutput(output);
                 }
             }
@@ -68,5 +103,15 @@ namespace MathX
                 status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Invalid statement] {ex.Message}", ex);
             }
         }
+    }
+
+    public class StatementInfo
+    {
+        public bool IsLabel { get; set; }
+        public string LabelName { get; set; }
+        public bool IsCondition { get; set; }
+        public bool ConditionResult { get; set; }
+        public bool BlockStart { get; set; }
+        public bool BlockEnd { get; set; }
     }
 }
