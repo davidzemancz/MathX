@@ -31,6 +31,14 @@ namespace Base.Api
             this.Exception = exception;
         }
 
+        public void ThrowIfError()
+        {
+            if (State == BaseStatus.StateEnum.Error)
+            {
+                throw new Exception(Text, Exception);
+            }
+        }
+
         public override string ToString()
         {
             return $"[Status {State}] {Text}";

@@ -54,7 +54,8 @@ namespace MathX.Primitives
                         parameters.Add(parameter);
                     }
                     var function = new Function(functionName, parameters.ToArray());
-                    result = function.Call();
+                    result = function.Call(out BaseStatus status);
+                    status.ThrowIfError();
                 }
                 else if (expChar == ';')
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Base.Api;
 using MathX.Primitives;
+using MathX.Primitives.Utils;
 
 namespace MathX.Processes
 {
@@ -37,10 +38,16 @@ namespace MathX.Processes
             Running = false;
         }
 
-        public void ExecuteStatement(string statement, out BaseStatus status)
+        public void ExecuteStatement(string line, out BaseStatus status)
         {
             if (!Running) throw new Exception("Process is not running");
-            new Statement(this, statement).Execute(out StatementInfo info, out status);
+            
+            Statement statement = new Statement(this, line);
+            StatementInfo statementInfo = statement.GetInfo(out status);
+            if (status.State == BaseStatus.StateEnum.Ok) 
+            {
+                statement.Execute(statementInfo, out status);
+            }
         }
 
         public void WriteToOutput(string data)
