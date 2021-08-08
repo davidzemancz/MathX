@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathX
+namespace MathX.Primitives
 {
     public class Operation
     {
@@ -32,7 +32,7 @@ namespace MathX
         }
 
         public static Variable Divide(Variable dividend, Variable divisor)
-{
+        {
             if (dividend.DataType == Variable.DataTypeEnum.Double && divisor.DataType == Variable.DataTypeEnum.Double)
                 return dividend / divisor;
             return null;

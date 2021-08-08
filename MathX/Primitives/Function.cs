@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathX
+namespace MathX.Primitives
 {
     public class Function
     {
@@ -26,7 +26,7 @@ namespace MathX
         public Variable Call()
         {
             Variable result = new Variable(Variable.DataTypeEnum.None, "_");
-             
+
             if (_name == Increment || _name == IncrementShort)
             {
                 if (!ArgumentsValid(1)) return result;

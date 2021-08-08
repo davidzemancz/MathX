@@ -1,4 +1,5 @@
 ﻿using Base.Api;
+using MathX.Primitives;
 using MathX.Processes;
 using System;
 using System.Collections.Generic;
@@ -25,13 +26,34 @@ namespace MathX
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
             try
             {
+                Dictionary<string, Label> labels = new Dictionary<string, Label>();
+                Stack<Block> blocks = new Stack<Block>();
+
                 using (StreamReader fileReader = new StreamReader(_fileName))
                 {
                     while (!fileReader.EndOfStream)
                     {
+                        long lineStartPosition = fileReader.BaseStream.Position;
                         string line = fileReader.ReadLine();
-                        _process.ExecuteStatement(line, out status);
-                        if (status.State == BaseStatus.StateEnum.Error) throw new Exception(status.Text, status.Exception);
+
+                        var statement = new Statement(_process, line);
+                        statement.Execute(out StatementInfo statementInfo, out status);
+                        if (status.State == BaseStatus.StateEnum.Error)
+                        {
+                            throw new Exception(status.Text, status.Exception);
+                        }
+                        else if (statementInfo.IsLabel)
+                        {
+                            labels[statementInfo.LabelName] = new Label(lineStartPosition, statementInfo.LabelName);
+                        }
+                        else if (statementInfo.BlockStart)
+                        {
+                            blocks.Push(new Block());
+                        }
+                        else if (statementInfo.BlockEnd)
+                        {
+                            var block = blocks.Peek();
+                        }
                     }
                 }
             }

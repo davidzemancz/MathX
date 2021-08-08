@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathX.Processes;
 
-namespace MathX
+namespace MathX.Primitives
 {
     public class Statement
     {
@@ -38,7 +38,7 @@ namespace MathX
 
                         string conditonExpression = _statement.Substring(3);
                         Variable variable = new Expression(_process, conditonExpression).Evaluate(out status);
-                        if (variable.DataType == Variable.DataTypeEnum.Double) 
+                        if (variable.DataType == Variable.DataTypeEnum.Double)
                         {
                             result = (double)variable.Value > 0;
                         }
@@ -46,7 +46,7 @@ namespace MathX
                         info.IsCondition = true;
                         info.ConditionResult = result;
 
-                        output = $"= {result.ToString()}";
+                        output = $"= {result}";
                         complete = true;
                     }
                     else if (_statement.StartsWith("$")) // Function
@@ -89,7 +89,7 @@ namespace MathX
                     }
 
                     // If still not recognized -> maybe its just expression 
-                    if (!complete) 
+                    if (!complete)
                     {
                         string expression = _statement;
                         output = $"= {new Expression(_process, expression).Evaluate(out status)?.Value}";

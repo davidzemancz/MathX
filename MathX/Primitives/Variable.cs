@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathX
+namespace MathX.Primitives
 {
     public class Variable
     {
@@ -33,7 +33,7 @@ namespace MathX
             Value = value;
         }
 
-        public static Variable operator +(Variable a, Variable b) 
+        public static Variable operator +(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Double, "_", (double)a.Value + (double)b.Value);

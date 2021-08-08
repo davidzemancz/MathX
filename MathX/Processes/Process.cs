@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Base.Api;
+using MathX.Primitives;
 
 namespace MathX.Processes
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Base.Api;
 using MathX.Processes;
 
-namespace MathX
+namespace MathX.Primitives
 {
     public class Expression
     {
@@ -14,12 +14,12 @@ namespace MathX
         private int _position;
         private Process _process;
 
-       
+
         public Expression(Process process, string expression)
         {
             _expression = expression;
             _position = -1;
-            this._process = process;
+            _process = process;
         }
 
         public Variable Evaluate(out BaseStatus status)
@@ -40,7 +40,7 @@ namespace MathX
         private Variable Evaluate(int operatorPriority = 0)
         {
             Variable result = new Variable(Variable.DataTypeEnum.None, "_");
-            while ((++_position) < _expression.Length)
+            while (++_position < _expression.Length)
             {
                 char expChar = _expression[_position];
                 if (expChar == '$')
@@ -69,8 +69,8 @@ namespace MathX
                 }
                 else if (
                     char.IsDigit(expChar)
-                    || (expChar == '-' && _position == 0)
-                    || (expChar == '-' && _expression[_position - 1] == '('))
+                    || expChar == '-' && _position == 0
+                    || expChar == '-' && _expression[_position - 1] == '(')
                 {
                     result = ReadNumber();
                     result.DataType = Variable.DataTypeEnum.Double;
