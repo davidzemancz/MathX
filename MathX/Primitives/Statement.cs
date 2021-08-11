@@ -44,11 +44,11 @@ namespace MathX.Primitives
                     }
                     else if (_statement.StartsWith("end")) // Block end
                     {
-                        if (_statement == "endif ")
+                        if (_statement == "endif")
                         {
                             statementInfo.ConditionEnd = true;
                         }
-                        else if (_statement == "endwhile ")
+                        else if (_statement == "endwhile")
                         {
                             statementInfo.LoopEnd = true;
                         }

@@ -38,6 +38,7 @@ namespace MathX
                     while (!streamreader.EndOfStream)
                     {
                         string line = streamreader.ReadLine();
+                        line = line.Trim();
                         linePositionEnd = streamreader.GetActualPosition();
 
                         // Get statement info

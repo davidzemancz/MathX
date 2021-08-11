@@ -21,6 +21,7 @@ namespace Base.UI.Api.Controls
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+            txt.SelectionTabs = new int[] { 20, 40, 60, 80 };
         }
 
         public void WriteLine(string line)
@@ -45,21 +46,36 @@ namespace Base.UI.Api.Controls
             string line = txt.Lines[lineIndex];
             int currentIndex = txt.SelectionStart;
             int lineStart = txt.GetFirstCharIndexFromLine(lineIndex);
-            
 
             // Reset
             ChangeTextStyle(lineStart, line.Length, currentIndex, txt.ForeColor, txt.BackColor);
 
             // Set style
+            StringBuilder wordBuilder = new StringBuilder();
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
-                if (i > 1)
+                if (c == '\t') continue;
+
+                if (c == ' ' || i == line.Length - 1)
                 {
-                    if (c == 'e' && line[i - 1] == 'l' && line[i - 2] == 'i' && line[i - 3] == 'h' && line[i - 4] == 'w')
+                    if (c != ' ')
                     {
-                        ChangeTextStyle(lineStart + i - 4, 5, currentIndex, Color.Blue, txt.BackColor);
+                        wordBuilder.Append(c);
+                        i++;
                     }
+
+                    string word = wordBuilder.ToString();
+                    if (word == "while" || word == "endwhile" || word == "if" || word == "endif")
+                    {
+                        ChangeTextStyle(lineStart + i - word.Length, word.Length, currentIndex, Color.Blue, txt.BackColor);
+                    }
+
+                    wordBuilder = new StringBuilder();
+                }
+                else
+                {
+                    wordBuilder.Append(c);
                 }
             }
 
