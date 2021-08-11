@@ -9,11 +9,11 @@ namespace MathX.Primitives
 {
     public class Function
     {
-        public const string Increment = "$increment";
-        public const string IncrementShort = "$i";
-        public const string Power = "$power";
-        public const string PowerShort = "$pow";
-        public const string Sinus = "$sin";
+        public const string Increment = "increment";
+        public const string IncrementShort = "i";
+        public const string Power = "power";
+        public const string PowerShort = "pow";
+        public const string Sinus = "sin";
 
         private string _name;
         private Variable[] _parameters;

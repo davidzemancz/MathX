@@ -43,48 +43,51 @@ namespace MathX.Primitives
             while (++_position < _expression.Length)
             {
                 char expChar = _expression[_position];
-                if (expChar == '$')
-                {
-                    string functionName = ReadFuncitonName();
-                    List<Variable> parameters = new List<Variable>();
-                    ++_position; // (
-                    while (_expression[_position] != ')')
-                    {
-                        Variable parameter = Evaluate();
-                        parameters.Add(parameter);
-                    }
-                    var function = new Function(functionName, parameters.ToArray());
-                    result = function.Call(out BaseStatus status);
-                    status.ThrowIfError();
-                }
-                else if (expChar == ';')
+                if (expChar == ',') // Function param delimiter
                 {
                     return result;
                 }
                 else if (
                     char.IsLetter(expChar)
-                    || expChar == '_')
+                    || expChar == '_') // Variable or function
                 {
-                    string variableName = ReadVariableName();
-                    result = GetVariable(variableName);
+                    string name = ReadName(out bool isFunction);
+
+                    if (isFunction)
+                    {
+                        List<Variable> parameters = new List<Variable>();
+                        ++_position; // (
+                        while (_expression.Length > _position && _expression[_position] != ')')
+                        {
+                            Variable parameter = Evaluate();
+                            parameters.Add(parameter);
+                        }
+                        var function = new Function(name, parameters.ToArray());
+                        result = function.Call(out BaseStatus status);
+                        status.ThrowIfError();
+                    }
+                    else
+                    {
+                        result = GetVariable(name);
+                    }
                 }
                 else if (
                     char.IsDigit(expChar)
                     || expChar == '-' && _position == 0
-                    || expChar == '-' && _expression[_position - 1] == '(')
+                    || expChar == '-' && _expression[_position - 1] == '(') // Digit
                 {
                     result = ReadNumber();
                     result.DataType = Variable.DataTypeEnum.Double;
                 }
-                else if (expChar == '(')
+                else if (expChar == '(') // Start of parentheses block
                 {
                     return Evaluate();
                 }
-                else if (expChar == ')')
+                else if (expChar == ')') // End of parentheses block
                 {
                     return result;
                 }
-                else // Is operator
+                else // Operator
                 {
                     char expOperator = expChar;
                     int expOperatorPriority = GetPriority(expOperator);
@@ -127,7 +130,7 @@ namespace MathX.Primitives
             return result;
         }
 
-        private string ReadFuncitonName()
+        private string ReadName(out bool isFunction)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(_expression[_position]);
@@ -136,18 +139,9 @@ namespace MathX.Primitives
                 _position++;
                 sb.Append(_expression[_position]);
             }
-            return sb.ToString();
-        }
 
-        private string ReadVariableName()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(_expression[_position]);
-            while (_position + 1 < _expression.Length && char.IsLetter(_expression[_position + 1]))
-            {
-                _position++;
-                sb.Append(_expression[_position]);
-            }
+            isFunction = _expression.Length > (_position + 1) && _expression[_position + 1] == '(';
+
             return sb.ToString();
         }
 

@@ -49,11 +49,12 @@ namespace MathX
                         if (statementInfo.Label != null)
                         {
                             if (conditions.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in condition");
-                            
+                            else if (loops.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in loop");
+
                             statementInfo.Label.Position = linePositionEnd;
                             labels[statementInfo.Label.Name] = statementInfo.Label;
                         }
-                        else if (statementInfo.Loop != null)
+                        else if (statementInfo.LoopStart)
                         {
                             statementInfo.Loop.Position = linePositionEnd;
                             statementInfo.Loop.EvaluateCondition(_process, out status);
@@ -77,7 +78,7 @@ namespace MathX
                                 loops.Pop();
                             }
                         }
-                        else if (statementInfo.Condition != null)
+                        else if (statementInfo.ConditionStart)
                         {
                             statementInfo.Condition.Evaluate(_process, out status);
                             status.ThrowIfError();
@@ -95,12 +96,7 @@ namespace MathX
                             {
                                 // Execute statement
                                 statement.Execute(statementInfo, out status);
-
-                                // Resolve statemant status & info 
-                                if (status.State == BaseStatus.StateEnum.Error) // Error
-                                {
-                                    throw new Exception(status.Text, status.Exception);
-                                }
+                                status.ThrowIfError();
                             }
                         }
                     }

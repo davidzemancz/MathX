@@ -32,21 +32,23 @@ namespace MathX.Primitives
                 {
                     if (_statement.StartsWith("if ")) // Condition
                     {
+                        statementInfo.ConditionStart = true;
                         string conditonExpression = _statement.Substring(3);
                         statementInfo.Condition = new Condition(conditonExpression);
                     }
                     else if(_statement.StartsWith("while ")) // Loop
                     {
+                        statementInfo.LoopStart = true;
                         string loopExpression = _statement.Substring(6);
                         statementInfo.Loop = new Loop(-1, loopExpression);
                     }
                     else if (_statement.StartsWith("end")) // Block end
                     {
-                        if (_statement == "endif")
+                        if (_statement == "endif ")
                         {
                             statementInfo.ConditionEnd = true;
                         }
-                        else if (_statement == "endwhile")
+                        else if (_statement == "endwhile ")
                         {
                             statementInfo.LoopEnd = true;
                         }
@@ -54,10 +56,6 @@ namespace MathX.Primitives
                     else if(_statement.StartsWith("#")) // Label
                     {
                         statementInfo.Label = new Label(-1, _statement.Substring(1));
-                    }
-                    else if (_statement.StartsWith("$")) // Function call
-                    {
-                        statementInfo.Function = new Function();
                     }
                 }
             }
@@ -91,10 +89,6 @@ namespace MathX.Primitives
                     {
                         string labelName = statementInfo.Label.Name;
                         output = $"LABEL {labelName}";
-                    }
-                    else if (statementInfo.Function != null) // Function
-                    {
-                        // TODO statement fucntion calls
                     }
                     else
                     {

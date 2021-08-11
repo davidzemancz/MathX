@@ -9,10 +9,13 @@ namespace MathX.Primitives.Utils
     public class StatementInfo
     {
         public Label Label { get; set; }
-        public Function Function { get; set; }
+        
+        public bool ConditionStart { get; set; }
         public Condition Condition { get; set; }
-        public Loop Loop { get; set; }
         public bool ConditionEnd { get; set; }
+        
+        public bool LoopStart { get; set; }
+        public Loop Loop { get; set; }
         public bool LoopEnd { get; set; }
 
         }

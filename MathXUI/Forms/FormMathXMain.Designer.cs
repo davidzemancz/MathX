@@ -46,9 +46,15 @@ namespace MathX.UI.Forms
             this.btnShortcutLastScript = new System.Windows.Forms.Button();
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
             this.btnShortcutConsole = new System.Windows.Forms.Button();
+            this.gbExamples = new System.Windows.Forms.GroupBox();
+            this.btnExamplesVariables = new System.Windows.Forms.Button();
+            this.btnExamplesConditions = new System.Windows.Forms.Button();
+            this.btnExamplesLoops = new System.Windows.Forms.Button();
+            this.btnExamplesFunctions = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.gbShortcuts.SuspendLayout();
+            this.gbExamples.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -243,12 +249,69 @@ namespace MathX.UI.Forms
             this.btnShortcutConsole.UseVisualStyleBackColor = true;
             this.btnShortcutConsole.Click += new System.EventHandler(this.shortcutButton_Click);
             // 
+            // gbExamples
+            // 
+            this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbExamples.Controls.Add(this.btnExamplesFunctions);
+            this.gbExamples.Controls.Add(this.btnExamplesLoops);
+            this.gbExamples.Controls.Add(this.btnExamplesConditions);
+            this.gbExamples.Controls.Add(this.btnExamplesVariables);
+            this.gbExamples.ForeColor = System.Drawing.Color.White;
+            this.gbExamples.Location = new System.Drawing.Point(264, 159);
+            this.gbExamples.Name = "gbExamples";
+            this.gbExamples.Size = new System.Drawing.Size(708, 115);
+            this.gbExamples.TabIndex = 4;
+            this.gbExamples.TabStop = false;
+            this.gbExamples.Text = "Examples";
+            // 
+            // btnExamplesVariables
+            // 
+            this.btnExamplesVariables.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesVariables.Location = new System.Drawing.Point(17, 22);
+            this.btnExamplesVariables.Name = "btnExamplesVariables";
+            this.btnExamplesVariables.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesVariables.TabIndex = 4;
+            this.btnExamplesVariables.Text = "Variables";
+            this.btnExamplesVariables.UseVisualStyleBackColor = true;
+            // 
+            // btnExamplesConditions
+            // 
+            this.btnExamplesConditions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesConditions.Location = new System.Drawing.Point(17, 51);
+            this.btnExamplesConditions.Name = "btnExamplesConditions";
+            this.btnExamplesConditions.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesConditions.TabIndex = 5;
+            this.btnExamplesConditions.Text = "Conditions";
+            this.btnExamplesConditions.UseVisualStyleBackColor = true;
+            // 
+            // btnExamplesLoops
+            // 
+            this.btnExamplesLoops.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesLoops.Location = new System.Drawing.Point(17, 80);
+            this.btnExamplesLoops.Name = "btnExamplesLoops";
+            this.btnExamplesLoops.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesLoops.TabIndex = 6;
+            this.btnExamplesLoops.Text = "Loops";
+            this.btnExamplesLoops.UseVisualStyleBackColor = true;
+            // 
+            // btnExamplesFunctions
+            // 
+            this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesFunctions.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplesFunctions.Name = "btnExamplesFunctions";
+            this.btnExamplesFunctions.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesFunctions.TabIndex = 7;
+            this.btnExamplesFunctions.Text = "Functions";
+            this.btnExamplesFunctions.UseVisualStyleBackColor = true;
+            // 
             // FormMathXMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.gbExamples);
             this.Controls.Add(this.gbShortcuts);
             this.Controls.Add(this.gbProcesses);
             this.Controls.Add(this.mainMenu);
@@ -260,6 +323,7 @@ namespace MathX.UI.Forms
             this.gbProcesses.ResumeLayout(false);
             this.gbProcesses.PerformLayout();
             this.gbShortcuts.ResumeLayout(false);
+            this.gbExamples.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,6 +348,11 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.Button btnShortcutNewScript;
         private System.Windows.Forms.Button btnShortcutLastScript;
         private System.Windows.Forms.Button btnShortcutOpenScript;
+        private System.Windows.Forms.GroupBox gbExamples;
+        private System.Windows.Forms.Button btnExamplesFunctions;
+        private System.Windows.Forms.Button btnExamplesLoops;
+        private System.Windows.Forms.Button btnExamplesConditions;
+        private System.Windows.Forms.Button btnExamplesVariables;
     }
 }
 
