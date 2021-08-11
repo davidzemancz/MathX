@@ -39,6 +39,8 @@ namespace MathX
                     {
                         string line = streamreader.ReadLine();
                         line = line.Trim();
+                        if (string.IsNullOrEmpty(line)) continue;
+
                         linePositionEnd = streamreader.GetActualPosition();
 
                         // Get statement info

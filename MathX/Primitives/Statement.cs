@@ -118,8 +118,12 @@ namespace MathX.Primitives
                         // If still not recognized -> maybe its just expression 
                         if (!complete)
                         {
-                            string expression = _statement;
-                            output = $"= {new Expression(_process, expression).Evaluate(out status)?.Value}";
+                            string expressionStr = _statement;
+                            Expression expression = new Expression(_process, expressionStr);
+                            Variable result = expression.Evaluate(out status);
+                            if (result?.Value != null) {
+                                output = $"= {result.Value}";
+                            }
                             complete = true;
                         }
                     }

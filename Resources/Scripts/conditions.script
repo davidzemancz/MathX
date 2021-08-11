@@ -1,0 +1,11 @@
+﻿if 15>2
+	print(1)
+endif
+
+if 15==5+10
+	print(2)
+endif
+
+if 15<=5*(2+1)
+	print(3)
+endif

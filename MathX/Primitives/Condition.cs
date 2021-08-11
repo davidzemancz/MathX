@@ -28,7 +28,7 @@ namespace MathX.Primitives
         {
             Result = false;
             Variable variable = new Expression(process, Expression).Evaluate(out status);
-            if (variable.DataType == Variable.DataTypeEnum.Double)
+            if (variable?.DataType == Variable.DataTypeEnum.Double)
             {
                 Result = (double)variable.Value > 0;
             }

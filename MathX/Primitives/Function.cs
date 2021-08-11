@@ -1,4 +1,5 @@
 ﻿using Base.Api;
+using MathX.Processes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +14,20 @@ namespace MathX.Primitives
         public const string IncrementShort = "i";
         public const string Power = "power";
         public const string PowerShort = "pow";
+        public const string Print = "print";
         public const string Sinus = "sin";
 
         private string _name;
         private Variable[] _parameters;
+        private Process _process;
 
         public Function()
         {
         }
 
-        public Function(string name, Variable[] parameters)
+        public Function(Process process, string name, Variable[] parameters)
         {
+            _process = process;
             _name = name.ToLower();
             _parameters = parameters;
         }
@@ -33,7 +37,7 @@ namespace MathX.Primitives
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
             Variable result = new Variable(Variable.DataTypeEnum.None, "_");
             try
-            { 
+            {
                 if (_name == Increment || _name == IncrementShort)
                 {
                     if (!ArgumentsValid(1)) return result;
@@ -55,6 +59,11 @@ namespace MathX.Primitives
                         result = Math.Sin((double)_parameters[0].Value);
                     }
                     else throw new Exception($"First argument of {_name} function must be a number");
+                }
+                else if(_name == Print)
+                {
+                    if (!ArgumentsValid(1)) return result;
+                    _process.WriteToOutput(_parameters[0].Value?.ToString());
                 }
                 else
                 {

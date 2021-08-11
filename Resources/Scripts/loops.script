@@ -1,0 +1,8 @@
+﻿a=5
+while a
+	b=2
+	while b
+	 	b=b-1
+	endwhile
+	a=a-1
+endwhile

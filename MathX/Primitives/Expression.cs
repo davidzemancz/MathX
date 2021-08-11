@@ -62,7 +62,7 @@ namespace MathX.Primitives
                             Variable parameter = Evaluate();
                             parameters.Add(parameter);
                         }
-                        var function = new Function(name, parameters.ToArray());
+                        var function = new Function(_process, name, parameters.ToArray());
                         result = function.Call(out BaseStatus status);
                         status.ThrowIfError();
                     }
@@ -99,34 +99,74 @@ namespace MathX.Primitives
                     }
                     else
                     {
-                        Variable expResult = Evaluate(expOperatorPriority);
-
                         if (expOperator == '+')
                         {
+                            Variable expResult = Evaluate(expOperatorPriority);
                             result = Operation.Add(result, expResult);
                         }
                         else if (expOperator == '-')
                         {
+                            Variable expResult = Evaluate(expOperatorPriority);
                             result = Operation.Subtract(result, expResult);
                         }
                         else if (expOperator == '*')
                         {
+                            Variable expResult = Evaluate(expOperatorPriority);
                             result = Operation.Multiply(result, expResult);
                         }
                         else if (expOperator == '/')
                         {
+                            Variable expResult = Evaluate(expOperatorPriority);
                             result = Operation.Divide(result, expResult);
                         }
                         else if (expOperator == '^')
                         {
+                            Variable expResult = Evaluate(expOperatorPriority);
                             result = Operation.Power(result, expResult);
+                        }
+                        else if (expOperator == '>')
+                        {
+                            if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
+                            {
+                                _position++;
+                                Variable expResult = Evaluate(expOperatorPriority);
+                                result = Operation.Subtract(result, expResult) + 1;
+                            }
+                            else
+                            {
+                                Variable expResult = Evaluate(expOperatorPriority);
+                                result = Operation.Subtract(result, expResult);
+                            }
+                        }
+                        else if (expOperator == '<')
+                        {
+                            if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
+                            {
+                                _position++;
+                                Variable expResult = Evaluate(expOperatorPriority);
+                                result = Operation.Subtract(expResult, result) + 1;
+                            }
+                            else
+                            {
+                                Variable expResult = Evaluate(expOperatorPriority);
+                                result = Operation.Subtract(expResult, result);
+                            }
+                        }
+                        else if (expOperator == '=')
+                        {
+                            if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
+                            {
+                                _position++;
+                                Variable expResult = Evaluate(expOperatorPriority);
+                                result.Value = (double)((double)Operation.Subtract(result, expResult).Value == 0 ? 1 : 0);
+                                result.DataType = Variable.DataTypeEnum.Double;
+                            }
+                            else throw new Exception("Invalid expression operator");
                         }
                     }
                 }
             }
 
-            if (result == null) throw new Exception("Expression is null");
-            else if (result.DataType == Variable.DataTypeEnum.None) throw new Exception("Expression datatype is None");
             return result;
         }
 
