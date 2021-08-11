@@ -20,6 +20,7 @@ namespace Base.UI.Api.Controls
         public BaseCodeEditor()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
         }
 
         public void WriteLine(string line)
@@ -39,38 +40,42 @@ namespace Base.UI.Api.Controls
 
         private void ParseLine(int lineIndex)
         {
+            this.SuspendLayout();
+
             string line = txt.Lines[lineIndex];
+            int currentIndex = txt.SelectionStart;
             int lineStart = txt.GetFirstCharIndexFromLine(lineIndex);
             
-            //for (int i = 0; i < line.Length; i++)
-            //{
-            //    char c = line[i];
-            //    if (c == '=')
-            //    {
-            //        ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Green, txt.BackColor);
-            //    }
-            //    else if (c == '+' || c == '-' || c == '*' || c == '/')
-            //    {
-            //        ChangeTextStyle(lineStart + i, 1, lineStart + line.Length, Color.Blue, txt.BackColor);
-            //    }
-            //    else if(i > 1)
-            //    {
-            //        if(c == 'r' && line[i - 1] == 'o' && line[i - 2] == 'f')
-            //        {
-            //            ChangeTextStyle(lineStart + i - 2, 3, lineStart + line.Length, Color.Blue, txt.BackColor);
-            //        }
-            //    }
-            //}
+
+            // Reset
+            ChangeTextStyle(lineStart, line.Length, currentIndex, txt.ForeColor, txt.BackColor);
+
+            // Set style
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (i > 1)
+                {
+                    if (c == 'e' && line[i - 1] == 'l' && line[i - 2] == 'i' && line[i - 3] == 'h' && line[i - 4] == 'w')
+                    {
+                        ChangeTextStyle(lineStart + i - 4, 5, currentIndex, Color.Blue, txt.BackColor);
+                    }
+                }
+            }
+
+            txt.SelectionBackColor = Color.Blue;
+
+            this.ResumeLayout();
         }
 
-        private void ChangeTextStyle(int startIndex, int length, int lineEndIndex, Color foreColor, Color backColor)
+        private void ChangeTextStyle(int startIndex, int length, int currentIndex, Color foreColor, Color backColor)
         {
             txt.SelectionStart = startIndex;
             txt.SelectionLength = length;
             txt.SelectionColor = foreColor;
             txt.SelectionBackColor = backColor;
             txt.SelectionLength = 0;
-            txt.SelectionStart = lineEndIndex;
+            txt.SelectionStart = currentIndex;
             txt.SelectionColor = txt.ForeColor;
             txt.SelectionBackColor = txt.BackColor;
         }
