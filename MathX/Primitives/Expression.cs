@@ -101,41 +101,35 @@ namespace MathX.Primitives
                     {
                         if (expOperator == '+')
                         {
-                            Variable expResult = Evaluate(expOperatorPriority);
-                            result = Operation.Add(result, expResult);
+                            result = result + Evaluate(expOperatorPriority);
                         }
                         else if (expOperator == '-')
                         {
-                            Variable expResult = Evaluate(expOperatorPriority);
-                            result = Operation.Subtract(result, expResult);
+                            result = result - Evaluate(expOperatorPriority);
                         }
                         else if (expOperator == '*')
                         {
-                            Variable expResult = Evaluate(expOperatorPriority);
-                            result = Operation.Multiply(result, expResult);
+                            result = result * Evaluate(expOperatorPriority);
                         }
                         else if (expOperator == '/')
                         {
-                            Variable expResult = Evaluate(expOperatorPriority);
-                            result = Operation.Divide(result, expResult);
+                            result = result / Evaluate(expOperatorPriority);
                         }
                         else if (expOperator == '^')
                         {
-                            Variable expResult = Evaluate(expOperatorPriority);
-                            result = Operation.Power(result, expResult);
+                            result = new Function(_process, Function.Power, new[] { result, Evaluate(expOperatorPriority) }).Call(out BaseStatus status);
+                            status.ThrowIfError();
                         }
                         else if (expOperator == '>')
                         {
                             if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
                             {
                                 _position++;
-                                Variable expResult = Evaluate(expOperatorPriority);
-                                result = Operation.Subtract(result, expResult) + 1;
+                                result = result >= Evaluate(expOperatorPriority);
                             }
                             else
                             {
-                                Variable expResult = Evaluate(expOperatorPriority);
-                                result = Operation.Subtract(result, expResult);
+                                result = result > Evaluate(expOperatorPriority);
                             }
                         }
                         else if (expOperator == '<')
@@ -143,13 +137,11 @@ namespace MathX.Primitives
                             if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
                             {
                                 _position++;
-                                Variable expResult = Evaluate(expOperatorPriority);
-                                result = Operation.Subtract(expResult, result) + 1;
+                                result = result <= Evaluate(expOperatorPriority);
                             }
                             else
                             {
-                                Variable expResult = Evaluate(expOperatorPriority);
-                                result = Operation.Subtract(expResult, result);
+                                result = result < Evaluate(expOperatorPriority);
                             }
                         }
                         else if (expOperator == '=')
@@ -157,9 +149,16 @@ namespace MathX.Primitives
                             if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
                             {
                                 _position++;
-                                Variable expResult = Evaluate(expOperatorPriority);
-                                result.Value = (double)((double)Operation.Subtract(result, expResult).Value == 0 ? 1 : 0);
-                                result.DataType = Variable.DataTypeEnum.Double;
+                                result = result == Evaluate(expOperatorPriority);
+                            }
+                            else throw new Exception("Invalid expression operator");
+                        }
+                        else if (expOperator == '!')
+                        {
+                            if (_position + 1 < _expression.Length && _expression[_position + 1] == '=')
+                            {
+                                _position++;
+                                result = result != Evaluate(expOperatorPriority);
                             }
                             else throw new Exception("Invalid expression operator");
                         }

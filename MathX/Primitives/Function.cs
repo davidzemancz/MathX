@@ -42,19 +42,21 @@ namespace MathX.Primitives
                 {
                     if (!ArgumentsValid(1)) return result;
 
-                    result = Operation.Add(_parameters[0], 1.0);
+                    result = _parameters[0] + 1.0;
                 }
                 else if (_name == Power || _name == PowerShort)
                 {
                     if (!ArgumentsValid(2)) return result;
-
-                    result = Operation.Power(_parameters[0], _parameters[1]);
+                    else if (_parameters[0].DataType == Variable.DataTypeEnum.Double && _parameters[1].DataType == Variable.DataTypeEnum.Double)
+                    {
+                        result = Math.Pow((double)_parameters[0].Value, (double)_parameters[1].Value);
+                    }
+                    else throw new Exception($"Both arguments of {_name} function must be numbers");
                 }
                 else if (_name == Sinus)
                 {
                     if (!ArgumentsValid(1)) return result;
-
-                    if (_parameters[0].DataType == Variable.DataTypeEnum.Double)
+                    else if (_parameters[0].DataType == Variable.DataTypeEnum.Double)
                     {
                         result = Math.Sin((double)_parameters[0].Value);
                     }
@@ -72,7 +74,7 @@ namespace MathX.Primitives
             }
             catch (Exception ex)
             {
-                status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Invalid statement] {ex.Message}", ex);
+                status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Invalid function call] {ex.Message}", ex);
             }
             return result;
         }

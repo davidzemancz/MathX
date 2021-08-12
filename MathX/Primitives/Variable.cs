@@ -18,8 +18,8 @@ namespace MathX.Primitives
         {
             None = 0,
             Double = 1,
-            Tenzor = 2,
-            String = 3,
+            Boolean = 2,
+            Tenzor = 3,
         }
 
         public Variable(DataTypeEnum dataType, string name)
@@ -58,6 +58,48 @@ namespace MathX.Primitives
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Double, "_", (double)a.Value / (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator >(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value > (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator <(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value < (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator >=(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value >= (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator <=(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value <= (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator ==(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value == (double)b.Value);
+            return null;
+        }
+
+        public static Variable operator !=(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value != (double)b.Value);
             return null;
         }
 

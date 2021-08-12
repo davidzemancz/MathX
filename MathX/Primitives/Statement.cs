@@ -98,17 +98,25 @@ namespace MathX.Primitives
                         for (int i = 0; i < _statement.Length; i++)
                         {
                             char c = _statement[i];
-                            if (c == '=') // Assignment to variable
+                            if (c == '=') // Assignment to variable or inline function definition
                             {
-                                string variableName = _statement.Substring(0, i);
-                                string varibaleValueExpr = _statement.Substring(i + 1);
-                                Variable variable = new Expression(_process, varibaleValueExpr).Evaluate(out status);
-                                if (variable != null)
+                                string name = _statement.Substring(0, i);
+                                if (name.Contains('(')) // Function
                                 {
-                                    variable.Name = variableName;
-                                    _process.Variables[variableName] = variable;
-                                    output = $"{variableName} = {_process.Variables[variableName].Value}";
+                                    string functionExpr = _statement.Substring(i + 1);
 
+                                }
+                                else // Variable
+                                {
+                                    string varibaleValueExpr = _statement.Substring(i + 1);
+                                    Variable variable = new Expression(_process, varibaleValueExpr).Evaluate(out status);
+                                    if (!(variable is null))
+                                    {
+                                        variable.Name = name;
+                                        _process.Variables[name] = variable;
+                                        output = $"{name} = {_process.Variables[name].Value}";
+
+                                    }
                                 }
                                 complete = true;
                                 break;
