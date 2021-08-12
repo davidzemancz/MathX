@@ -11,6 +11,8 @@ namespace MathX.Processes
     {
         public Dictionary<string, Variable> Variables { get; set; }
 
+        public Dictionary<string, Function> Functions { get; set; }
+
         public bool Running { get; private set; }
 
         protected MemoryStream Output { get; set; }
@@ -22,6 +24,7 @@ namespace MathX.Processes
         public Process()
         {
             Variables = new Dictionary<string, Variable>();
+            Functions = new Dictionary<string, Function>();
             Output = new MemoryStream();
             OutputWriter = new StreamWriter(Output);
             OutputReader = new StreamReader(Output);
