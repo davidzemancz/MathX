@@ -103,8 +103,16 @@ namespace MathX.Primitives
                                 string name = _statement.Substring(0, i);
                                 if (name.Contains('(')) // Function
                                 {
+                                    string[] arr = name.Split('(');
+                                    string functionName = arr[0];
+                                    string[] functionParamsNames = arr[1].Substring(0, arr[1].Length - 1).Split(',');
+
                                     string functionExpr = _statement.Substring(i + 1);
 
+                                    Function function = new Function(_process, functionName, functionExpr, functionParamsNames);
+                                    _process.Functions[functionName] = function;
+
+                                    output = $"{name} = {functionExpr}";
                                 }
                                 else // Variable
                                 {

@@ -1,0 +1,11 @@
+﻿add(a,b)=a+b
+add(2,4*8)
+
+mysin(a)=sin(a)+1
+mysin(0)
+
+a=5
+while a>0
+	add(a,a)
+	a=a-1
+endwhile

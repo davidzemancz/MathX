@@ -62,9 +62,18 @@ namespace MathX.Primitives
                             Variable parameter = Evaluate();
                             parameters.Add(parameter);
                         }
-                        var function = new Function(_process, name, parameters.ToArray());
-                        result = function.Call(out BaseStatus status);
-                        status.ThrowIfError();
+
+                        if (_process.Functions.ContainsKey(name)) // User defined function
+                        {
+                            result = _process.Functions[name].Call(parameters.ToArray(), out BaseStatus status);
+                            status.ThrowIfError();
+                        }
+                        else // Inbuilt function
+                        {
+                            var function = new Function(_process, name, parameters.ToArray());
+                            result = function.Call(out BaseStatus status);
+                            status.ThrowIfError();
+                        }
                     }
                     else
                     {

@@ -18,11 +18,21 @@ namespace MathX.Primitives
         public const string Sinus = "sin";
 
         private string _name;
+        private string _expression;
+        private string[] _parametersNames;
         private Variable[] _parameters;
         private Process _process;
 
         public Function()
         {
+        }
+
+        public Function(Process process, string name, string expression, string[] parametersNames)
+        {
+            _process = process;
+            _name = name.ToLower();
+            _expression = expression;
+            _parametersNames = parametersNames;
         }
 
         public Function(Process process, string name, Variable[] parameters)
@@ -34,8 +44,15 @@ namespace MathX.Primitives
 
         public Variable Call(out BaseStatus status)
         {
+            return Call(_parameters, out status);
+        }
+
+        public Variable Call(Variable[] parameters, out BaseStatus status)
+        {
+            _parameters = parameters;
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
             Variable result = new Variable(Variable.DataTypeEnum.None, "_");
+
             try
             {
                 if (_name == Increment || _name == IncrementShort)
@@ -67,7 +84,33 @@ namespace MathX.Primitives
                     if (!ArgumentsValid(1)) return result;
                     _process.WriteToOutput(_parameters[0].Value?.ToString());
                 }
-                else
+                else if (_process.Functions.ContainsKey(_name))
+                {
+                    if (!ArgumentsValid(_parametersNames.Length)) return result;
+
+                    // Save function params to process variables
+                    Dictionary<string, Variable> tempVariablesStorage = new Dictionary<string, Variable>();
+                    int i = 0;
+                    foreach(string parameterName in _parametersNames)
+                    {
+                        if (_process.Variables.ContainsKey(parameterName)) 
+                        {
+                            tempVariablesStorage[parameterName] = _process.Variables[parameterName];
+                        }
+                        _process.Variables[parameterName] = _parameters[i++];
+                    }
+
+                    // Evaluate function expression
+                    result = new Expression(_process, _expression).Evaluate(out status);
+                    status.ThrowIfError();
+
+                    // Restore process variables
+                    foreach(KeyValuePair<string, Variable> kvp in tempVariablesStorage)
+                    {
+                        _process.Variables[kvp.Key] = kvp.Value;
+                    }
+                }
+                else 
                 {
                     throw new Exception($"Invalid function name {_name}");
                 }
