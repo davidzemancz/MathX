@@ -29,6 +29,12 @@ namespace MathX.UI.Forms
 
         #region Actions
 
+        private void ShowGraphForm()
+        {
+            var form = new FormMathXGraph();
+            form.Show();
+        }
+
         private void ShowConsoleForm()
         {
             var form = new FormMathXConsole();
@@ -74,6 +80,10 @@ namespace MathX.UI.Forms
             else if (sender == btnShortcutLastScript)
             {
                 this.ShowScriptEditorForm(false);
+            }
+            else if (sender == btnGraph)
+            {
+                this.ShowGraphForm();
             }
         }
 

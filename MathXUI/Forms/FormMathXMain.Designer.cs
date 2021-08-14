@@ -47,10 +47,11 @@ namespace MathX.UI.Forms
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
             this.btnShortcutConsole = new System.Windows.Forms.Button();
             this.gbExamples = new System.Windows.Forms.GroupBox();
-            this.btnExamplesVariables = new System.Windows.Forms.Button();
-            this.btnExamplesConditions = new System.Windows.Forms.Button();
-            this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesFunctions = new System.Windows.Forms.Button();
+            this.btnExamplesLoops = new System.Windows.Forms.Button();
+            this.btnExamplesConditions = new System.Windows.Forms.Button();
+            this.btnExamplesVariables = new System.Windows.Forms.Button();
+            this.btnGraph = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.gbShortcuts.SuspendLayout();
@@ -193,6 +194,7 @@ namespace MathX.UI.Forms
             // 
             this.gbShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbShortcuts.Controls.Add(this.btnGraph);
             this.gbShortcuts.Controls.Add(this.btnShortcutOpenScript);
             this.gbShortcuts.Controls.Add(this.btnShortcutLastScript);
             this.gbShortcuts.Controls.Add(this.btnShortcutNewScript);
@@ -265,25 +267,15 @@ namespace MathX.UI.Forms
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
             // 
-            // btnExamplesVariables
+            // btnExamplesFunctions
             // 
-            this.btnExamplesVariables.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesVariables.Location = new System.Drawing.Point(17, 22);
-            this.btnExamplesVariables.Name = "btnExamplesVariables";
-            this.btnExamplesVariables.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplesVariables.TabIndex = 4;
-            this.btnExamplesVariables.Text = "Variables";
-            this.btnExamplesVariables.UseVisualStyleBackColor = true;
-            // 
-            // btnExamplesConditions
-            // 
-            this.btnExamplesConditions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesConditions.Location = new System.Drawing.Point(17, 51);
-            this.btnExamplesConditions.Name = "btnExamplesConditions";
-            this.btnExamplesConditions.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplesConditions.TabIndex = 5;
-            this.btnExamplesConditions.Text = "Conditions";
-            this.btnExamplesConditions.UseVisualStyleBackColor = true;
+            this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesFunctions.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplesFunctions.Name = "btnExamplesFunctions";
+            this.btnExamplesFunctions.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesFunctions.TabIndex = 7;
+            this.btnExamplesFunctions.Text = "Functions";
+            this.btnExamplesFunctions.UseVisualStyleBackColor = true;
             // 
             // btnExamplesLoops
             // 
@@ -295,15 +287,36 @@ namespace MathX.UI.Forms
             this.btnExamplesLoops.Text = "Loops";
             this.btnExamplesLoops.UseVisualStyleBackColor = true;
             // 
-            // btnExamplesFunctions
+            // btnExamplesConditions
             // 
-            this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesFunctions.Location = new System.Drawing.Point(166, 22);
-            this.btnExamplesFunctions.Name = "btnExamplesFunctions";
-            this.btnExamplesFunctions.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplesFunctions.TabIndex = 7;
-            this.btnExamplesFunctions.Text = "Functions";
-            this.btnExamplesFunctions.UseVisualStyleBackColor = true;
+            this.btnExamplesConditions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesConditions.Location = new System.Drawing.Point(17, 51);
+            this.btnExamplesConditions.Name = "btnExamplesConditions";
+            this.btnExamplesConditions.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesConditions.TabIndex = 5;
+            this.btnExamplesConditions.Text = "Conditions";
+            this.btnExamplesConditions.UseVisualStyleBackColor = true;
+            // 
+            // btnExamplesVariables
+            // 
+            this.btnExamplesVariables.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesVariables.Location = new System.Drawing.Point(17, 22);
+            this.btnExamplesVariables.Name = "btnExamplesVariables";
+            this.btnExamplesVariables.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesVariables.TabIndex = 4;
+            this.btnExamplesVariables.Text = "Variables";
+            this.btnExamplesVariables.UseVisualStyleBackColor = true;
+            // 
+            // btnGraph
+            // 
+            this.btnGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGraph.Location = new System.Drawing.Point(315, 20);
+            this.btnGraph.Name = "btnGraph";
+            this.btnGraph.Size = new System.Drawing.Size(143, 23);
+            this.btnGraph.TabIndex = 4;
+            this.btnGraph.Text = "Graph";
+            this.btnGraph.UseVisualStyleBackColor = true;
+            this.btnGraph.Click += new System.EventHandler(this.shortcutButton_Click);
             // 
             // FormMathXMain
             // 
@@ -353,6 +366,7 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.Button btnExamplesLoops;
         private System.Windows.Forms.Button btnExamplesConditions;
         private System.Windows.Forms.Button btnExamplesVariables;
+        private System.Windows.Forms.Button btnGraph;
     }
 }
 

@@ -57,7 +57,10 @@ namespace MathX.Primitives
         public static Variable operator /(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
+            {
+                if ((double)b.Value == 0) throw new Exception("Unable to divide by zero");
                 return new Variable(DataTypeEnum.Double, "_", (double)a.Value / (double)b.Value);
+            }
             return null;
         }
 
