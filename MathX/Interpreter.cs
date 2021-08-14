@@ -57,40 +57,57 @@ namespace MathX
                             statementInfo.Label.Position = linePositionEnd;
                             labels[statementInfo.Label.Name] = statementInfo.Label;
                         }
-                        else if (statementInfo.LoopStart)
+                        else if (statementInfo.Loop != null)
                         {
-                            statementInfo.Loop.Position = linePositionEnd;
-                            statementInfo.Loop.EvaluateCondition(_process, out status);
-                            status.ThrowIfError();
-
-                            loops.Push(statementInfo.Loop);
-                        }
-                        else if (statementInfo.LoopEnd)
-                        {
-                            Loop loop = loops.Peek();
-                            loop.EvaluateCondition(_process, out status);
-                            status.ThrowIfError();
-
-                            if (loop.Result)
+                            if (statementInfo.Loop.Keyword == Keywords.While)
                             {
-                                streamreader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
-                                streamreader.DiscardBufferedData();
-                            }
-                            else
-                            {
-                                loops.Pop();
-                            }
-                        }
-                        else if (statementInfo.ConditionStart)
-                        {
-                            statementInfo.Condition.Evaluate(_process, out status);
-                            status.ThrowIfError();
 
-                            conditions.Push(statementInfo.Condition);
+                                statementInfo.Loop.Position = linePositionEnd;
+                                statementInfo.Loop.EvaluateCondition(_process, out status);
+                                status.ThrowIfError();
+
+                                loops.Push(statementInfo.Loop);
+                            }
+                            else if(statementInfo.Loop.Keyword == Keywords.EndWhile)
+                            {
+                                Loop loop = loops.Peek();
+                                loop.EvaluateCondition(_process, out status);
+                                status.ThrowIfError();
+
+                                if (loop.Result)
+                                {
+                                    streamreader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
+                                    streamreader.DiscardBufferedData();
+                                }
+                                else
+                                {
+                                    loops.Pop();
+                                }
+                            }
                         }
-                        else if (statementInfo.ConditionEnd)
+                        else if (statementInfo.Condition != null)
                         {
-                            conditions.Pop();
+                            if (statementInfo.Condition.Keyword == Keywords.If)
+                            {
+                                statementInfo.Condition.Evaluate(_process, out status);
+                                status.ThrowIfError();
+
+                                conditions.Push(statementInfo.Condition);
+                            }
+                            else if (statementInfo.Condition.Keyword == Keywords.ElseIf)
+                            {
+                                throw new NotImplementedException("ElseIf block is not implemented yet");
+                            }
+                            else if (statementInfo.Condition.Keyword == Keywords.Else)
+                            {
+                                var currentCondition = conditions.Pop();
+                                statementInfo.Condition.Result = !currentCondition.Result;
+                                conditions.Push(statementInfo.Condition);
+                            }
+                            else if(statementInfo.Condition.Keyword == Keywords.EndIf)
+                            {
+                                conditions.Pop();
+                            }
                         }
                         else
                         {

@@ -14,14 +14,17 @@ namespace MathX.Primitives
 
         public string Expression { get; set; }
 
+        public string Keyword { get; set; }
+
         public Condition()
         {
 
         }
 
-        public Condition(string expression)
+        public Condition(string keyword, string expression)
         {
-            this.Expression = expression;
+            Keyword = keyword;
+            Expression = expression;
         }
 
         public bool Evaluate(Process process, out BaseStatus status)

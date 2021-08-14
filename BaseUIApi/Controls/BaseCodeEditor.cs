@@ -14,8 +14,13 @@ namespace Base.UI.Api.Controls
     {
         [Browsable(true)]
         public new event EventHandler TextChanged;
-
+        
         public override string Text { get => txt.Text ; set => txt.Text = value; }
+
+        public HashSet<string> KeyWords { get; } = new HashSet<string>() { 
+            "while", "endwhile", 
+            "if", "else" ,"endif" 
+        };
 
         public BaseCodeEditor()
         {
@@ -66,7 +71,7 @@ namespace Base.UI.Api.Controls
                     }
 
                     string word = wordBuilder.ToString();
-                    if (word == "while" || word == "endwhile" || word == "if" || word == "endif")
+                    if (this.KeyWords.Contains(word))
                     {
                         ChangeTextStyle(lineStart + i - word.Length, word.Length, currentIndex, Color.Blue, txt.BackColor);
                     }

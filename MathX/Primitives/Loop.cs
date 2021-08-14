@@ -15,21 +15,25 @@ namespace MathX.Primitives
         public bool Result { get; set; }
 
         public string Expression { get; set; }
+        
+        public string Keyword { get; set; }
 
         public Loop() 
         { 
 
         }
 
-        public Loop(long position, string expression)
+        public Loop(long position, string keyword, string expression)
         {
-            Expression = expression;
             Position = position;
+            Keyword = keyword;
+            Expression = expression;
+
         }
 
         public bool EvaluateCondition(Process process, out BaseStatus status)
         {
-            Result = new Condition(Expression).Evaluate(process, out status);
+            Result = new Condition(Keywords.If, Expression).Evaluate(process, out status);
             return Result;
         }
     }

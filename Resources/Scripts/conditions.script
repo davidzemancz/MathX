@@ -1,5 +1,7 @@
 ﻿if 15>2
 	print(1)
+else 
+	print(10)
 endif
 
 if 15==5+10

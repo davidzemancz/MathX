@@ -30,29 +30,35 @@ namespace MathX.Primitives
             {
                 if (_statement.Length > 0)
                 {
-                    if (_statement.StartsWith("if ")) // Condition
+                    if (_statement.StartsWith("if ")) 
                     {
-                        statementInfo.ConditionStart = true;
                         string conditonExpression = _statement.Substring(3);
-                        statementInfo.Condition = new Condition(conditonExpression);
+                        statementInfo.Condition = new Condition(Keywords.If, conditonExpression);
                     }
-                    else if(_statement.StartsWith("while ")) // Loop
+                    if (_statement.StartsWith("elseif "))
                     {
-                        statementInfo.LoopStart = true;
+                        string conditonExpression = _statement.Substring(3);
+                        statementInfo.Condition = new Condition(Keywords.ElseIf, conditonExpression);
+                    }
+                    if (_statement == "else") 
+                    {
+                        string conditonExpression = _statement.Substring(3);
+                        statementInfo.Condition = new Condition(Keywords.Else, conditonExpression);
+                    }
+                    if (_statement == "endif") 
+                    {
+                        statementInfo.Condition = new Condition(Keywords.EndIf, null);
+                    }
+                    else if(_statement.StartsWith("while ")) 
+                    {
                         string loopExpression = _statement.Substring(6);
-                        statementInfo.Loop = new Loop(-1, loopExpression);
+                        statementInfo.Loop = new Loop(-1, Keywords.While, loopExpression);
                     }
-                    else if (_statement.StartsWith("end")) // Block end
+                    else if (_statement == "endwhile")
                     {
-                        if (_statement == "endif")
-                        {
-                            statementInfo.ConditionEnd = true;
-                        }
-                        else if (_statement == "endwhile")
-                        {
-                            statementInfo.LoopEnd = true;
-                        }
+                        statementInfo.Loop = new Loop(-1, Keywords.While, null);
                     }
+
                     else if(_statement.StartsWith("#")) // Label
                     {
                         statementInfo.Label = new Label(-1, _statement.Substring(1));
@@ -76,16 +82,12 @@ namespace MathX.Primitives
                     string output = null;
                    
                     // Looking for keywords
-                    if (statementInfo.Condition != null) // Condition
+                    if (statementInfo?.Condition != null) // Condition
                     {
                         bool result = statementInfo.Condition.Result;
                         output = $"= {result}";
                     }
-                    else if (statementInfo.ConditionEnd) // Condition end
-                    {
-                       // ignore
-                    }
-                    else if (statementInfo.Label != null)
+                    else if (statementInfo?.Label != null)
                     {
                         string labelName = statementInfo.Label.Name;
                         output = $"LABEL {labelName}";
