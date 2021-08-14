@@ -124,7 +124,7 @@ namespace MathX.Primitives
                                     {
                                         variable.Name = name;
                                         _process.Variables[name] = variable;
-                                        output = $"{name} = {_process.Variables[name].Value}";
+                                        output = $"{variable}";
 
                                     }
                                 }

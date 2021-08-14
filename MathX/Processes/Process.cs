@@ -9,42 +9,34 @@ namespace MathX.Processes
 {
     public class Process : IDisposable
     {
-        public Dictionary<string, Variable> Variables { get; set; }
-
-        public Dictionary<string, Function> Functions { get; set; }
-
-        public bool Running { get; private set; }
-
+        public string Id { get; set; }
+        public StateEnum State { get; set; }
+        public BaseDictionary<string, Variable> Variables { get; set; }
+        public BaseDictionary<string, Function> Functions { get; set; }
         protected MemoryStream Output { get; set; }
-
         protected StreamWriter OutputWriter { get; set; }
-
         public StreamReader OutputReader { get; protected set; }
 
-        public Process()
+        public enum StateEnum
         {
-            Variables = new Dictionary<string, Variable>();
-            Functions = new Dictionary<string, Function>();
+            Running = 1,
+            Stopped = 2,
+            Terminated = 3
+        }
+
+        public Process(string id)
+        {
+            Id = id;
+            Variables = new BaseDictionary<string, Variable>();
+            Functions = new BaseDictionary<string, Function>();
             Output = new MemoryStream();
             OutputWriter = new StreamWriter(Output);
             OutputReader = new StreamReader(Output);
+            State = StateEnum.Running;
         }
         
-        public void Start()
-        {
-            Running = true;
-        }
-      
-        public void Stop()
-        {
-            if (!Running) throw new Exception("Process is not running");
-            Running = false;
-        }
-
         public void ExecuteStatement(string line, out BaseStatus status)
         {
-            if (!Running) throw new Exception("Process is not running");
-            
             Statement statement = new Statement(this, line);
             StatementInfo statementInfo = statement.GetInfo(out status);
             if (status.State == BaseStatus.StateEnum.Ok) 
@@ -55,8 +47,7 @@ namespace MathX.Processes
 
         public void WriteToOutput(string data)
         {
-            if (!Running) throw new Exception("Process is not running");
-            else if (string.IsNullOrEmpty(data)) return;
+            if (string.IsNullOrEmpty(data)) return;
 
             OutputWriter.WriteLine(data);
             OutputWriter.Flush();
@@ -67,6 +58,11 @@ namespace MathX.Processes
             this.Output.Dispose();
             this.OutputReader.Dispose();
             this.OutputWriter.Dispose();
+        }
+
+        public override string ToString()
+        {
+            return $"Process {Id} [State {State}]";
         }
     }
 }

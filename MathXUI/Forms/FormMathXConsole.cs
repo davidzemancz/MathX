@@ -32,8 +32,7 @@ namespace MathX.UI
         public FormMathXConsole()
         {
             InitializeComponent();
-            _consoleProcess = new Process();
-            _consoleProcess.Start();
+            _consoleProcess = ProcessManager.Processes["1"];
             
             txtCommandLine.GotFocus += txtCommandLine_GotFocus;
             txtCommandLine.LostFocus += txtCommandLine_LostFocus;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MathX.Primitives
 {
@@ -112,7 +113,15 @@ namespace MathX.Primitives
                 }
                 else 
                 {
-                    throw new Exception($"Invalid function name {_name}");
+                    if (!string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_expression))
+                    {
+                        _process.Functions[_name] = this;
+                        result = _process.Functions[_name].Call(out status);
+                    }
+                    else
+                    {
+                        throw new Exception($"Invalid function name {_name}");
+                    }
                 }
             }
             catch (Exception ex)
@@ -130,6 +139,17 @@ namespace MathX.Primitives
                 throw new Exception($"Invalid arguments for function {_name}");
             }
             return true;
+        }
+
+        public override string ToString()
+{
+            string paramsNames = "";
+            foreach (string paramName in _parametersNames)
+            {
+                paramsNames += paramName + ",";
+            }
+            if (paramsNames.Length > 0) paramsNames = paramsNames.Substring(0, paramsNames.Length - 1);
+            return $"{_name}({paramsNames}) = {_expression}";
         }
     }
 }

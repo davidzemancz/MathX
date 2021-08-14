@@ -113,7 +113,7 @@ namespace MathX.Primitives
 
         public override string ToString()
         {
-            return Value?.ToString();
+            return $"{Name} = {Value?.ToString()}";
         }
 
     }

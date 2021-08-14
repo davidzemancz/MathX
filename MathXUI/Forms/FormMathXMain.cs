@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 using System.Windows.Forms;
 using Base.Api;
 using Base.UI.Api.Controls;
+using MathX.Primitives;
+using MathX.Processes;
 
 namespace MathX.UI.Forms
 {
@@ -11,7 +13,7 @@ namespace MathX.UI.Forms
     {
         #region PROPS
 
-       
+        
 
         #endregion
 
@@ -51,9 +53,49 @@ namespace MathX.UI.Forms
             form.Show();
         }
 
+        private void LoadProcesses()
+        {
+            lbProcesses.Items.Clear();
+            foreach (KeyValuePair<string, Process> kvp in ProcessManager.Processes)
+            {
+                lbProcesses.Items.Add(kvp.Value);
+            }
+            lbProcesses.SelectedIndex = 0;
+        }
+
         #endregion
 
         #region Form
+
+        private void FormMathXMain_Activated(object sender, System.EventArgs e)
+        {
+            LoadProcesses();
+        }
+
+        private void FormMathXMain_Load(object sender, System.EventArgs e)
+        {
+            Process defaultProcess = new Process("1");
+            ProcessManager.Processes.Add(defaultProcess.Id, defaultProcess);
+        }
+
+        private void lbProcesses_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            Process selectedProcess = (Process)lbProcesses.SelectedItem;
+
+            lbVariables.Items.Clear();
+            foreach (KeyValuePair<string, Variable> kvp in selectedProcess.Variables)
+            {
+                lbVariables.Items.Add(kvp.Value);
+            }
+            if (lbVariables.Items.Count < 1) lbVariables.Items.Add("[None]");
+
+            lbFunctions.Items.Clear();
+            foreach (KeyValuePair<string, Function> kvp in selectedProcess.Functions)
+            {
+                lbFunctions.Items.Add(kvp.Value);
+            }
+            if (lbFunctions.Items.Count < 1) lbFunctions.Items.Add("[None]");
+        }
 
         private void menuStrip_ItemClicked(object sender, System.EventArgs e)
         {
@@ -87,10 +129,13 @@ namespace MathX.UI.Forms
             }
         }
 
-        #endregion
+
+
 
         #endregion
 
+        #endregion
 
+        
     }
 }

@@ -154,17 +154,13 @@ namespace MathX.UI.Forms
             }
             else
             {
-                using (Process process = new Process())
+                using (Process process = new Process("2"))
                 {
-                    process.Start();
-                    
                     Interpreter interpreter = new Interpreter(process, FileName);
                     interpreter.Run(out BaseStatus status);
                     process.OutputReader.BaseStream.Seek(0, SeekOrigin.Begin);
                     string output = process.OutputReader.ReadToEnd();
                     txtOutput.Text = output + status.ToString();
-                    
-                    process.Stop();
                 }
             }
         }

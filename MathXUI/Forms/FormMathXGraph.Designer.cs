@@ -29,24 +29,42 @@ namespace MathX.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.pcbContainer = new System.Windows.Forms.PictureBox();
             this.pcbGraph = new System.Windows.Forms.PictureBox();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bwCoordinates = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.pcbContainer)).BeginInit();
+            this.pcbContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbGraph)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // pcbContainer
+            // 
+            this.pcbContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pcbContainer.Controls.Add(this.pcbGraph);
+            this.pcbContainer.Location = new System.Drawing.Point(12, 28);
+            this.pcbContainer.Name = "pcbContainer";
+            this.pcbContainer.Size = new System.Drawing.Size(951, 470);
+            this.pcbContainer.TabIndex = 0;
+            this.pcbContainer.TabStop = false;
             // 
             // pcbGraph
             // 
             this.pcbGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pcbGraph.Location = new System.Drawing.Point(12, 28);
+            this.pcbGraph.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pcbGraph.Location = new System.Drawing.Point(0, 0);
             this.pcbGraph.Name = "pcbGraph";
-            this.pcbGraph.Size = new System.Drawing.Size(795, 486);
-            this.pcbGraph.TabIndex = 0;
+            this.pcbGraph.Size = new System.Drawing.Size(951, 470);
+            this.pcbGraph.TabIndex = 8;
             this.pcbGraph.TabStop = false;
+            this.pcbGraph.SizeChanged += new System.EventHandler(this.pcbGraph_SizeChanged);
             // 
             // mainMenu
             // 
@@ -57,7 +75,7 @@ namespace MathX.UI.Forms
             this.processToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(819, 25);
+            this.mainMenu.Size = new System.Drawing.Size(975, 25);
             this.mainMenu.TabIndex = 7;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -79,11 +97,14 @@ namespace MathX.UI.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(819, 526);
+            this.ClientSize = new System.Drawing.Size(975, 538);
             this.Controls.Add(this.mainMenu);
-            this.Controls.Add(this.pcbGraph);
+            this.Controls.Add(this.pcbContainer);
             this.Name = "FormMathXGraph";
             this.Text = "Graph";
+            this.Load += new System.EventHandler(this.FormMathXGraph_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pcbContainer)).EndInit();
+            this.pcbContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pcbGraph)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
@@ -94,9 +115,11 @@ namespace MathX.UI.Forms
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pcbGraph;
+        private System.Windows.Forms.PictureBox pcbContainer;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pcbGraph;
+        private System.ComponentModel.BackgroundWorker bwCoordinates;
     }
 }
