@@ -41,6 +41,9 @@ namespace MathX.UI.Forms
             this.lbVariables = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.tsProcesses = new System.Windows.Forms.ToolStrip();
+            this.tsBtnAddProcess = new System.Windows.Forms.ToolStripButton();
+            this.tsBtnDelProcess = new System.Windows.Forms.ToolStripButton();
             this.gbShortcuts = new System.Windows.Forms.GroupBox();
             this.btnGraph = new System.Windows.Forms.Button();
             this.btnShortcutOpenScript = new System.Windows.Forms.Button();
@@ -55,6 +58,7 @@ namespace MathX.UI.Forms
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
+            this.tsProcesses.SuspendLayout();
             this.gbShortcuts.SuspendLayout();
             this.gbExamples.SuspendLayout();
             this.SuspendLayout();
@@ -120,7 +124,7 @@ namespace MathX.UI.Forms
             this.lbProcesses.Location = new System.Drawing.Point(3, 3);
             this.lbProcesses.Name = "lbProcesses";
             this.tlpProcesses.SetRowSpan(this.lbProcesses, 2);
-            this.lbProcesses.Size = new System.Drawing.Size(312, 213);
+            this.lbProcesses.Size = new System.Drawing.Size(301, 213);
             this.lbProcesses.TabIndex = 1;
             this.lbProcesses.SelectedIndexChanged += new System.EventHandler(this.lbProcesses_SelectedIndexChanged);
             // 
@@ -129,6 +133,7 @@ namespace MathX.UI.Forms
             this.gbProcesses.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbProcesses.Controls.Add(this.tlpProcesses);
+            this.gbProcesses.Controls.Add(this.tsProcesses);
             this.gbProcesses.ForeColor = System.Drawing.Color.White;
             this.gbProcesses.Location = new System.Drawing.Point(12, 41);
             this.gbProcesses.Name = "gbProcesses";
@@ -149,13 +154,13 @@ namespace MathX.UI.Forms
             this.tlpProcesses.Controls.Add(this.label3, 2, 0);
             this.tlpProcesses.Controls.Add(this.lbProcesses, 0, 0);
             this.tlpProcesses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpProcesses.Location = new System.Drawing.Point(3, 19);
+            this.tlpProcesses.Location = new System.Drawing.Point(35, 19);
             this.tlpProcesses.Name = "tlpProcesses";
             this.tlpProcesses.RowCount = 2;
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpProcesses.Size = new System.Drawing.Size(954, 219);
+            this.tlpProcesses.Size = new System.Drawing.Size(922, 219);
             this.tlpProcesses.TabIndex = 5;
             // 
             // lbFunctions
@@ -170,10 +175,10 @@ namespace MathX.UI.Forms
             "a = 4",
             "b = True",
             "c = [4,3,4;2,2,1]"});
-            this.lbFunctions.Location = new System.Drawing.Point(639, 23);
+            this.lbFunctions.Location = new System.Drawing.Point(617, 23);
             this.lbFunctions.Name = "lbFunctions";
             this.lbFunctions.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbFunctions.Size = new System.Drawing.Size(312, 193);
+            this.lbFunctions.Size = new System.Drawing.Size(302, 193);
             this.lbFunctions.TabIndex = 4;
             // 
             // lbVariables
@@ -188,16 +193,16 @@ namespace MathX.UI.Forms
             "a = 4",
             "b = True",
             "c = [4,3,4;2,2,1]"});
-            this.lbVariables.Location = new System.Drawing.Point(321, 23);
+            this.lbVariables.Location = new System.Drawing.Point(310, 23);
             this.lbVariables.Name = "lbVariables";
             this.lbVariables.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbVariables.Size = new System.Drawing.Size(312, 193);
+            this.lbVariables.Size = new System.Drawing.Size(301, 193);
             this.lbVariables.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(321, 0);
+            this.label2.Location = new System.Drawing.Point(310, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 15);
             this.label2.TabIndex = 6;
@@ -206,11 +211,44 @@ namespace MathX.UI.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(639, 0);
+            this.label3.Location = new System.Drawing.Point(617, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 15);
             this.label3.TabIndex = 7;
             this.label3.Text = "Functions";
+            // 
+            // tsProcesses
+            // 
+            this.tsProcesses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(73)))), ((int)(((byte)(171)))));
+            this.tsProcesses.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tsProcesses.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tsProcesses.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsBtnAddProcess,
+            this.tsBtnDelProcess});
+            this.tsProcesses.Location = new System.Drawing.Point(3, 19);
+            this.tsProcesses.Name = "tsProcesses";
+            this.tsProcesses.Size = new System.Drawing.Size(32, 219);
+            this.tsProcesses.TabIndex = 6;
+            this.tsProcesses.Text = "toolStrip1";
+            this.tsProcesses.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ts_ItemClicked);
+            // 
+            // tsBtnAddProcess
+            // 
+            this.tsBtnAddProcess.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsBtnAddProcess.Image = global::MathX.UI.Properties.Resources.add24;
+            this.tsBtnAddProcess.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnAddProcess.Name = "tsBtnAddProcess";
+            this.tsBtnAddProcess.Size = new System.Drawing.Size(29, 20);
+            this.tsBtnAddProcess.Text = "toolStripButton1";
+            // 
+            // tsBtnDelProcess
+            // 
+            this.tsBtnDelProcess.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsBtnDelProcess.Image = global::MathX.UI.Properties.Resources.cancel24;
+            this.tsBtnDelProcess.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnDelProcess.Name = "tsBtnDelProcess";
+            this.tsBtnDelProcess.Size = new System.Drawing.Size(29, 20);
+            this.tsBtnDelProcess.Text = "toolStripButton1";
             // 
             // gbShortcuts
             // 
@@ -358,8 +396,11 @@ namespace MathX.UI.Forms
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.gbProcesses.ResumeLayout(false);
+            this.gbProcesses.PerformLayout();
             this.tlpProcesses.ResumeLayout(false);
             this.tlpProcesses.PerformLayout();
+            this.tsProcesses.ResumeLayout(false);
+            this.tsProcesses.PerformLayout();
             this.gbShortcuts.ResumeLayout(false);
             this.gbExamples.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -392,6 +433,9 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ListBox lbFunctions;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolStrip tsProcesses;
+        private System.Windows.Forms.ToolStripButton tsBtnAddProcess;
+        private System.Windows.Forms.ToolStripButton tsBtnDelProcess;
     }
 }
 

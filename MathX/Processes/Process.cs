@@ -13,8 +13,8 @@ namespace MathX.Processes
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
         public BaseDictionary<string, Function> Functions { get; set; }
-        protected MemoryStream Output { get; set; }
-        protected StreamWriter OutputWriter { get; set; }
+        private MemoryStream Output { get; set; }
+        public StreamWriter OutputWriter { get; set; }
         public StreamReader OutputReader { get; protected set; }
 
         public enum StateEnum
@@ -43,14 +43,6 @@ namespace MathX.Processes
             {
                 statement.Execute(statementInfo, out status);
             }
-        }
-
-        public void WriteToOutput(string data)
-        {
-            if (string.IsNullOrEmpty(data)) return;
-
-            OutputWriter.WriteLine(data);
-            OutputWriter.Flush();
         }
 
         public void Dispose()

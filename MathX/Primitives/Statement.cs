@@ -145,7 +145,8 @@ namespace MathX.Primitives
                             complete = true;
                         }
                     }
-                    _process.WriteToOutput(output);
+                    _process.OutputWriter.WriteLine(output);
+                    _process.OutputWriter.Flush();
                 }
             }
             catch (Exception ex)

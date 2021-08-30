@@ -43,7 +43,27 @@ namespace MathX.UI
 
         #region PRIVATE METHODS
 
+        #region Actions
+
+        private void LoadProcesses()
+        {
+            cbxProcesses.Items.Clear();
+            foreach (KeyValuePair<string, Process> kvp in ProcessManager.Processes)
+            {
+                cbxProcesses.Items.Add(kvp.Value);
+            }
+            if (cbxProcesses.Items.Count > 0) cbxProcesses.SelectedIndex = 0;
+        }
+
+        #endregion
+
         #region Form
+
+        private void FormMathXConsole_Activated(object sender, EventArgs e)
+        {
+            this.LoadProcesses();
+
+        }
 
         private void FormMathXConsole_Load(object sender, EventArgs e)
         {
@@ -62,7 +82,7 @@ namespace MathX.UI
                 if (status.State == BaseStatus.StateEnum.Ok)
                 {
                     txtOutput.Text += $">   {statement}\n";
-                    txtOutput.Text += $"        {_consoleProcess.OutputReader.ReadToEnd()}";
+                    txtOutput.Text += $"       {_consoleProcess.OutputReader.ReadToEnd()}";
                 }
                 else
                 {
@@ -90,10 +110,17 @@ namespace MathX.UI
             }
         }
 
-    #endregion
-
-    #endregion
-
-
+        private void cbxProcesses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _consoleProcess = cbxProcesses.SelectedItem as Process;
         }
+
+
+
+        #endregion
+
+        #endregion
+
+       
+    }
 }

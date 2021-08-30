@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="devexpress.win.design" Version="21.1.4" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BaseApi\BaseApi.csproj" />
     <ProjectReference Include="..\BaseUIApi\BaseUIApi.csproj" />
     <ProjectReference Include="..\MathX\MathX.csproj" />

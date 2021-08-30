@@ -60,7 +60,7 @@ namespace MathX.UI.Forms
             {
                 lbProcesses.Items.Add(kvp.Value);
             }
-            lbProcesses.SelectedIndex = 0;
+            if(lbProcesses.Items.Count > 0) lbProcesses.SelectedIndex = 0;
         }
 
         #endregion
@@ -129,13 +129,42 @@ namespace MathX.UI.Forms
             }
         }
 
-
-
+        private void ts_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == tsBtnAddProcess)
+            {
+                BaseTextBoxForm txtForm = new BaseTextBoxForm();
+                txtForm.Text = "Process name";
+                txtForm.Value = "";
+                if (txtForm.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(txtForm.Value))
+                {
+                    if (ProcessManager.Processes.ContainsKey(txtForm.Value))
+                    {
+                        MessageBox.Show($"Process with name {txtForm.Value} already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        string newProcessId = txtForm.Value;
+                        ProcessManager.Processes.Add(newProcessId, new Process(newProcessId));
+                        LoadProcesses();
+                    }
+                }
+            }
+            else if (e.ClickedItem == tsBtnDelProcess)
+            {
+                Process selectedProcess = lbProcesses.SelectedItem as Process;
+                if (selectedProcess != null)
+                {
+                    ProcessManager.Processes.Remove(selectedProcess.Id);
+                    LoadProcesses();
+                }
+            }
+        }
 
         #endregion
 
         #endregion
 
-        
+
     }
 }

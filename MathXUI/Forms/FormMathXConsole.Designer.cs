@@ -32,8 +32,7 @@ namespace MathX.UI
             this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.txtCommandLine = new System.Windows.Forms.TextBox();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbxProcesses = new System.Windows.Forms.ToolStripComboBox();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,11 +43,11 @@ namespace MathX.UI
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtOutput.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtOutput.ForeColor = System.Drawing.Color.White;
-            this.txtOutput.Location = new System.Drawing.Point(0, 25);
+            this.txtOutput.Location = new System.Drawing.Point(0, 27);
             this.txtOutput.Margin = new System.Windows.Forms.Padding(0);
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
-            this.txtOutput.Size = new System.Drawing.Size(984, 511);
+            this.txtOutput.Size = new System.Drawing.Size(984, 509);
             this.txtOutput.TabIndex = 0;
             this.txtOutput.Text = "";
             // 
@@ -71,27 +70,19 @@ namespace MathX.UI
             this.mainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(73)))), ((int)(((byte)(171)))));
             this.mainMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.processToolStripMenuItem});
+            this.cbxProcesses});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(984, 25);
+            this.mainMenu.Size = new System.Drawing.Size(984, 27);
             this.mainMenu.TabIndex = 6;
             this.mainMenu.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
+            // cbxProcesses
             // 
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // processToolStripMenuItem
-            // 
-            this.processToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.processToolStripMenuItem.Name = "processToolStripMenuItem";
-            this.processToolStripMenuItem.Size = new System.Drawing.Size(65, 21);
-            this.processToolStripMenuItem.Text = "Process";
+            this.cbxProcesses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxProcesses.Name = "cbxProcesses";
+            this.cbxProcesses.Size = new System.Drawing.Size(200, 23);
+            this.cbxProcesses.SelectedIndexChanged += new System.EventHandler(this.cbxProcesses_SelectedIndexChanged);
             // 
             // FormMathXConsole
             // 
@@ -104,6 +95,7 @@ namespace MathX.UI
             this.Controls.Add(this.txtCommandLine);
             this.Name = "FormMathXConsole";
             this.Text = "MathX console";
+            this.Activated += new System.EventHandler(this.FormMathXConsole_Activated);
             this.Load += new System.EventHandler(this.FormMathXConsole_Load);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
@@ -117,7 +109,6 @@ namespace MathX.UI
         private System.Windows.Forms.RichTextBox txtOutput;
         private System.Windows.Forms.TextBox txtCommandLine;
         private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox cbxProcesses;
     }
 }

@@ -83,7 +83,7 @@ namespace MathX.Primitives
                 else if(_name == Print)
                 {
                     if (!ArgumentsValid(1)) return result;
-                    _process.WriteToOutput(_parameters[0].Value?.ToString());
+                    _process.OutputWriter.WriteLine(_parameters[0].Value?.ToString());
                 }
                 else if (_process.Functions.ContainsKey(_name))
                 {
