@@ -8,6 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\conditions.script" />
+    <None Remove="Resources\functions.script" />
+    <None Remove="Resources\loops.script" />
+    <None Remove="Resources\variables.script" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Scripts\conditions.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Scripts\functions.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Scripts\loops.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Scripts\variables.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BaseApi\BaseApi.csproj" />
     <ProjectReference Include="..\BaseUIApi\BaseUIApi.csproj" />
     <ProjectReference Include="..\MathX\MathX.csproj" />

@@ -73,7 +73,7 @@ namespace MathX.UI.Forms
             this.viewToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(984, 25);
+            this.mainMenu.Size = new System.Drawing.Size(982, 25);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -124,7 +124,7 @@ namespace MathX.UI.Forms
             this.lbProcesses.Location = new System.Drawing.Point(3, 3);
             this.lbProcesses.Name = "lbProcesses";
             this.tlpProcesses.SetRowSpan(this.lbProcesses, 2);
-            this.lbProcesses.Size = new System.Drawing.Size(301, 213);
+            this.lbProcesses.Size = new System.Drawing.Size(303, 213);
             this.lbProcesses.TabIndex = 1;
             this.lbProcesses.SelectedIndexChanged += new System.EventHandler(this.lbProcesses_SelectedIndexChanged);
             // 
@@ -137,7 +137,7 @@ namespace MathX.UI.Forms
             this.gbProcesses.ForeColor = System.Drawing.Color.White;
             this.gbProcesses.Location = new System.Drawing.Point(12, 41);
             this.gbProcesses.Name = "gbProcesses";
-            this.gbProcesses.Size = new System.Drawing.Size(960, 241);
+            this.gbProcesses.Size = new System.Drawing.Size(958, 241);
             this.gbProcesses.TabIndex = 2;
             this.gbProcesses.TabStop = false;
             this.gbProcesses.Text = "Processes";
@@ -154,13 +154,13 @@ namespace MathX.UI.Forms
             this.tlpProcesses.Controls.Add(this.label3, 2, 0);
             this.tlpProcesses.Controls.Add(this.lbProcesses, 0, 0);
             this.tlpProcesses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpProcesses.Location = new System.Drawing.Point(35, 19);
+            this.tlpProcesses.Location = new System.Drawing.Point(27, 19);
             this.tlpProcesses.Name = "tlpProcesses";
             this.tlpProcesses.RowCount = 2;
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpProcesses.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpProcesses.Size = new System.Drawing.Size(922, 219);
+            this.tlpProcesses.Size = new System.Drawing.Size(928, 219);
             this.tlpProcesses.TabIndex = 5;
             // 
             // lbFunctions
@@ -175,10 +175,10 @@ namespace MathX.UI.Forms
             "a = 4",
             "b = True",
             "c = [4,3,4;2,2,1]"});
-            this.lbFunctions.Location = new System.Drawing.Point(617, 23);
+            this.lbFunctions.Location = new System.Drawing.Point(621, 23);
             this.lbFunctions.Name = "lbFunctions";
             this.lbFunctions.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbFunctions.Size = new System.Drawing.Size(302, 193);
+            this.lbFunctions.Size = new System.Drawing.Size(304, 193);
             this.lbFunctions.TabIndex = 4;
             // 
             // lbVariables
@@ -193,16 +193,16 @@ namespace MathX.UI.Forms
             "a = 4",
             "b = True",
             "c = [4,3,4;2,2,1]"});
-            this.lbVariables.Location = new System.Drawing.Point(310, 23);
+            this.lbVariables.Location = new System.Drawing.Point(312, 23);
             this.lbVariables.Name = "lbVariables";
             this.lbVariables.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbVariables.Size = new System.Drawing.Size(301, 193);
+            this.lbVariables.Size = new System.Drawing.Size(303, 193);
             this.lbVariables.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(310, 0);
+            this.label2.Location = new System.Drawing.Point(312, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 15);
             this.label2.TabIndex = 6;
@@ -211,7 +211,7 @@ namespace MathX.UI.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(617, 0);
+            this.label3.Location = new System.Drawing.Point(621, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 15);
             this.label3.TabIndex = 7;
@@ -227,7 +227,8 @@ namespace MathX.UI.Forms
             this.tsBtnDelProcess});
             this.tsProcesses.Location = new System.Drawing.Point(3, 19);
             this.tsProcesses.Name = "tsProcesses";
-            this.tsProcesses.Size = new System.Drawing.Size(32, 219);
+            this.tsProcesses.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.tsProcesses.Size = new System.Drawing.Size(24, 219);
             this.tsProcesses.TabIndex = 6;
             this.tsProcesses.Text = "toolStrip1";
             this.tsProcesses.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ts_ItemClicked);
@@ -238,8 +239,8 @@ namespace MathX.UI.Forms
             this.tsBtnAddProcess.Image = global::MathX.UI.Properties.Resources.add24;
             this.tsBtnAddProcess.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsBtnAddProcess.Name = "tsBtnAddProcess";
-            this.tsBtnAddProcess.Size = new System.Drawing.Size(29, 20);
-            this.tsBtnAddProcess.Text = "toolStripButton1";
+            this.tsBtnAddProcess.Size = new System.Drawing.Size(21, 20);
+            this.tsBtnAddProcess.Text = "Add process";
             // 
             // tsBtnDelProcess
             // 
@@ -247,8 +248,8 @@ namespace MathX.UI.Forms
             this.tsBtnDelProcess.Image = global::MathX.UI.Properties.Resources.cancel24;
             this.tsBtnDelProcess.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsBtnDelProcess.Name = "tsBtnDelProcess";
-            this.tsBtnDelProcess.Size = new System.Drawing.Size(29, 20);
-            this.tsBtnDelProcess.Text = "toolStripButton1";
+            this.tsBtnDelProcess.Size = new System.Drawing.Size(21, 20);
+            this.tsBtnDelProcess.Text = "Remove process";
             // 
             // gbShortcuts
             // 
@@ -262,7 +263,7 @@ namespace MathX.UI.Forms
             this.gbShortcuts.ForeColor = System.Drawing.Color.White;
             this.gbShortcuts.Location = new System.Drawing.Point(12, 288);
             this.gbShortcuts.Name = "gbShortcuts";
-            this.gbShortcuts.Size = new System.Drawing.Size(515, 115);
+            this.gbShortcuts.Size = new System.Drawing.Size(513, 115);
             this.gbShortcuts.TabIndex = 3;
             this.gbShortcuts.TabStop = false;
             this.gbShortcuts.Text = "Shortcuts";
@@ -324,16 +325,15 @@ namespace MathX.UI.Forms
             // 
             // gbExamples
             // 
-            this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbExamples.Controls.Add(this.btnExamplesFunctions);
             this.gbExamples.Controls.Add(this.btnExamplesLoops);
             this.gbExamples.Controls.Add(this.btnExamplesConditions);
             this.gbExamples.Controls.Add(this.btnExamplesVariables);
             this.gbExamples.ForeColor = System.Drawing.Color.White;
-            this.gbExamples.Location = new System.Drawing.Point(654, 288);
+            this.gbExamples.Location = new System.Drawing.Point(533, 288);
             this.gbExamples.Name = "gbExamples";
-            this.gbExamples.Size = new System.Drawing.Size(323, 115);
+            this.gbExamples.Size = new System.Drawing.Size(437, 115);
             this.gbExamples.TabIndex = 4;
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
@@ -347,6 +347,7 @@ namespace MathX.UI.Forms
             this.btnExamplesFunctions.TabIndex = 7;
             this.btnExamplesFunctions.Text = "Functions";
             this.btnExamplesFunctions.UseVisualStyleBackColor = true;
+            this.btnExamplesFunctions.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // btnExamplesLoops
             // 
@@ -357,6 +358,7 @@ namespace MathX.UI.Forms
             this.btnExamplesLoops.TabIndex = 6;
             this.btnExamplesLoops.Text = "Loops";
             this.btnExamplesLoops.UseVisualStyleBackColor = true;
+            this.btnExamplesLoops.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // btnExamplesConditions
             // 
@@ -367,6 +369,7 @@ namespace MathX.UI.Forms
             this.btnExamplesConditions.TabIndex = 5;
             this.btnExamplesConditions.Text = "Conditions";
             this.btnExamplesConditions.UseVisualStyleBackColor = true;
+            this.btnExamplesConditions.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // btnExamplesVariables
             // 
@@ -377,13 +380,14 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.TabIndex = 4;
             this.btnExamplesVariables.Text = "Variables";
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
+            this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // FormMathXMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(982, 561);
             this.Controls.Add(this.gbExamples);
             this.Controls.Add(this.gbShortcuts);
             this.Controls.Add(this.gbProcesses);

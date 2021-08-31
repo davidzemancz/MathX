@@ -56,7 +56,7 @@ namespace MathX.Primitives
                     }
                     else if (_statement == "endwhile")
                     {
-                        statementInfo.Loop = new Loop(-1, Keywords.While, null);
+                        statementInfo.Loop = new Loop(-1, Keywords.EndWhile, null);
                     }
 
                     else if(_statement.StartsWith("#")) // Label
@@ -140,7 +140,7 @@ namespace MathX.Primitives
                             Expression expression = new Expression(_process, expressionStr);
                             Variable result = expression.Evaluate(out status);
                             if (result?.Value != null) {
-                                output = $"= {result.Value}";
+                                output = $"{expressionStr} = {result.Value}";
                             }
                             complete = true;
                         }

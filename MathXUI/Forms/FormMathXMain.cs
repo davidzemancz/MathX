@@ -43,12 +43,13 @@ namespace MathX.UI.Forms
             form.Show();
         }
 
-        private void ShowScriptEditorForm(bool shwoOpenFileDialog)
+        private void ShowScriptEditorForm(bool showOpenFileDialog, string fileName = "")
         {
             var form = new FormMathXScriptEditor();
             form.FormInput = new FormMathXScriptEditor.Input()
             {
-                ShowOpenFileDialog = shwoOpenFileDialog,
+                ShowOpenFileDialog = showOpenFileDialog,
+                FileName = fileName
             };
             form.Show();
         }
@@ -129,6 +130,27 @@ namespace MathX.UI.Forms
             }
         }
 
+        private void exampleButton_Click(object sender, System.EventArgs e)
+        {
+            string scriptsDir = Path.GetDirectoryName(Application.ExecutablePath);
+            if (sender == btnExamplesVariables)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//variables.script");
+            }
+            else if (sender == btnExamplesConditions)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//conditions.script");
+            }
+            else if (sender == btnExamplesLoops)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//loops.script");
+            }
+            else if (sender == btnExamplesFunctions)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//functions.script");
+            }
+        }
+
         private void ts_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem == tsBtnAddProcess)
@@ -161,10 +183,11 @@ namespace MathX.UI.Forms
             }
         }
 
-        #endregion
 
         #endregion
 
+        #endregion
 
+      
     }
 }

@@ -156,11 +156,15 @@ namespace MathX.UI.Forms
             {
                 using (Process process = new Process("2"))
                 {
-                    Interpreter interpreter = new Interpreter(process, FileName);
-                    interpreter.Run(out BaseStatus status);
-                    process.OutputReader.BaseStream.Seek(0, SeekOrigin.Begin);
-                    string output = process.OutputReader.ReadToEnd();
-                    txtOutput.Text = output + status.ToString();
+                    using (FileStream fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        fileStream.CopyTo(process.Input);
+                        process.Input.Seek(0, SeekOrigin.Begin);
+                        process.Run(out BaseStatus status);
+                        process.OutputReader.BaseStream.Seek(0, SeekOrigin.Begin);
+                        string output = process.OutputReader.ReadToEnd();
+                        txtOutput.Text = output + status;
+                    }
                 }
             }
         }
@@ -178,7 +182,14 @@ namespace MathX.UI.Forms
             {
                 this.OpenFile();
             }
-            
+            else if (!string.IsNullOrEmpty(((Input)this.FormInput).FileName))
+            {
+                FileName = ((Input)this.FormInput).FileName;
+                _supressTextChanged = true;
+                codeEditor.WriteText(File.ReadAllText(FileName, Settings.Encoding));
+                _supressTextChanged = false;
+            }
+
         }
 
         private void FormMathXScriptEditor_KeyDown(object sender, KeyEventArgs e)
@@ -252,6 +263,8 @@ namespace MathX.UI.Forms
         public class Input : BaseInput
         {
             public bool ShowOpenFileDialog { get; set; }
+
+            public string FileName { get; set; }
         }
 
         #endregion

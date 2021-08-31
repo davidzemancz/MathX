@@ -40,7 +40,7 @@ namespace MathX.Primitives
         private Variable Evaluate(int operatorPriority = 0)
         {
             Variable result = new Variable(Variable.DataTypeEnum.None, "_");
-            while (++_position < _expression.Length)
+            while (++_position < _expression?.Length)
             {
                 char expChar = _expression[_position];
                 if (expChar == ',') // Function param delimiter
@@ -80,10 +80,7 @@ namespace MathX.Primitives
                         result = GetVariable(name);
                     }
                 }
-                else if (
-                    char.IsDigit(expChar)
-                    || expChar == '-' && _position == 0
-                    || expChar == '-' && _expression[_position - 1] == '(') // Digit
+                else if (char.IsDigit(expChar))
                 {
                     result = ReadNumber();
                     result.DataType = Variable.DataTypeEnum.Double;
@@ -96,18 +93,21 @@ namespace MathX.Primitives
                 {
                     return result;
                 }
-                else // Operator
+                else if (IsOperator(expChar)) // Operator
                 {
                     char expOperator = expChar;
                     int expOperatorPriority = GetPriority(expOperator);
 
-                    if (expOperatorPriority < operatorPriority)
+                    // Operator with lower priority AND NOT plus or minus before signed number
+                    if (expOperatorPriority < operatorPriority && !(_position > 0 && IsOperator(_expression[_position - 1])))
                     {
                         _position--;
                         return result;
                     }
                     else
                     {
+                        operatorPriority = expOperatorPriority;
+
                         if (expOperator == '+')
                         {
                             result = result + Evaluate(expOperatorPriority);
@@ -119,6 +119,7 @@ namespace MathX.Primitives
                         else if (expOperator == '*')
                         {
                             result = result * Evaluate(expOperatorPriority);
+                           
                         }
                         else if (expOperator == '/')
                         {
@@ -176,6 +177,12 @@ namespace MathX.Primitives
             }
 
             return result;
+        }
+
+        private bool IsOperator(char oper)
+        {
+            char[] opers = new[] { '+','-','*','/','^','>','<','=','!' };
+            return opers.Contains(oper);
         }
 
         private string ReadName(out bool isFunction)
