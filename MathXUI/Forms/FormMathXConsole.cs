@@ -24,7 +24,7 @@ namespace MathX.UI
 
         #region PROPS
 
-        private Process _consoleProcess;
+        private Process _currentProcess;
 
         #endregion
 
@@ -32,7 +32,6 @@ namespace MathX.UI
         public FormMathXConsole()
         {
             InitializeComponent();
-            _consoleProcess = ProcessManager.Processes["1"];
             
             txtCommandLine.GotFocus += txtCommandLine_GotFocus;
             txtCommandLine.LostFocus += txtCommandLine_LostFocus;
@@ -61,7 +60,7 @@ namespace MathX.UI
 
         private void FormMathXConsole_Activated(object sender, EventArgs e)
         {
-            this.LoadProcesses();
+            LoadProcesses();
 
         }
 
@@ -75,14 +74,21 @@ namespace MathX.UI
             if (e.KeyCode == Keys.Enter)
             {
                 string statement = txtCommandLine.Text;
-                long readerPosition = _consoleProcess.OutputReader.BaseStream.Position;
-                _consoleProcess.ExecuteStatement(statement, out BaseStatus status);
-                _consoleProcess.OutputReader.BaseStream.Seek(readerPosition, SeekOrigin.Begin);
+                long writerPosition = _currentProcess.InputWriter.BaseStream.Position;
+                long readerPosition = _currentProcess.OutputReader.BaseStream.Position;
+                
+                _currentProcess.InputWriter.WriteLine(statement);
+                _currentProcess.InputWriter.Flush();
+                _currentProcess.Input.Seek(writerPosition, SeekOrigin.Begin);
+
+                _currentProcess.Run(out BaseStatus status);
+
+                _currentProcess.OutputReader.BaseStream.Seek(readerPosition, SeekOrigin.Begin);
 
                 if (status.State == BaseStatus.StateEnum.Ok)
                 {
                     txtOutput.Text += $">   {statement}\n";
-                    txtOutput.Text += $"       {_consoleProcess.OutputReader.ReadToEnd()}";
+                    txtOutput.Text += $"       {_currentProcess.OutputReader.ReadToEnd()}";
                 }
                 else
                 {
@@ -112,7 +118,7 @@ namespace MathX.UI
 
         private void cbxProcesses_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _consoleProcess = cbxProcesses.SelectedItem as Process;
+            _currentProcess = cbxProcesses.SelectedItem as Process;
         }
 
 

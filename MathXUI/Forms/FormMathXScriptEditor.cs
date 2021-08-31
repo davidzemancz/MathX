@@ -53,6 +53,7 @@ namespace MathX.UI.Forms
         private string _fileName;
         private bool _unsavedChanges;
         private bool _supressTextChanged;
+        private Process _currentProcess;
 
         #endregion
 
@@ -68,6 +69,16 @@ namespace MathX.UI.Forms
         #region PRIVATE METHODS
 
         #region Actions
+
+        private void LoadProcesses()
+        {
+            cbxProcesses.Items.Clear();
+            foreach (KeyValuePair<string, Process> kvp in ProcessManager.Processes)
+            {
+                cbxProcesses.Items.Add(kvp.Value);
+            }
+            if (cbxProcesses.Items.Count > 0) cbxProcesses.SelectedIndex = 0;
+        }
 
         private void UpdateTitleText()
         {
@@ -150,28 +161,28 @@ namespace MathX.UI.Forms
         {
             if (this.UnsavedChanges)
             {
-                MessageBox.Show("Save changes before running the script.", "Unsaved changes", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.SaveFile();
             }
-            else
+            using (FileStream fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read))
             {
-                using (Process process = new Process("2"))
-                {
-                    using (FileStream fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read))
-                    {
-                        fileStream.CopyTo(process.Input);
-                        process.Input.Seek(0, SeekOrigin.Begin);
-                        process.Run(out BaseStatus status);
-                        process.OutputReader.BaseStream.Seek(0, SeekOrigin.Begin);
-                        string output = process.OutputReader.ReadToEnd();
-                        txtOutput.Text = output + status;
-                    }
-                }
+                long position = _currentProcess.Input.Position;
+                fileStream.CopyTo(_currentProcess.Input);
+                _currentProcess.Input.Seek(position, SeekOrigin.Begin);
+                _currentProcess.Run(out BaseStatus status);
+                _currentProcess.Output.Seek(0, SeekOrigin.Begin);
+                string output = _currentProcess.OutputReader.ReadToEnd();
+                txtOutput.Text = output + status;
             }
         }
 
         #endregion
 
         #region Form
+
+        private void FormMathXScriptEditor_Activated(object sender, EventArgs e)
+        {
+            LoadProcesses();
+        }
 
         private void FormMathXScriptEditor_Load(object sender, EventArgs e)
         {
@@ -254,6 +265,11 @@ namespace MathX.UI.Forms
             }
         }
 
+        private void cbxProcesses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currentProcess = cbxProcesses.SelectedItem as Process;
+        }
+
         #endregion
 
         #endregion
@@ -267,7 +283,9 @@ namespace MathX.UI.Forms
             public string FileName { get; set; }
         }
 
+
         #endregion
 
+       
     }
 }

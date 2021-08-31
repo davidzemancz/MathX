@@ -12,6 +12,8 @@ namespace MathX.Primitives
 
         public object Value { get; set; }
 
+        public bool Temporary => Name.StartsWith("_");
+
         public DataTypeEnum DataType { get; set; }
 
         public enum DataTypeEnum
@@ -19,7 +21,7 @@ namespace MathX.Primitives
             None = 0,
             Double = 1,
             Boolean = 2,
-            Tenzor = 3,
+            Vector = 3,
         }
 
         public Variable(DataTypeEnum dataType, string name)
@@ -35,22 +37,28 @@ namespace MathX.Primitives
 
         public static Variable operator +(Variable a, Variable b)
         {
-            if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) + (b.Value as double? ?? 0));
+            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value + (Vector)b?.Value);
+            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) + (b?.Value as double? ?? 0));
             return null;
         }
 
         public static Variable operator -(Variable a, Variable b)
         {
-            if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) - (b.Value as double? ?? 0));
+            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value - (Vector)b?.Value);
+            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) - (b?.Value as double? ?? 0));
             return null;
         }
 
         public static Variable operator *(Variable a, Variable b)
         {
-            if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 1) * (b.Value as double? ?? 1));
+            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value * (Vector)b?.Value);
+            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) * (b?.Value as double? ?? 0));
             return null;
         }
 
@@ -106,6 +114,11 @@ namespace MathX.Primitives
             return null;
         }
 
+        public static implicit operator Variable(Vector vector)
+        {
+            return new Variable(DataTypeEnum.Vector, "_", vector);
+        }
+
         public static implicit operator Variable(double number)
         {
             return new Variable(DataTypeEnum.Double, "_", number);
@@ -113,6 +126,7 @@ namespace MathX.Primitives
 
         public override string ToString()
         {
+            if (Temporary) return Value?.ToString();
             return $"{Name} = {Value?.ToString()}";
         }
 

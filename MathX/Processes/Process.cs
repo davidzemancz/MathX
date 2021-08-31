@@ -15,7 +15,7 @@ namespace MathX.Processes
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
         public BaseDictionary<string, Function> Functions { get; set; }
-        private MemoryStream Output { get; set; }
+        public MemoryStream Output { get; set; }
         public StreamWriter OutputWriter { get; set; }
         public StreamReader OutputReader { get; protected set; }
         public MemoryStream Input { get; set; }
@@ -35,8 +35,8 @@ namespace MathX.Processes
             Variables = new BaseDictionary<string, Variable>();
             Functions = new BaseDictionary<string, Function>();
             Output = new MemoryStream();
-            OutputWriter = new StreamWriter(Output);
             OutputReader = new StreamReader(Output);
+            OutputWriter = new StreamWriter(Output);
             Input = new MemoryStream();
             InputWriter = new StreamWriter(Input);
             InputReader = new StreamReader(Input);
@@ -142,15 +142,6 @@ namespace MathX.Processes
             {
                 status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Runtime exception] {ex.Message}", ex);
             }
-        }
-
-        public void ExecuteStatement(string line, out BaseStatus status)
-        {
-            Statement statement = new Statement(this, line);
-            StatementInfo statementInfo = statement.GetInfo(out status);
-            status.ThrowIfError();
-            statement.Execute(statementInfo, out status);
-            status.ThrowIfError();
         }
 
         public void Dispose()

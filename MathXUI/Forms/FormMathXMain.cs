@@ -86,6 +86,7 @@ namespace MathX.UI.Forms
             lbVariables.Items.Clear();
             foreach (KeyValuePair<string, Variable> kvp in selectedProcess.Variables)
             {
+                if (kvp.Value.Temporary) continue;
                 lbVariables.Items.Add(kvp.Value);
             }
             if (lbVariables.Items.Count < 1) lbVariables.Items.Add("[None]");
@@ -148,6 +149,10 @@ namespace MathX.UI.Forms
             else if (sender == btnExamplesFunctions)
             {
                 this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//functions.script");
+            }
+            else if (sender == btnExamplesVectors)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//vectors.script");
             }
         }
 

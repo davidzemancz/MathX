@@ -36,12 +36,12 @@ namespace MathX.UI.Forms
             this.tsmiFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRun = new System.Windows.Forms.ToolStripMenuItem();
             this.scMain = new System.Windows.Forms.SplitContainer();
             this.gbOutput = new System.Windows.Forms.GroupBox();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.cbxProcesses = new System.Windows.Forms.ToolStripComboBox();
             this.mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
@@ -65,12 +65,12 @@ namespace MathX.UI.Forms
             this.mainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(73)))), ((int)(((byte)(171)))));
             this.mainMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cbxProcesses,
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
             this.actionsToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(984, 25);
+            this.mainMenu.Size = new System.Drawing.Size(984, 27);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -83,7 +83,7 @@ namespace MathX.UI.Forms
             this.tsmiFileSaveAs});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 23);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // tsmiFileNew
@@ -114,26 +114,19 @@ namespace MathX.UI.Forms
             this.tsmiFileSaveAs.Text = "Save As [Ctrl+Shift+S]";
             this.tsmiFileSaveAs.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
             // actionsToolStripMenuItem
             // 
             this.actionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiRun});
             this.actionsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
-            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(62, 21);
+            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
             this.actionsToolStripMenuItem.Text = "Actions";
             // 
             // tsmiRun
             // 
             this.tsmiRun.Name = "tsmiRun";
-            this.tsmiRun.Size = new System.Drawing.Size(123, 22);
+            this.tsmiRun.Size = new System.Drawing.Size(180, 22);
             this.tsmiRun.Text = "Run [F5]";
             this.tsmiRun.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
@@ -185,6 +178,12 @@ namespace MathX.UI.Forms
             this.txtOutput.TabIndex = 1;
             this.txtOutput.Text = "";
             // 
+            // cbxProcesses
+            // 
+            this.cbxProcesses.Name = "cbxProcesses";
+            this.cbxProcesses.Size = new System.Drawing.Size(200, 23);
+            this.cbxProcesses.SelectedIndexChanged += new System.EventHandler(this.cbxProcesses_SelectedIndexChanged);
+            // 
             // FormMathXScriptEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -194,6 +193,7 @@ namespace MathX.UI.Forms
             this.Controls.Add(this.mainMenu);
             this.Name = "FormMathXScriptEditor";
             this.Text = "MathX Script Editor";
+            this.Activated += new System.EventHandler(this.FormMathXScriptEditor_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMathXScriptEditor_FormClosing);
             this.Load += new System.EventHandler(this.FormMathXScriptEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMathXScriptEditor_KeyDown);
@@ -214,7 +214,6 @@ namespace MathX.UI.Forms
         private Base.UI.Api.Controls.BaseCodeEditor codeEditor;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileNew;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileSave;
@@ -224,5 +223,6 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.SplitContainer scMain;
         private System.Windows.Forms.GroupBox gbOutput;
         private System.Windows.Forms.RichTextBox txtOutput;
+        private System.Windows.Forms.ToolStripComboBox cbxProcesses;
     }
 }

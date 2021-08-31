@@ -55,6 +55,7 @@ namespace MathX.UI.Forms
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
+            this.btnExamplesVectors = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -326,6 +327,7 @@ namespace MathX.UI.Forms
             // gbExamples
             // 
             this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbExamples.Controls.Add(this.btnExamplesVectors);
             this.gbExamples.Controls.Add(this.btnExamplesFunctions);
             this.gbExamples.Controls.Add(this.btnExamplesLoops);
             this.gbExamples.Controls.Add(this.btnExamplesConditions);
@@ -381,6 +383,17 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.Text = "Variables";
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
+            // 
+            // btnExamplesVectors
+            // 
+            this.btnExamplesVectors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesVectors.Location = new System.Drawing.Point(166, 49);
+            this.btnExamplesVectors.Name = "btnExamplesVectors";
+            this.btnExamplesVectors.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesVectors.TabIndex = 8;
+            this.btnExamplesVectors.Text = "Vectors && matrices";
+            this.btnExamplesVectors.UseVisualStyleBackColor = true;
+            this.btnExamplesVectors.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // FormMathXMain
             // 
@@ -440,6 +453,7 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ToolStrip tsProcesses;
         private System.Windows.Forms.ToolStripButton tsBtnAddProcess;
         private System.Windows.Forms.ToolStripButton tsBtnDelProcess;
+        private System.Windows.Forms.Button btnExamplesVectors;
     }
 }
 

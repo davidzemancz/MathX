@@ -45,45 +45,29 @@ namespace MathX.Primitives
                 char expChar = _expression[_position];
                 if (expChar == ',') // Function param delimiter
                 {
+                    _position--;
                     return result;
                 }
-                else if (
-                    char.IsLetter(expChar)
-                    || expChar == '_') // Variable or function
+                else if (char.IsLetter(expChar)|| expChar == '_') // Variable or function
                 {
                     string name = ReadName(out bool isFunction);
 
                     if (isFunction)
                     {
-                        List<Variable> parameters = new List<Variable>();
-                        ++_position; // (
-                        while (_expression.Length > _position && _expression[_position] != ')')
-                        {
-                            Variable parameter = Evaluate();
-                            parameters.Add(parameter);
-                        }
-
-                        if (_process.Functions.ContainsKey(name)) // User defined function
-                        {
-                            result = _process.Functions[name].Call(parameters.ToArray(), out BaseStatus status);
-                            status.ThrowIfError();
-                        }
-                        else // Inbuilt function
-                        {
-                            var function = new Function(_process, name, parameters.ToArray());
-                            result = function.Call(out BaseStatus status);
-                            status.ThrowIfError();
-                        }
+                        result = CallFuntion(name);
                     }
                     else
                     {
                         result = GetVariable(name);
                     }
                 }
-                else if (char.IsDigit(expChar))
+                else if (char.IsDigit(expChar)) // Number
                 {
                     result = ReadNumber();
-                    result.DataType = Variable.DataTypeEnum.Double;
+                }
+                else if (expChar == '[') // Vector or Matrix
+                {
+                    result = ReadVector();
                 }
                 else if (expChar == '(') // Start of parentheses block
                 {
@@ -179,6 +163,32 @@ namespace MathX.Primitives
             return result;
         }
 
+        private Variable CallFuntion(string name)
+        {
+            Variable result;
+            List<Variable> parameters = new List<Variable>();
+            ++_position; // (
+            while (_expression.Length > _position && _expression[_position] != ')')
+            {
+                if (_position + 1 < _expression.Length && _expression[_position + 1] == ',') _position++;
+                Variable parameter = Evaluate();
+                parameters.Add(parameter);
+            }
+
+            if (_process.Functions.ContainsKey(name)) // User defined function
+            {
+                result = _process.Functions[name].Call(parameters.ToArray(), out BaseStatus status);
+                status.ThrowIfError();
+            }
+            else // Inbuilt function
+            {
+                var function = new Function(_process, name, parameters.ToArray());
+                result = function.Call(out BaseStatus status);
+                status.ThrowIfError();
+            }
+            return result;
+        }
+
         private bool IsOperator(char oper)
         {
             char[] opers = new[] { '+','-','*','/','^','>','<','=','!' };
@@ -198,6 +208,20 @@ namespace MathX.Primitives
             isFunction = _expression.Length > (_position + 1) && _expression[_position + 1] == '(';
 
             return sb.ToString();
+        }
+
+        private Vector ReadVector()
+        {
+            List<Variable> components = new List<Variable>();
+
+            while (_expression.Length > _position && _expression[_position] != ']')
+            {
+                if (_position + 1 < _expression.Length && _expression[_position + 1] == ',') _position++;
+                Variable component = Evaluate();
+                components.Add(component);
+            }
+
+            return new Vector(components.ToArray());
         }
 
         private double ReadNumber()
