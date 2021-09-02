@@ -3,6 +3,7 @@ using MathX.Primitives;
 using MathX.Primitives.Utils;
 using MathX.Processes;
 using System;
+using System.IO;
 
 namespace MathXExample
 {
@@ -86,7 +87,39 @@ namespace MathXExample
 
             #region Vstupy a vystupy
 
+            /*
+             * Vstupni stream procesu
+             *  - Do nej lze zapisovat prikazy, ktere se nasledne vykonaji zavolanim funkce Run()
+             *  - Zapis probiha obvykle pomoci tridy StreamWriter
+             *  - POZOR, stream nesmim zavrit, tedy nutno nastavit parametr leaveOpen=true
+            */
+            MemoryStream inputStream = process.Input;
+            using (StreamWriter streamWriter = new StreamWriter(inputStream, null, -1, true))
+            {
+                streamWriter.WriteLine("a=6");
+            }
+
+            // Vstup lze take posilat ve zkracenem zapisu
+            process.PushInput("b=7");
+
+            /*
+             * Vstupni stream procesu
+             *  - Opet POZOR, nazavrit stream
+            */
+            MemoryStream outputStream = process.Output;
+            using (StreamReader streamReader = new StreamReader(outputStream, null, true, -1, true))
+            {
+                string output = streamReader.ReadToEnd();
+                Console.WriteLine(output);
+            }
+
+            // Vstupni i vystupni stream lze clearnout (vytvori se nova instance)
+            process.ClearInput();
+            process.ClearOutput();
+
             #endregion
+
+            Console.ReadKey();
 
             #region Dispose
 

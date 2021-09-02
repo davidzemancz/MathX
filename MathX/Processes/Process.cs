@@ -180,11 +180,13 @@ namespace MathX.Processes
 
         public void ClearInput()
         {
+            Input.Dispose();
             Input = new MemoryStream();
         }
 
         public void ClearOutput()
         {
+            Output.Dispose();
             Output = new MemoryStream();
         }
 
