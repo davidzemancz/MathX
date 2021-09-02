@@ -101,23 +101,41 @@ namespace Base.UI.Api.Utils
 
         public string OpenFile(string prevText)
         {
-            return Encoding.GetString(OpenFile(Encoding.GetBytes(prevText)));
+            return OpenFile("", prevText);
+        }
+
+        public string OpenFile(string fileName, string prevText)
+        {
+            return Encoding.GetString(OpenFile(fileName, Encoding.GetBytes(prevText)));
         }
 
         public byte[] OpenFile(byte[] prevData)
         {
+            return OpenFile("", prevData);
+        }
+
+        public byte[] OpenFile(string fileName, byte[] prevData)
+        {
             CheckUnsavedChanges(prevData, out bool cancel);
             if (cancel) return null;
 
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = false;
-            ofd.Filter = Filter;
-            ofd.FilterIndex = 1;
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrEmpty(fileName))
             {
-                FileName = ofd.FileName;
-                return File.ReadAllBytes(FileName);
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Multiselect = false;
+                ofd.Filter = Filter;
+                ofd.FilterIndex = 1;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    FileName = ofd.FileName;
+                    return File.ReadAllBytes(FileName);
+                }
             }
+            else
+            {
+                return File.ReadAllBytes(fileName);
+            }
+            
             return null;
         }
 

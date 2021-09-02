@@ -66,7 +66,11 @@ namespace MathX.UI.Forms
                 _currentProcess.Input.Seek(position, SeekOrigin.Begin);
                 _currentProcess.Run(out BaseStatus status);
                 _currentProcess.Output.Seek(0, SeekOrigin.Begin);
-                string output = _currentProcess.OutputReader.ReadToEnd();
+                string output;
+                using (StreamReader outputReader = new StreamReader(_currentProcess.Output))
+                {
+                    output = outputReader.ReadToEnd();
+                }
                 txtOutput.Text = output + status;
             }
         }
@@ -85,12 +89,14 @@ namespace MathX.UI.Forms
 
             if (((Input)FormInput).ShowOpenFileDialog)
             {
-                FileHandler.OpenFile("");
+                _openingFile = true;
+                codeEditor.Text = FileHandler.OpenFile("");
+                _openingFile = false;
             }
             else if (!string.IsNullOrEmpty(((Input)FormInput).FileName))
             {
                 _openingFile = true;
-                codeEditor.WriteText(File.ReadAllText(((Input)FormInput).FileName, Settings.Encoding));
+                codeEditor.Text = FileHandler.OpenFile(((Input)FormInput).FileName, "");
                 _openingFile = false;
             }
 

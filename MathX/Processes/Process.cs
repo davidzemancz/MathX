@@ -16,24 +16,17 @@ namespace MathX.Processes
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
         public BaseDictionary<string, Function> Functions { get; set; }
+        
         [JsonIgnore]
         public MemoryStream Output { get; set; }
         [JsonIgnore]
-        public StreamWriter OutputWriter { get; set; }
-        [JsonIgnore]
-        public StreamReader OutputReader { get; protected set; }
-        [JsonIgnore]
         public MemoryStream Input { get; set; }
-        [JsonIgnore]
-        public StreamWriter InputWriter { get; set; }
-        [JsonIgnore]
-        public StreamReader InputReader { get; protected set; }
 
         public enum StateEnum
         {
-            Running = 1,
-            Stopped = 2,
-            Terminated = 3
+            Pending = 1,
+            Running = 2,
+            Stopped = 3
         }
 
         public Process(string id)
@@ -42,15 +35,13 @@ namespace MathX.Processes
             Variables = new BaseDictionary<string, Variable>();
             Functions = new BaseDictionary<string, Function>();
             Output = new MemoryStream();
-            OutputReader = new StreamReader(Output);
             Input = new MemoryStream();
-            InputWriter = new StreamWriter(Input);
-            InputReader = new StreamReader(Input);
             State = StateEnum.Running;
         }
         
         public void Run(out BaseStatus status)
         {
+            State = StateEnum.Running;
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
             try
             {
@@ -58,88 +49,91 @@ namespace MathX.Processes
                 Stack<Condition> conditions = new Stack<Condition>();
                 Stack<Loop> loops = new Stack<Loop>();
 
-                long linePositionEnd = 0;
-                while (!InputReader.EndOfStream)
+                using (StreamReader inputReader = new StreamReader(Input, null, true, -1, true))
                 {
-                    string line = InputReader.ReadLine();
-                    line = line.Trim();
-                    if (string.IsNullOrEmpty(line)) continue;
-
-                    linePositionEnd = InputReader.GetActualPosition();
-
-                    // Get statement info
-                    var statement = new Statement(this, line);
-                    StatementInfo statementInfo = statement.GetInfo(out status);
-                    status.ThrowIfError();
-
-                    // Resolve statement info
-                    if (statementInfo.Label != null)
+                    long linePositionEnd = 0;
+                    while (!inputReader.EndOfStream)
                     {
-                        if (conditions.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in condition");
-                        else if (loops.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in loop");
+                        string line = inputReader.ReadLine();
+                        line = line.Trim();
+                        if (string.IsNullOrEmpty(line)) continue;
 
-                        statementInfo.Label.Position = linePositionEnd;
-                        labels[statementInfo.Label.Name] = statementInfo.Label;
-                    }
-                    else if (statementInfo.Loop != null)
-                    {
-                        if (statementInfo.Loop.Keyword == Keywords.While)
+                        linePositionEnd = inputReader.GetActualPosition();
+
+                        // Get statement info
+                        var statement = new Statement(this, line);
+                        StatementInfo statementInfo = statement.GetInfo(out status);
+                        status.ThrowIfError();
+
+                        // Resolve statement info
+                        if (statementInfo.Label != null)
                         {
-                            statementInfo.Loop.Position = linePositionEnd;
-                            statementInfo.Loop.EvaluateCondition(this, out status);
-                            status.ThrowIfError();
+                            if (conditions.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in condition");
+                            else if (loops.Count > 0) throw new Exception($"Label {statementInfo.Label.Name} could not be placed in loop");
 
-                            loops.Push(statementInfo.Loop);
+                            statementInfo.Label.Position = linePositionEnd;
+                            labels[statementInfo.Label.Name] = statementInfo.Label;
                         }
-                        else if (statementInfo.Loop.Keyword == Keywords.EndWhile)
+                        else if (statementInfo.Loop != null)
                         {
-                            Loop loop = loops.Peek();
-                            loop.EvaluateCondition(this, out status);
-                            status.ThrowIfError();
-
-                            if (loop.Result)
+                            if (statementInfo.Loop.Keyword == Keywords.While)
                             {
-                                InputReader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
-                                InputReader.DiscardBufferedData();
-                            }
-                            else
-                            {
-                                loops.Pop();
-                            }
-                        }
-                    }
-                    else if (statementInfo.Condition != null)
-                    {
-                        if (statementInfo.Condition.Keyword == Keywords.If)
-                        {
-                            statementInfo.Condition.Evaluate(this, out status);
-                            status.ThrowIfError();
+                                statementInfo.Loop.Position = linePositionEnd;
+                                statementInfo.Loop.EvaluateCondition(this, out status);
+                                status.ThrowIfError();
 
-                            conditions.Push(statementInfo.Condition);
+                                loops.Push(statementInfo.Loop);
+                            }
+                            else if (statementInfo.Loop.Keyword == Keywords.EndWhile)
+                            {
+                                Loop loop = loops.Peek();
+                                loop.EvaluateCondition(this, out status);
+                                status.ThrowIfError();
+
+                                if (loop.Result)
+                                {
+                                    inputReader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
+                                    inputReader.DiscardBufferedData();
+                                }
+                                else
+                                {
+                                    loops.Pop();
+                                }
+                            }
                         }
-                        else if (statementInfo.Condition.Keyword == Keywords.ElseIf)
+                        else if (statementInfo.Condition != null)
                         {
-                            throw new NotImplementedException("ElseIf block is not implemented yet");
+                            if (statementInfo.Condition.Keyword == Keywords.If)
+                            {
+                                statementInfo.Condition.Evaluate(this, out status);
+                                status.ThrowIfError();
+
+                                conditions.Push(statementInfo.Condition);
+                            }
+                            else if (statementInfo.Condition.Keyword == Keywords.ElseIf)
+                            {
+                                throw new NotImplementedException("ElseIf block is not implemented yet");
+                            }
+                            else if (statementInfo.Condition.Keyword == Keywords.Else)
+                            {
+                                var currentCondition = conditions.Pop();
+                                statementInfo.Condition.Result = !currentCondition.Result;
+                                conditions.Push(statementInfo.Condition);
+                            }
+                            else if (statementInfo.Condition.Keyword == Keywords.EndIf)
+                            {
+                                conditions.Pop();
+                            }
                         }
-                        else if (statementInfo.Condition.Keyword == Keywords.Else)
+                        else
                         {
-                            var currentCondition = conditions.Pop();
-                            statementInfo.Condition.Result = !currentCondition.Result;
-                            conditions.Push(statementInfo.Condition);
-                        }
-                        else if (statementInfo.Condition.Keyword == Keywords.EndIf)
-                        {
-                            conditions.Pop();
-                        }
-                    }
-                    else
-                    {
-                        // All conditions are met
-                        if ((conditions.Count == 0 || conditions.All(c => c.Result)) && (loops.Count == 0 || loops.All(l => l.Result)))
-                        {
-                            // Execute statement
-                            statement.Execute(statementInfo, out status);
-                            status.ThrowIfError();
+                            // All conditions are met
+                            if ((conditions.Count == 0 || conditions.All(c => c.Result)) && (loops.Count == 0 || loops.All(l => l.Result)))
+                            {
+                                // Execute statement
+                                statement.Execute(statementInfo, out status);
+                                status.ThrowIfError();
+                            }
                         }
                     }
                 }
@@ -148,16 +142,36 @@ namespace MathX.Processes
             {
                 status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Runtime exception] {ex.Message}", ex);
             }
+            finally
+            {
+                State = StateEnum.Pending;
+            }
+        }
+
+        public void PushInput(string line)
+        {
+            long position = Input.Position;
+            using (StreamWriter inputWriter = new StreamWriter(Input, null, -1, true))
+            {
+                inputWriter.WriteLine(line);
+            }
+            Input.Seek(position, SeekOrigin.Begin);
+        }
+
+        public void PushOutput(string line)
+        {
+            long position = Output.Position;
+            using (StreamWriter outputWriter =  new StreamWriter(Output, null, -1, true))
+            {
+                outputWriter.WriteLine(line);
+            }
+            Output.Seek(position, SeekOrigin.Begin);
         }
 
         public void Dispose()
         {
             Output.Dispose();
-            OutputReader.Dispose();
-            OutputWriter.Dispose();
             Input.Dispose();
-            InputWriter.Dispose();
-            InputReader.Dispose();
         }
 
         public override string ToString()

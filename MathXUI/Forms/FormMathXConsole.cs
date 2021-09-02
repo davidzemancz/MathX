@@ -73,27 +73,26 @@ namespace MathX.UI
         {
             if (e.KeyCode == Keys.Enter)
             {
+                BaseStatus status;
                 string statement = txtCommandLine.Text;
-                long writerPosition = _currentProcess.InputWriter.BaseStream.Position;
-                long readerPosition = _currentProcess.OutputReader.BaseStream.Position;
+
+                _currentProcess.PushInput(statement);
+                _currentProcess.Run(out status);
                 
-                _currentProcess.InputWriter.WriteLine(statement);
-                _currentProcess.InputWriter.Flush();
-                _currentProcess.Input.Seek(writerPosition, SeekOrigin.Begin);
-
-                _currentProcess.Run(out BaseStatus status);
-
-                _currentProcess.OutputReader.BaseStream.Seek(readerPosition, SeekOrigin.Begin);
-
-                if (status.State == BaseStatus.StateEnum.Ok)
+                using (StreamReader outputReader = new StreamReader(_currentProcess.Output, null, true, -1, true))
                 {
-                    txtOutput.Text += $">   {statement}\n";
-                    txtOutput.Text += $"       {_currentProcess.OutputReader.ReadToEnd()}";
+                    if (status.State == BaseStatus.StateEnum.Ok)
+                    {
+                        txtOutput.Text += $">   {statement}\n";
+                        txtOutput.Text += $"       {outputReader.ReadToEnd()}";
+                    }
+                    else
+                    {
+                        txtOutput.Text += $">   {status.Text}\n";
+                    }
                 }
-                else
-                {
-                    txtOutput.Text += $">   {status.Text}\n";
-                }
+
+               
 
                 txtCommandLine.Text = "";
             }
