@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 using Base.Api;
 using Base.UI.Api.Controls;
+using Base.UI.Api.Utils;
 using MathX.Primitives;
 using MathX.Processes;
 
@@ -13,8 +18,6 @@ namespace MathX.UI.Forms
     {
         #region PROPS
 
-        
-
         #endregion
 
         #region CONSTRUCTORS
@@ -22,7 +25,7 @@ namespace MathX.UI.Forms
         public FormMathXMain()
         {
             InitializeComponent();
-         
+            FileHandler = new BaseFileHandler(this, Settings.Encoding, "Json files (*.json)|*.json|All files (*.*)|*.*");
         }
 
         #endregion
@@ -30,6 +33,17 @@ namespace MathX.UI.Forms
         #region PRIVATE METHODS
 
         #region Actions
+
+        private byte[] GetStateData()
+        {
+            return JsonSerializer.SerializeToUtf8Bytes(ProcessManager.Processes);
+        }
+
+        private void LoadStateData(byte[] data)
+        {
+            ProcessManager.Processes = JsonSerializer.Deserialize<Dictionary<string, Process>>(data);
+            LoadProcesses();
+        }
 
         private void ShowGraphForm()
         {
@@ -79,6 +93,29 @@ namespace MathX.UI.Forms
             ProcessManager.Processes.Add(defaultProcess.Id, defaultProcess);
         }
 
+        private void FormMathXMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.N)
+            {
+                byte[] data = this.FileHandler.NewFile(GetStateData());
+                LoadStateData(data);
+            }
+            else if (e.Control && e.KeyCode == Keys.O)
+            {
+                byte[] data = this.FileHandler.OpenFile(GetStateData());
+                LoadStateData(data);
+            }
+            else if (e.Control && e.KeyCode == Keys.S)
+            {
+                FileHandler.SaveFile(GetStateData());
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.S)
+            {
+                FileHandler.SaveFileAs(GetStateData());
+            }
+            
+        }
+
         private void lbProcesses_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             Process selectedProcess = (Process)lbProcesses.SelectedItem;
@@ -101,10 +138,29 @@ namespace MathX.UI.Forms
 
         private void menuStrip_ItemClicked(object sender, System.EventArgs e)
         {
-            if(sender == consoleToolStripMenuItem)
+            if (sender == consoleToolStripMenuItem)
             {
-                this.ShowConsoleForm();
+                ShowConsoleForm();
             }
+            else if (sender == tsmiFileNew)
+            {
+                byte[] data = this.FileHandler.NewFile(GetStateData());
+                LoadStateData(data);
+            }
+            else if (sender == tsmiFileOpen)
+            {
+                byte[] data = this.FileHandler.OpenFile(GetStateData());
+                LoadStateData(data);
+            }
+            else if (sender == tsmiFileSave)
+            {
+                FileHandler.SaveFile(GetStateData());
+            }
+            else if (sender == tsmiFileSaveAs)
+            {
+                FileHandler.SaveFileAs(GetStateData());
+            }
+          
         }
 
         private void shortcutButton_Click(object sender, System.EventArgs e)
@@ -187,12 +243,13 @@ namespace MathX.UI.Forms
                 }
             }
         }
+       
 
 
         #endregion
 
         #endregion
 
-      
+
     }
 }

@@ -15,5 +15,8 @@ namespace MathX.Primitives
 
         public const string While = "while";
         public const string EndWhile = "endwhile";
+
+        public const string Def = "def";
+        public const string EndDef = "edndef";
     }
 }

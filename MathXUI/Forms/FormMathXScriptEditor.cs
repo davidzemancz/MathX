@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Base.UI.Api.Controls;
 using Base.Api;
 using MathX.Processes;
+using Base.UI.Api.Utils;
 
 namespace MathX.UI.Forms
 {
@@ -18,41 +19,11 @@ namespace MathX.UI.Forms
     {
         #region PROPS
 
-        private string FileName 
-        {
-            get
-            {
-                return _fileName;
-            }
-            set 
-            {
-                bool valueChanged = value != _fileName;
-                _fileName = value;
-                if (valueChanged) UpdateTitleText();
-            }
-        }
-
-        private bool UnsavedChanges
-        {
-            get
-            {
-                return _unsavedChanges;
-            }
-            set
-            {
-                bool valueChanged = value != _unsavedChanges;
-                _unsavedChanges = value;
-                if(valueChanged) UpdateTitleText();
-            }
-        }
-       
         #endregion
 
         #region FIELDS
 
-        private string _fileName;
-        private bool _unsavedChanges;
-        private bool _supressTextChanged;
+        private bool _openingFile;
         private Process _currentProcess;
 
         #endregion
@@ -62,6 +33,7 @@ namespace MathX.UI.Forms
         public FormMathXScriptEditor()
         {
             InitializeComponent();
+            FileHandler = new BaseFileHandler(this, Settings.Encoding, "Script files (*.txt;*.script)|*.txt;*.script|All files (*.*)|*.*");
         }
 
         #endregion
@@ -80,90 +52,14 @@ namespace MathX.UI.Forms
             if (cbxProcesses.Items.Count > 0) cbxProcesses.SelectedIndex = 0;
         }
 
-        private void UpdateTitleText()
-        {
-            Text = (UnsavedChanges ? "*" : "")
-                       + (string.IsNullOrEmpty(FileName) ? "Untitled" : Path.GetFileName(FileName))
-                       + " - MathX Script editor";
-        }
-
-        private void CheckUnsavedChanges(out bool cancel)
-        {
-            cancel = false;
-            if (UnsavedChanges)
-            {
-                DialogResult dr = MessageBox.Show("Do you want to save changes to " + (string.IsNullOrEmpty(FileName) ? "Untitled" : FileName) + "?", "MathX Script editor", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if(dr == DialogResult.Cancel)
-                {
-                    cancel = true;
-                }
-                else if(dr == DialogResult.Yes)
-                {
-                    this.SaveFile();
-                }
-            }
-        }
-
-        private void NewFile()
-        {
-            CheckUnsavedChanges(out bool cancel);
-            if (cancel) return;
-
-            FileName = "";
-            codeEditor.Text = "";
-        }
-
-        private void OpenFile()
-        {
-            CheckUnsavedChanges(out bool cancel);
-            if (cancel) return;
-
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = false;
-            ofd.Filter = "Script files (*.txt;*.script)|*.txt;*.script|All files (*.*)|*.*";
-            ofd.FilterIndex = 1;
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                FileName = ofd.FileName;
-                _supressTextChanged = true;
-                codeEditor.WriteText(File.ReadAllText(FileName, Settings.Encoding));
-                _supressTextChanged = false;
-            }
-        }
-
-        private void SaveFile()
-        {
-            if (string.IsNullOrEmpty(_fileName) || !File.Exists(_fileName))
-            {
-                this.SaveFileAs();
-            }
-            else
-            {
-                File.WriteAllText(_fileName, codeEditor.Text, Settings.Encoding);
-                UnsavedChanges = false;
-            }
-        }
-
-        private void SaveFileAs()
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Script files (*.txt;*.script)|*.txt;*.script|All files (*.*)|*.*";
-            sfd.FilterIndex = 1;
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                FileName = sfd.FileName;
-                File.WriteAllText(_fileName, codeEditor.Text, Settings.Encoding);
-                UnsavedChanges = false;
-            }
-        }
 
         private void Run()
         {
-            if (this.UnsavedChanges)
+            if (FileHandler.UnsavedChanges)
             {
-                this.SaveFile();
+                FileHandler.SaveFile(codeEditor.Text);
             }
-            using (FileStream fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read))
+            using (FileStream fileStream = new FileStream(FileHandler.FileName, FileMode.Open, FileAccess.Read))
             {
                 long position = _currentProcess.Input.Position;
                 fileStream.CopyTo(_currentProcess.Input);
@@ -186,19 +82,16 @@ namespace MathX.UI.Forms
 
         private void FormMathXScriptEditor_Load(object sender, EventArgs e)
         {
-            FileName = "";
-            UnsavedChanges = false;
 
-            if (((Input)this.FormInput).ShowOpenFileDialog)
+            if (((Input)FormInput).ShowOpenFileDialog)
             {
-                this.OpenFile();
+                FileHandler.OpenFile("");
             }
-            else if (!string.IsNullOrEmpty(((Input)this.FormInput).FileName))
+            else if (!string.IsNullOrEmpty(((Input)FormInput).FileName))
             {
-                FileName = ((Input)this.FormInput).FileName;
-                _supressTextChanged = true;
-                codeEditor.WriteText(File.ReadAllText(FileName, Settings.Encoding));
-                _supressTextChanged = false;
+                _openingFile = true;
+                codeEditor.WriteText(File.ReadAllText(((Input)FormInput).FileName, Settings.Encoding));
+                _openingFile = false;
             }
 
         }
@@ -207,37 +100,39 @@ namespace MathX.UI.Forms
         {
             if (e.Control && e.KeyCode == Keys.N)
             {
-                this.NewFile();
+                codeEditor.Text = FileHandler.NewFile(codeEditor.Text);
             }
             else if (e.Control && e.KeyCode == Keys.O)
             {
-                this.OpenFile();
+                _openingFile = true;
+                codeEditor.Text = FileHandler.OpenFile(codeEditor.Text);
+                _openingFile = false;
             }
             else if (e.Control && e.KeyCode == Keys.S)
             {
-                this.SaveFile();
+                FileHandler.SaveFile(codeEditor.Text);
             }
             else if (e.Control && e.Shift && e.KeyCode == Keys.S)
             {
-                this.SaveFileAs();
+                FileHandler.SaveFileAs(codeEditor.Text);
             }
             else if (e.KeyCode == Keys.F5)
             {
-                this.Run();
+                Run();
             }
         }
 
         private void FormMathXScriptEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CheckUnsavedChanges(out bool cancel);
+            FileHandler.CheckUnsavedChanges(codeEditor.Text, out bool cancel);
             e.Cancel = cancel;
         }
 
         private void codeEditor_TextChanged(object sender, EventArgs e)
         {
-            if (!_supressTextChanged)
+            if (!_openingFile)
             {
-                this.UnsavedChanges = true;
+                FileHandler.UnsavedChanges = true;
             }
         }
 
@@ -245,23 +140,25 @@ namespace MathX.UI.Forms
         {
             if (sender == tsmiFileNew)
             {
-                this.NewFile();
+                codeEditor.Text = FileHandler.NewFile(codeEditor.Text);
             }
             else if (sender == tsmiFileOpen)
             {
-                this.OpenFile();
+                _openingFile = true;
+                codeEditor.Text = FileHandler.OpenFile(codeEditor.Text);
+                _openingFile = false;
             }
             else if (sender == tsmiFileSave)
             {
-                this.SaveFile();
+                FileHandler.SaveFile(codeEditor.Text);
             }
             else if (sender == tsmiFileSaveAs)
             {
-                this.SaveFileAs();
+                FileHandler.SaveFileAs(codeEditor.Text);
             }
             else if (sender == tsmiRun)
             {
-                this.Run();
+                Run();
             }
         }
 
@@ -276,7 +173,7 @@ namespace MathX.UI.Forms
 
         #region CLASSES
 
-        public class Input : BaseInput
+        public class Input : BaseFormInput
         {
             public bool ShowOpenFileDialog { get; set; }
 

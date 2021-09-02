@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Base.Api
 {
-    public class BaseInput
+    public class BaseFormInput
     {
     }
 }

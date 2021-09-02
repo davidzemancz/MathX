@@ -1,5 +1,6 @@
 ﻿# Issues
 * Problem s prioritou vyrazu
+* Problem s Stream readery a writery
 
 # TODO
 * Desetinna cisla

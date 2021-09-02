@@ -14,5 +14,5 @@ namespace MathX.Primitives.Utils
         
         public Loop Loop { get; set; }
 
-        }
+    }
 }

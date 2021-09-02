@@ -1,4 +1,5 @@
 ﻿using Base.Api;
+using Base.UI.Api.Utils;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,7 +7,9 @@ namespace Base.UI.Api.Controls
 {
     public class BaseForm : Form
     {
-        public BaseInput FormInput { get; set; }
+        public BaseFormInput FormInput { get; set; }
+
+        public BaseFileHandler FileHandler { get; set; }
 
         public BaseForm()
         {

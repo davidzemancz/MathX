@@ -31,6 +31,10 @@ namespace MathX.UI.Forms
         {
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,11 +55,11 @@ namespace MathX.UI.Forms
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
             this.btnShortcutConsole = new System.Windows.Forms.Button();
             this.gbExamples = new System.Windows.Forms.GroupBox();
+            this.btnExamplesVectors = new System.Windows.Forms.Button();
             this.btnExamplesFunctions = new System.Windows.Forms.Button();
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
-            this.btnExamplesVectors = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -80,10 +84,43 @@ namespace MathX.UI.Forms
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFileNew,
+            this.tsmiFileOpen,
+            this.tsmiFileSave,
+            this.tsmiFileSaveAs});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // tsmiFileNew
+            // 
+            this.tsmiFileNew.Name = "tsmiFileNew";
+            this.tsmiFileNew.Size = new System.Drawing.Size(203, 22);
+            this.tsmiFileNew.Text = "New [Ctrl+N]";
+            this.tsmiFileNew.Click += new System.EventHandler(this.menuStrip_ItemClicked);
+            // 
+            // tsmiFileOpen
+            // 
+            this.tsmiFileOpen.Name = "tsmiFileOpen";
+            this.tsmiFileOpen.Size = new System.Drawing.Size(203, 22);
+            this.tsmiFileOpen.Text = "Open [Ctrl+O]";
+            this.tsmiFileOpen.Click += new System.EventHandler(this.menuStrip_ItemClicked);
+            // 
+            // tsmiFileSave
+            // 
+            this.tsmiFileSave.Name = "tsmiFileSave";
+            this.tsmiFileSave.Size = new System.Drawing.Size(203, 22);
+            this.tsmiFileSave.Text = "Save [Ctrl+S]";
+            this.tsmiFileSave.Click += new System.EventHandler(this.menuStrip_ItemClicked);
+            // 
+            // tsmiFileSaveAs
+            // 
+            this.tsmiFileSaveAs.Name = "tsmiFileSaveAs";
+            this.tsmiFileSaveAs.Size = new System.Drawing.Size(203, 22);
+            this.tsmiFileSaveAs.Text = "Save As [Ctrl+Shift+S]";
+            this.tsmiFileSaveAs.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
             // editToolStripMenuItem
             // 
@@ -340,6 +377,17 @@ namespace MathX.UI.Forms
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
             // 
+            // btnExamplesVectors
+            // 
+            this.btnExamplesVectors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesVectors.Location = new System.Drawing.Point(166, 49);
+            this.btnExamplesVectors.Name = "btnExamplesVectors";
+            this.btnExamplesVectors.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesVectors.TabIndex = 8;
+            this.btnExamplesVectors.Text = "Vectors && matrices";
+            this.btnExamplesVectors.UseVisualStyleBackColor = true;
+            this.btnExamplesVectors.Click += new System.EventHandler(this.exampleButton_Click);
+            // 
             // btnExamplesFunctions
             // 
             this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -384,17 +432,6 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
             // 
-            // btnExamplesVectors
-            // 
-            this.btnExamplesVectors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesVectors.Location = new System.Drawing.Point(166, 49);
-            this.btnExamplesVectors.Name = "btnExamplesVectors";
-            this.btnExamplesVectors.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplesVectors.TabIndex = 8;
-            this.btnExamplesVectors.Text = "Vectors && matrices";
-            this.btnExamplesVectors.UseVisualStyleBackColor = true;
-            this.btnExamplesVectors.Click += new System.EventHandler(this.exampleButton_Click);
-            // 
             // FormMathXMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -410,6 +447,7 @@ namespace MathX.UI.Forms
             this.Text = "MathX";
             this.Activated += new System.EventHandler(this.FormMathXMain_Activated);
             this.Load += new System.EventHandler(this.FormMathXMain_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMathXMain_KeyDown);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.gbProcesses.ResumeLayout(false);
@@ -428,7 +466,6 @@ namespace MathX.UI.Forms
         #endregion
 
         private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
@@ -454,6 +491,11 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ToolStripButton tsBtnAddProcess;
         private System.Windows.Forms.ToolStripButton tsBtnDelProcess;
         private System.Windows.Forms.Button btnExamplesVectors;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileSave;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileNew;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
     }
 }
 

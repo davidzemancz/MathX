@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Base.Api;
 using MathX.Primitives;
 using MathX.Primitives.Utils;
@@ -15,11 +16,17 @@ namespace MathX.Processes
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
         public BaseDictionary<string, Function> Functions { get; set; }
+        [JsonIgnore]
         public MemoryStream Output { get; set; }
+        [JsonIgnore]
         public StreamWriter OutputWriter { get; set; }
+        [JsonIgnore]
         public StreamReader OutputReader { get; protected set; }
+        [JsonIgnore]
         public MemoryStream Input { get; set; }
+        [JsonIgnore]
         public StreamWriter InputWriter { get; set; }
+        [JsonIgnore]
         public StreamReader InputReader { get; protected set; }
 
         public enum StateEnum
@@ -36,7 +43,6 @@ namespace MathX.Processes
             Functions = new BaseDictionary<string, Function>();
             Output = new MemoryStream();
             OutputReader = new StreamReader(Output);
-            OutputWriter = new StreamWriter(Output);
             Input = new MemoryStream();
             InputWriter = new StreamWriter(Input);
             InputReader = new StreamReader(Input);
