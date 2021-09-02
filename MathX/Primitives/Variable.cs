@@ -24,6 +24,11 @@ namespace MathX.Primitives
             Vector = 3,
         }
 
+        public Variable()
+        {
+
+        }
+
         public Variable(DataTypeEnum dataType, string name)
         {
             DataType = dataType;

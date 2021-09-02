@@ -150,22 +150,42 @@ namespace MathX.Processes
 
         public void PushInput(string line)
         {
+            if (line == null) return;
+
             long position = Input.Position;
             using (StreamWriter inputWriter = new StreamWriter(Input, null, -1, true))
             {
+                // Write to end
+                Output.Seek(0, SeekOrigin.End);
                 inputWriter.WriteLine(line);
             }
+            // Seek to prev position
             Input.Seek(position, SeekOrigin.Begin);
         }
 
         public void PushOutput(string line)
         {
+            if (line == null) return;
+
             long position = Output.Position;
             using (StreamWriter outputWriter =  new StreamWriter(Output, null, -1, true))
             {
+                // Write to end
+                Output.Seek(0, SeekOrigin.End);
                 outputWriter.WriteLine(line);
             }
+            // Seek to prev position
             Output.Seek(position, SeekOrigin.Begin);
+        }
+
+        public void ClearInput()
+        {
+            Input = new MemoryStream();
+        }
+
+        public void ClearOutput()
+        {
+            Output = new MemoryStream();
         }
 
         public void Dispose()

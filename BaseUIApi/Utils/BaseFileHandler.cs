@@ -133,7 +133,8 @@ namespace Base.UI.Api.Utils
             }
             else
             {
-                return File.ReadAllBytes(fileName);
+                FileName = fileName;
+                return File.ReadAllBytes(FileName);
             }
             
             return null;

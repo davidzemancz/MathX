@@ -61,17 +61,18 @@ namespace MathX.UI.Forms
             }
             using (FileStream fileStream = new FileStream(FileHandler.FileName, FileMode.Open, FileAccess.Read))
             {
-                long position = _currentProcess.Input.Position;
+                _currentProcess.ClearInput();
                 fileStream.CopyTo(_currentProcess.Input);
-                _currentProcess.Input.Seek(position, SeekOrigin.Begin);
+                _currentProcess.Input.Seek(0, SeekOrigin.Begin);
                 _currentProcess.Run(out BaseStatus status);
                 _currentProcess.Output.Seek(0, SeekOrigin.Begin);
                 string output;
-                using (StreamReader outputReader = new StreamReader(_currentProcess.Output))
+                using (StreamReader outputReader = new StreamReader(_currentProcess.Output, null, true, -1, true))
                 {
                     output = outputReader.ReadToEnd();
                 }
                 txtOutput.Text = output + status;
+                _currentProcess.ClearOutput();
             }
         }
 
