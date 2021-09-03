@@ -60,6 +60,7 @@ namespace MathX.UI.Forms
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
+            this.btnExamplePrimes = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -364,6 +365,7 @@ namespace MathX.UI.Forms
             // gbExamples
             // 
             this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbExamples.Controls.Add(this.btnExamplePrimes);
             this.gbExamples.Controls.Add(this.btnExamplesVectors);
             this.gbExamples.Controls.Add(this.btnExamplesFunctions);
             this.gbExamples.Controls.Add(this.btnExamplesLoops);
@@ -372,7 +374,7 @@ namespace MathX.UI.Forms
             this.gbExamples.ForeColor = System.Drawing.Color.White;
             this.gbExamples.Location = new System.Drawing.Point(533, 288);
             this.gbExamples.Name = "gbExamples";
-            this.gbExamples.Size = new System.Drawing.Size(437, 115);
+            this.gbExamples.Size = new System.Drawing.Size(437, 172);
             this.gbExamples.TabIndex = 4;
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
@@ -380,7 +382,7 @@ namespace MathX.UI.Forms
             // btnExamplesVectors
             // 
             this.btnExamplesVectors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesVectors.Location = new System.Drawing.Point(166, 49);
+            this.btnExamplesVectors.Location = new System.Drawing.Point(17, 136);
             this.btnExamplesVectors.Name = "btnExamplesVectors";
             this.btnExamplesVectors.Size = new System.Drawing.Size(143, 23);
             this.btnExamplesVectors.TabIndex = 8;
@@ -391,7 +393,7 @@ namespace MathX.UI.Forms
             // btnExamplesFunctions
             // 
             this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesFunctions.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplesFunctions.Location = new System.Drawing.Point(17, 109);
             this.btnExamplesFunctions.Name = "btnExamplesFunctions";
             this.btnExamplesFunctions.Size = new System.Drawing.Size(143, 23);
             this.btnExamplesFunctions.TabIndex = 7;
@@ -431,6 +433,17 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.Text = "Variables";
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
+            // 
+            // btnExamplePrimes
+            // 
+            this.btnExamplePrimes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplePrimes.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplePrimes.Name = "btnExamplePrimes";
+            this.btnExamplePrimes.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplePrimes.TabIndex = 9;
+            this.btnExamplePrimes.Text = "Primes";
+            this.btnExamplePrimes.UseVisualStyleBackColor = true;
+            this.btnExamplePrimes.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // FormMathXMain
             // 
@@ -496,6 +509,7 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiFileSaveAs;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileNew;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
+        private System.Windows.Forms.Button btnExamplePrimes;
     }
 }
 

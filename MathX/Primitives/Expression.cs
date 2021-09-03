@@ -109,6 +109,10 @@ namespace MathX.Primitives
                         {
                             result = result / Evaluate(expOperatorPriority);
                         }
+                        else if (expOperator == '%')
+                        {
+                            result = result % Evaluate(expOperatorPriority);
+                        }
                         else if (expOperator == '^')
                         {
                             result = new Function(_process, Function.Power, new[] { result, Evaluate(expOperatorPriority) }).Call(out BaseStatus status);
@@ -191,7 +195,7 @@ namespace MathX.Primitives
 
         private bool IsOperator(char oper)
         {
-            char[] opers = new[] { '+','-','*','/','^','>','<','=','!' };
+            char[] opers = new[] { '+','-','*','/','^','>','<','=','!','%' };
             return opers.Contains(oper);
         }
 

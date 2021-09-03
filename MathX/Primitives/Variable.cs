@@ -72,10 +72,20 @@ namespace MathX.Primitives
             if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
             {
                 if ((double)b.Value == 0) throw new Exception("Unable to divide by zero");
-                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 1) * (b.Value as double? ?? 1));
+                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 1) / (b.Value as double? ?? 1));
             }
             return null;
         }
+
+        public static Variable operator %(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
+            {
+                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) % (b.Value as double? ?? 1));
+            }
+            return null;
+        }
+
 
         public static Variable operator >(Variable a, Variable b)
         {

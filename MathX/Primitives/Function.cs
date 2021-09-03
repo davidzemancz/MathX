@@ -17,6 +17,7 @@ namespace MathX.Primitives
         public const string PowerShort = "pow";
         public const string Print = "print";
         public const string Sinus = "sin";
+        public const string Sqrt = "sqrt";
 
         private string _name;
         private string _expression;
@@ -71,6 +72,15 @@ namespace MathX.Primitives
                     }
                     else throw new Exception($"Both arguments of {_name} function must be numbers");
                 }
+                else if (_name == Print)
+                {
+                    if (!ArgumentsValid(1)) return result;
+                    string exprStr = _parameters[0].Value?.ToString();
+                    Expression expression = new Expression(_process, exprStr);
+                    Variable expResult = expression.Evaluate(out status);
+                    status.ThrowIfError();
+                    _process.PushOutput(expResult.Value?.ToString());
+                }
                 else if (_name == Sinus)
                 {
                     if (!ArgumentsValid(1)) return result;
@@ -80,10 +90,14 @@ namespace MathX.Primitives
                     }
                     else throw new Exception($"First argument of {_name} function must be a number");
                 }
-                else if(_name == Print)
+                else if(_name == Sqrt)
                 {
                     if (!ArgumentsValid(1)) return result;
-                    _process.PushOutput(_parameters[0].Value?.ToString());
+                    if (_parameters[0].DataType == Variable.DataTypeEnum.Double)
+                    {
+                        result = Math.Sqrt((double)_parameters[0].Value);
+                    }
+                    else throw new Exception($"Argument of {_name} function must be number");
                 }
                 else if (_process.Functions.ContainsKey(_name))
                 {

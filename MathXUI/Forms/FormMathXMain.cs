@@ -210,6 +210,10 @@ namespace MathX.UI.Forms
             {
                 this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//vectors.script");
             }
+            else if (sender == btnExamplePrimes)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//primes.script");
+            }
         }
 
         private void ts_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

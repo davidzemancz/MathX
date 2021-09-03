@@ -1,0 +1,10 @@
+﻿prime=125
+isPrime=1
+div=1
+while div<=sqrt(prime)
+	div=i(div)
+	if (prime%div)==0
+		isPrime=0
+	endif
+endwhile
+print(isPrime)
