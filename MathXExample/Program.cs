@@ -23,6 +23,7 @@ namespace MathXExample
 
             #endregion
 
+            Console.WriteLine("Pro pokračování do sekce Výrazy stiskněte klávesu");
             Console.ReadKey();
 
             #region Vyrazy
@@ -43,7 +44,7 @@ namespace MathXExample
             string strExpr2 = Console.ReadLine();
 
             Expression expression2 = new Expression(process, strExpr2);
-            Variable result2 = expression1.Evaluate(out status);
+            Variable result2 = expression2.Evaluate(out status);
             status.ThrowIfError();
 
             /*
@@ -54,6 +55,7 @@ namespace MathXExample
 
             #endregion
 
+            Console.WriteLine("Pro pokračování do sekce Příkazy stiskněte klávesu");
             Console.ReadKey();
 
             #region Prikazy
@@ -75,17 +77,31 @@ namespace MathXExample
             statement1.Execute(statement1Info, out status);
             status.ThrowIfError();
 
+            // Vystup najdu v process.Output streamu
+            using (StreamReader outputReader =  new StreamReader(process.Output, null, true, -1, true))
+            {
+                Console.WriteLine(outputReader.ReadToEnd());
+            }
+
             #endregion
 
+            Console.WriteLine("Pro pokračování do sekce Funkce stiskněte klávesu");
             Console.ReadKey();
 
             #region Funkce
 
+
+
             #endregion
 
+            Console.WriteLine("Pro pokračování do sekce Vstupy a výstupy stiskněte klávesu");
             Console.ReadKey();
 
             #region Vstupy a vystupy
+
+            // Vstupni i vystupni stream lze clearnout (vytvori se nova instance)
+            process.ClearInput();
+            process.ClearOutput();
 
             /*
              * Vstupni stream procesu
@@ -96,11 +112,17 @@ namespace MathXExample
             MemoryStream inputStream = process.Input;
             using (StreamWriter streamWriter = new StreamWriter(inputStream, null, -1, true))
             {
-                streamWriter.WriteLine("a=6");
+                streamWriter.WriteLine("x=6");
+                streamWriter.WriteLine("y=7");
+                streamWriter.WriteLine("add(a,b)=a+b");
+                streamWriter.WriteLine("z=add(x,y)");
             }
+            // Musim na zacatek streamu
+            inputStream.Seek(0, SeekOrigin.Begin); 
 
-            // Vstup lze take posilat ve zkracenem zapisu
-            process.PushInput("b=7");
+            // Vykonam prikazy
+            process.Run(out status);
+            status.ThrowIfError();
 
             /*
              * Vstupni stream procesu
@@ -113,12 +135,13 @@ namespace MathXExample
                 Console.WriteLine(output);
             }
 
-            // Vstupni i vystupni stream lze clearnout (vytvori se nova instance)
+            // Clearnu vstupni a vystupni stream
             process.ClearInput();
             process.ClearOutput();
 
             #endregion
 
+            Console.WriteLine("Pro ukončení programu stiskněte klávesu");
             Console.ReadKey();
 
             #region Dispose

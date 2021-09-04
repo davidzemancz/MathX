@@ -1,7 +1,7 @@
 ﻿prime=125
 isPrime=1
 div=1
-while div<=sqrt(prime)
+while div<=sqrt(prime)&isPrime
 	div=i(div)
 	if (prime%div)==0
 		isPrime=0

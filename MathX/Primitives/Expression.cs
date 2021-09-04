@@ -28,6 +28,7 @@ namespace MathX.Primitives
             Variable result = null;
             try
             {
+                _position = -1;
                 result = Evaluate();
             }
             catch (Exception ex)
@@ -83,14 +84,14 @@ namespace MathX.Primitives
                     int expOperatorPriority = GetPriority(expOperator);
 
                     // Operator with lower priority AND NOT plus or minus before signed number
-                    if (expOperatorPriority < operatorPriority && !(_position > 0 && IsOperator(_expression[_position - 1])))
+                    if (expOperatorPriority <= operatorPriority && !(_position > 0 && IsOperator(_expression[_position - 1])))
                     {
                         _position--;
                         return result;
                     }
                     else
                     {
-                        operatorPriority = expOperatorPriority;
+                        //operatorPriority = expOperatorPriority;
 
                         if (expOperator == '+')
                         {
@@ -117,6 +118,14 @@ namespace MathX.Primitives
                         {
                             result = new Function(_process, Function.Power, new[] { result, Evaluate(expOperatorPriority) }).Call(out BaseStatus status);
                             status.ThrowIfError();
+                        }
+                        else if (expOperator == '&')
+                        {
+                            result = result & Evaluate(expOperatorPriority);
+                        }
+                        else if (expOperator == '|')
+                        {
+                            result = result | Evaluate(expOperatorPriority);
                         }
                         else if (expOperator == '>')
                         {
@@ -195,7 +204,7 @@ namespace MathX.Primitives
 
         private bool IsOperator(char oper)
         {
-            char[] opers = new[] { '+','-','*','/','^','>','<','=','!','%' };
+            char[] opers = new[] { '+','-','*','/','^','>','<','=','!','%','&','|' };
             return opers.Contains(oper);
         }
 
@@ -257,6 +266,16 @@ namespace MathX.Primitives
                 case '*': return 3;
                 case '/': return 4;
                 case '^': return 5;
+                case '%': return 6;
+                case '|': return 7;
+                case '&': return 8;
+                case '<':
+                case '>':
+                case '=':
+                case '!':
+                    return 9;
+                
+               
             }
             return 0;
         }

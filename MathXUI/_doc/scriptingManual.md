@@ -3,10 +3,10 @@
 ## DataTypes
 	* Double
 	* Boolean
-	* Tensor
+	* Vector
 
 # Expressions
-## Aritmetic operations
+## Aritmetic operations with numbers
 	* Adition:			[expression1]+[expresson2]
 	* Substraction:		[expression1]-[expresson2]
 	* Multiplication:	[expression1]*[expresson2]
@@ -17,18 +17,24 @@
 	* 2: multiplication, division
 	* 3: power
 	* 4: parentheses
+## Aritmetic operations with vectors
+	* Adition:			[expression1]+[expresson2]
+	* Substraction:		[expression1]-[expresson2]
+	* Dot product:		[expression1]*[expresson2]
 
 # Conditions
 	* if [expression]
 		'body'
 	  endif
 	* [expression] can be Boolean or Double
+	* Logical operators are &,| 
 
 # Loops
 	* while [expression]
 		'body'
 	  endwhile
 	* [expression] can be Boolean or Double
+	* Logical operators are &,| 
 
 # Functions
 ## Inbuilt functions

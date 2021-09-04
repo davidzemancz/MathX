@@ -156,7 +156,7 @@ namespace MathX.Processes
             using (StreamWriter inputWriter = new StreamWriter(Input, null, -1, true))
             {
                 // Write to end
-                Output.Seek(0, SeekOrigin.End);
+                Output.Seek(Output.Length, SeekOrigin.Begin);
                 inputWriter.WriteLine(line);
             }
             // Seek to prev position

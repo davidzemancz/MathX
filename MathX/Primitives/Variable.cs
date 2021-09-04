@@ -86,6 +86,40 @@ namespace MathX.Primitives
             return null;
         }
 
+        public static Variable operator &(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Boolean && b.DataType == DataTypeEnum.Boolean)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as bool? ?? false) && (b.Value as bool? ?? false));
+            }
+            else if (a.DataType == DataTypeEnum.Boolean && b.DataType == DataTypeEnum.Double)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as bool? ?? false) && (b.Value as double? ?? 0) > 0);
+            }
+            else if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Boolean)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as double? ?? 0) > 0 && (b.Value as bool? ?? false));
+            }
+            return null;
+        }
+
+        public static Variable operator |(Variable a, Variable b)
+        {
+            if (a.DataType == DataTypeEnum.Boolean && b.DataType == DataTypeEnum.Boolean)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as bool? ?? false) || (b.Value as bool? ?? false));
+            }
+            else if (a.DataType == DataTypeEnum.Boolean && b.DataType == DataTypeEnum.Double)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as bool? ?? false) || (b.Value as double? ?? 0) > 0);
+            }
+            else if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Boolean)
+            {
+                return new Variable(DataTypeEnum.Boolean, "_", (a.Value as double? ?? 0) > 0 || (b.Value as bool? ?? false));
+            }
+            return null;
+        }
+
 
         public static Variable operator >(Variable a, Variable b)
         {
