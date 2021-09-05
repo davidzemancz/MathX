@@ -41,6 +41,11 @@ namespace Base.Api
 
         public override string ToString()
         {
+            if (this.Exception != null)
+            {
+                return $"[Status {State}] {Text}" + Environment.NewLine + $"[Exception] {Exception.StackTrace}";
+            }
+
             return $"[Status {State}] {Text}";
         }
 

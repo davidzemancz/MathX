@@ -55,12 +55,13 @@ namespace MathX.UI.Forms
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
             this.btnShortcutConsole = new System.Windows.Forms.Button();
             this.gbExamples = new System.Windows.Forms.GroupBox();
+            this.btnExamplePrimes = new System.Windows.Forms.Button();
             this.btnExamplesVectors = new System.Windows.Forms.Button();
             this.btnExamplesFunctions = new System.Windows.Forms.Button();
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
-            this.btnExamplePrimes = new System.Windows.Forms.Button();
+            this.btnExamplesBubblesort = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -365,6 +366,7 @@ namespace MathX.UI.Forms
             // gbExamples
             // 
             this.gbExamples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbExamples.Controls.Add(this.btnExamplesBubblesort);
             this.gbExamples.Controls.Add(this.btnExamplePrimes);
             this.gbExamples.Controls.Add(this.btnExamplesVectors);
             this.gbExamples.Controls.Add(this.btnExamplesFunctions);
@@ -378,6 +380,17 @@ namespace MathX.UI.Forms
             this.gbExamples.TabIndex = 4;
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
+            // 
+            // btnExamplePrimes
+            // 
+            this.btnExamplePrimes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplePrimes.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplePrimes.Name = "btnExamplePrimes";
+            this.btnExamplePrimes.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplePrimes.TabIndex = 9;
+            this.btnExamplePrimes.Text = "Primes";
+            this.btnExamplePrimes.UseVisualStyleBackColor = true;
+            this.btnExamplePrimes.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // btnExamplesVectors
             // 
@@ -434,16 +447,16 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
             // 
-            // btnExamplePrimes
+            // btnExamplesBubblesort
             // 
-            this.btnExamplePrimes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplePrimes.Location = new System.Drawing.Point(166, 22);
-            this.btnExamplePrimes.Name = "btnExamplePrimes";
-            this.btnExamplePrimes.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplePrimes.TabIndex = 9;
-            this.btnExamplePrimes.Text = "Primes";
-            this.btnExamplePrimes.UseVisualStyleBackColor = true;
-            this.btnExamplePrimes.Click += new System.EventHandler(this.exampleButton_Click);
+            this.btnExamplesBubblesort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesBubblesort.Location = new System.Drawing.Point(166, 51);
+            this.btnExamplesBubblesort.Name = "btnExamplesBubblesort";
+            this.btnExamplesBubblesort.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesBubblesort.TabIndex = 10;
+            this.btnExamplesBubblesort.Text = "Bubble sort";
+            this.btnExamplesBubblesort.UseVisualStyleBackColor = true;
+            this.btnExamplesBubblesort.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // FormMathXMain
             // 
@@ -459,6 +472,7 @@ namespace MathX.UI.Forms
             this.Name = "FormMathXMain";
             this.Text = "MathX";
             this.Activated += new System.EventHandler(this.FormMathXMain_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMathXMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMathXMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMathXMain_KeyDown);
             this.mainMenu.ResumeLayout(false);
@@ -510,6 +524,7 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiFileNew;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
         private System.Windows.Forms.Button btnExamplePrimes;
+        private System.Windows.Forms.Button btnExamplesBubblesort;
     }
 }
 

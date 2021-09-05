@@ -109,22 +109,55 @@ namespace MathX.Primitives
                                     string functionName = arr[0];
                                     string[] functionParamsNames = arr[1].Substring(0, arr[1].Length - 1).Split(',');
 
-                                    string functionExpr = _statement.Substring(i + 1);
+                                    string expression = _statement.Substring(i + 1);
 
-                                    Function function = new Function(_process, functionName, functionExpr, functionParamsNames);
+                                    Function function = new Function(_process, functionName, expression, functionParamsNames);
                                     _process.Functions[functionName] = function;
 
-                                    output = $"{name} = {functionExpr}";
+                                    output = $"{name} = {expression}";
+                                }
+                                else if (name.Contains('[')) // Indexer of variable (vector or matrix)
+                                {
+                                    string[] arr = name.Split('[');
+                                    string variableName = arr[0];
+                                    string[] indexes = arr[1].Substring(0, arr[1].Length - 1).Split(',');
+
+                                    string expression = _statement.Substring(i + 1);
+
+                                    if (_process.Variables.ContainsKey(variableName))
+                                    {
+                                        Variable variable = _process.Variables[variableName];
+                                        if (variable.DataType == Variable.DataTypeEnum.Vector)
+                                        {
+                                            Vector vector = (Vector)variable.Value;
+                                            if (vector != null)
+                                            {
+                                                Variable indexVariable = new Expression(_process, indexes[0]).Evaluate(out status);
+                                                int index = int.Parse(indexVariable.Value?.ToString() ?? "-1");
+                                                if (index < 0 || index >= vector.Dimension) // Out of vector range
+                                                {
+                                                    throw new IndexOutOfRangeException("Index is out of vector range");
+                                                }
+                                                
+                                                Variable result = new Expression(_process, expression).Evaluate(out status);
+                                                vector[index] = result;
+                                                output = $"{variable}";
+                                            }
+                                            else throw new Exception($"Null variable {variableName}");
+                                        }
+                                        else throw new Exception("Datatype does not support indexing");
+                                    }
+                                    else throw new Exception($"Undefined variable {variableName}");
                                 }
                                 else // Variable
                                 {
                                     string varibaleValueExpr = _statement.Substring(i + 1);
-                                    Variable variable = new Expression(_process, varibaleValueExpr).Evaluate(out status);
-                                    if (!(variable is null))
+                                    Variable result = new Expression(_process, varibaleValueExpr).Evaluate(out status);
+                                    if (result.Value != null)
                                     {
-                                        variable.Name = name;
-                                        _process.Variables[name] = variable;
-                                        output = $"{variable}";
+                                        result.Name = name;
+                                        _process.Variables[name] = result;
+                                        output = $"{result}";
 
                                     }
                                 }
@@ -139,7 +172,7 @@ namespace MathX.Primitives
                             string expressionStr = _statement;
                             Expression expression = new Expression(_process, expressionStr);
                             Variable result = expression.Evaluate(out status);
-                            if (result?.Value != null) {
+                            if (result.Value != null) {
                                 output = $"{expressionStr} = {result.Value}";
                             }
                             complete = true;

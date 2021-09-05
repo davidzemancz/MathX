@@ -3,14 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace MathX.Primitives
 {
-    public class Variable
+    public struct Variable
     {
+        private object _value;
+
         public string Name { get; set; }
 
-        public object Value { get; set; }
+        public object Value 
+        {
+            get {  return _value; }
+            set 
+            {
+                if (value is JsonElement)
+                {
+                    JsonElement jsonElement = (JsonElement)value;
+                    if (jsonElement.ValueKind == JsonValueKind.Object)
+                    {
+                        string type = jsonElement.GetProperty("Type").GetString();
+                        if (type == nameof(Vector))
+                        {
+                            value = JsonSerializer.Deserialize<Vector>(jsonElement.GetRawText());
+                        }
+                    }
+                }
+                _value = value; 
+            }
+        }
 
         public bool Temporary => Name.StartsWith("_");
 
@@ -24,13 +46,9 @@ namespace MathX.Primitives
             Vector = 3,
         }
 
-        public Variable()
-        {
-
-        }
-
         public Variable(DataTypeEnum dataType, string name)
         {
+            _value = null;
             DataType = dataType;
             Name = name;
         }
@@ -42,29 +60,29 @@ namespace MathX.Primitives
 
         public static Variable operator +(Variable a, Variable b)
         {
-            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
-                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value + (Vector)b?.Value);
-            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) + (b?.Value as double? ?? 0));
-            return null;
+            if (a.DataType == DataTypeEnum.Vector && b.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a.Value + (Vector)b.Value);
+            else if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) + (b.Value as double? ?? 0));
+            return new Variable();
         }
 
         public static Variable operator -(Variable a, Variable b)
         {
-            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
-                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value - (Vector)b?.Value);
-            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) - (b?.Value as double? ?? 0));
-            return null;
+            if (a.DataType == DataTypeEnum.Vector && b.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a.Value - (Vector)b.Value);
+            else if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) - (b.Value as double? ?? 0));
+            return new Variable();
         }
 
         public static Variable operator *(Variable a, Variable b)
         {
-            if (a?.DataType == DataTypeEnum.Vector && b?.DataType == DataTypeEnum.Vector)
-                return new Variable(DataTypeEnum.Vector, "_", (Vector)a?.Value * (Vector)b?.Value);
-            else if (a?.DataType == DataTypeEnum.Double || b?.DataType == DataTypeEnum.Double)
-                return new Variable(DataTypeEnum.Double, "_", (a?.Value as double? ?? 0) * (b?.Value as double? ?? 0));
-            return null;
+            if (a.DataType == DataTypeEnum.Vector && b.DataType == DataTypeEnum.Vector)
+                return new Variable(DataTypeEnum.Vector, "_", (Vector)a.Value * (Vector)b.Value);
+            else if (a.DataType == DataTypeEnum.Double || b.DataType == DataTypeEnum.Double)
+                return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) * (b.Value as double? ?? 0));
+            return new Variable();
         }
 
         public static Variable operator /(Variable a, Variable b)
@@ -74,7 +92,7 @@ namespace MathX.Primitives
                 if ((double)b.Value == 0) throw new Exception("Unable to divide by zero");
                 return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 1) / (b.Value as double? ?? 1));
             }
-            return null;
+            return new Variable();
         }
 
         public static Variable operator %(Variable a, Variable b)
@@ -83,7 +101,7 @@ namespace MathX.Primitives
             {
                 return new Variable(DataTypeEnum.Double, "_", (a.Value as double? ?? 0) % (b.Value as double? ?? 1));
             }
-            return null;
+            return new Variable();
         }
 
         public static Variable operator &(Variable a, Variable b)
@@ -100,7 +118,7 @@ namespace MathX.Primitives
             {
                 return new Variable(DataTypeEnum.Boolean, "_", (a.Value as double? ?? 0) > 0 && (b.Value as bool? ?? false));
             }
-            return null;
+            return new Variable();
         }
 
         public static Variable operator |(Variable a, Variable b)
@@ -117,7 +135,7 @@ namespace MathX.Primitives
             {
                 return new Variable(DataTypeEnum.Boolean, "_", (a.Value as double? ?? 0) > 0 || (b.Value as bool? ?? false));
             }
-            return null;
+            return new Variable();
         }
 
 
@@ -125,52 +143,52 @@ namespace MathX.Primitives
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value > (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static Variable operator <(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value < (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static Variable operator >=(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value >= (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static Variable operator <=(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value <= (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static Variable operator ==(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value == (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static Variable operator !=(Variable a, Variable b)
         {
             if (a.DataType == DataTypeEnum.Double && b.DataType == DataTypeEnum.Double)
                 return new Variable(DataTypeEnum.Boolean, "_", (double)a.Value != (double)b.Value);
-            return null;
+            return new Variable();
         }
 
         public static implicit operator Variable(Vector vector)
         {
-            return new Variable(DataTypeEnum.Vector, "_", vector);
+            return new (DataTypeEnum.Vector, "_", vector);
         }
 
         public static implicit operator Variable(double number)
         {
-            return new Variable(DataTypeEnum.Double, "_", number);
+            return new (DataTypeEnum.Double, "_", number);
         }
 
         public override string ToString()

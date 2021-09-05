@@ -76,53 +76,59 @@ namespace MathX.Processes
                         }
                         else if (statementInfo.Loop != null)
                         {
-                            if (statementInfo.Loop.Keyword == Keywords.While)
+                            if ((conditions.Count == 0 || conditions.All(c => c.Result)))
                             {
-                                statementInfo.Loop.Position = linePositionEnd;
-                                statementInfo.Loop.EvaluateCondition(this, out status);
-                                status.ThrowIfError();
-
-                                loops.Push(statementInfo.Loop);
-                            }
-                            else if (statementInfo.Loop.Keyword == Keywords.EndWhile)
-                            {
-                                Loop loop = loops.Peek();
-                                loop.EvaluateCondition(this, out status);
-                                status.ThrowIfError();
-
-                                if (loop.Result)
+                                if (statementInfo.Loop.Keyword == Keywords.While)
                                 {
-                                    inputReader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
-                                    inputReader.DiscardBufferedData();
+                                    statementInfo.Loop.Position = linePositionEnd;
+                                    statementInfo.Loop.EvaluateCondition(this, out status);
+                                    status.ThrowIfError();
+
+                                    loops.Push(statementInfo.Loop);
                                 }
-                                else
+                                else if (statementInfo.Loop.Keyword == Keywords.EndWhile)
                                 {
-                                    loops.Pop();
+                                    Loop loop = loops.Peek();
+                                    loop.EvaluateCondition(this, out status);
+                                    status.ThrowIfError();
+
+                                    if (loop.Result)
+                                    {
+                                        inputReader.BaseStream.Seek(loop.Position, SeekOrigin.Begin);
+                                        inputReader.DiscardBufferedData();
+                                    }
+                                    else
+                                    {
+                                        loops.Pop();
+                                    }
                                 }
                             }
                         }
                         else if (statementInfo.Condition != null)
                         {
-                            if (statementInfo.Condition.Keyword == Keywords.If)
+                            if ((loops.Count == 0 || loops.All(l => l.Result)))
                             {
-                                statementInfo.Condition.Evaluate(this, out status);
-                                status.ThrowIfError();
+                                if (statementInfo.Condition.Keyword == Keywords.If)
+                                {
+                                    statementInfo.Condition.Evaluate(this, out status);
+                                    status.ThrowIfError();
 
-                                conditions.Push(statementInfo.Condition);
-                            }
-                            else if (statementInfo.Condition.Keyword == Keywords.ElseIf)
-                            {
-                                throw new NotImplementedException("ElseIf block is not implemented yet");
-                            }
-                            else if (statementInfo.Condition.Keyword == Keywords.Else)
-                            {
-                                var currentCondition = conditions.Pop();
-                                statementInfo.Condition.Result = !currentCondition.Result;
-                                conditions.Push(statementInfo.Condition);
-                            }
-                            else if (statementInfo.Condition.Keyword == Keywords.EndIf)
-                            {
-                                conditions.Pop();
+                                    conditions.Push(statementInfo.Condition);
+                                }
+                                else if (statementInfo.Condition.Keyword == Keywords.ElseIf)
+                                {
+                                    throw new NotImplementedException("ElseIf block is not implemented yet");
+                                }
+                                else if (statementInfo.Condition.Keyword == Keywords.Else)
+                                {
+                                    var currentCondition = conditions.Pop();
+                                    statementInfo.Condition.Result = !currentCondition.Result;
+                                    conditions.Push(statementInfo.Condition);
+                                }
+                                else if (statementInfo.Condition.Keyword == Keywords.EndIf)
+                                {
+                                    conditions.Pop();
+                                }
                             }
                         }
                         else

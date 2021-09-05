@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -41,6 +42,7 @@ namespace MathX.UI.Forms
 
         private void LoadStateData(byte[] data)
         {
+            if (data == null) return;
             ProcessManager.Processes = JsonSerializer.Deserialize<Dictionary<string, Process>>(data);
             LoadProcesses();
         }
@@ -113,7 +115,12 @@ namespace MathX.UI.Forms
             {
                 FileHandler.SaveFileAs(GetStateData());
             }
-            
+        }
+
+        private void FormMathXMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            FileHandler.CheckUnsavedChanges(GetStateData(), out bool cancel);
+            e.Cancel = cancel;
         }
 
         private void lbProcesses_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -214,6 +221,10 @@ namespace MathX.UI.Forms
             {
                 this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//primes.script");
             }
+            else if (sender == btnExamplesBubblesort)
+            {
+                this.ShowScriptEditorForm(false, $"{scriptsDir}//Resources//Scripts//bubblesort.script");
+            }
         }
 
         private void ts_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -247,13 +258,14 @@ namespace MathX.UI.Forms
                 }
             }
         }
-       
+
+
 
 
         #endregion
 
         #endregion
 
-
+        
     }
 }

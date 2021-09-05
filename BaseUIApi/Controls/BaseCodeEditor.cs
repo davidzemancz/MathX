@@ -14,8 +14,19 @@ namespace Base.UI.Api.Controls
     {
         [Browsable(true)]
         public new event EventHandler TextChanged;
-        
-        public override string Text { get => txt.Text ; set => txt.Text = value; }
+
+        public override string Text
+        {
+            get => txt.Text ; 
+            set
+            {
+                txt.Text = value;
+                for (int i = 0; i < txt.Lines.Length; i++)
+                {
+                    ParseLine(i);
+                }
+            }
+        }
 
         public HashSet<string> KeyWords { get; } = new HashSet<string>() { 
             "while", "endwhile", 
@@ -34,16 +45,7 @@ namespace Base.UI.Api.Controls
             txt.Text += $"{Environment.NewLine}{line}";
             ParseLine(txt.Lines.Length - 1);
         }
-
-        public void WriteText(string text)
-        {
-            txt.Text = text;
-            for (int i = 0; i < txt.Lines.Length; i++)
-            {
-                ParseLine(i);
-            }
-        }
-
+        
         private void ParseLine(int lineIndex)
         {
             this.SuspendLayout();

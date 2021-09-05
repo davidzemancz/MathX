@@ -25,7 +25,7 @@ namespace MathX.Primitives
         public Variable Evaluate(out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
-            Variable result = null;
+            Variable result = new Variable();
             try
             {
                 _position = -1;
@@ -51,7 +51,7 @@ namespace MathX.Primitives
                 }
                 else if (char.IsLetter(expChar)|| expChar == '_') // Variable or function
                 {
-                    string name = ReadName(out bool isFunction);
+                    string name = ReadName(out bool isFunction, out bool hasIndexer);
 
                     if (isFunction)
                     {
@@ -61,14 +61,39 @@ namespace MathX.Primitives
                     {
                         result = GetVariable(name);
                     }
+
+                    if (hasIndexer)
+                    {
+                        if (result.DataType == Variable.DataTypeEnum.Vector)
+                        {
+                            Vector vector = (Vector)result.Value;
+                            if (vector != null)
+                            {
+                                List<Variable> parameters = GetParameters(true, ']');
+                                int index = int.Parse(parameters[0].Value?.ToString() ?? "-1");
+                                if (index < 0 || index >= vector.Dimension) // Out of vector range
+                                {
+                                    throw new IndexOutOfRangeException("Index is out of vector range");
+                                }
+
+                                result = vector[index];
+                            }
+                            else throw new Exception($"Null variable {name}");
+                        }
+                        else throw new Exception("Datatype does not support indexing");
+                    }
                 }
                 else if (char.IsDigit(expChar)) // Number
                 {
                     result = ReadNumber();
                 }
                 else if (expChar == '[') // Vector or Matrix
-                {
+                {   
                     result = ReadVector();
+                }
+                else if (expChar == ']') // End of vector or indexer
+                {
+                    return result;
                 }
                 else if (expChar == '(') // Start of parentheses block
                 {
@@ -176,17 +201,27 @@ namespace MathX.Primitives
             return result;
         }
 
-        private Variable CallFuntion(string name)
+        private List<Variable> GetParameters(bool skipOpeningChar, char closingChar)
         {
-            Variable result;
+            
             List<Variable> parameters = new List<Variable>();
-            ++_position; // (
-            while (_expression.Length > _position && _expression[_position] != ')')
+
+            if (skipOpeningChar) ++_position;
+            while (_expression.Length > _position && _expression[_position] != closingChar)
             {
                 if (_position + 1 < _expression.Length && _expression[_position + 1] == ',') _position++;
                 Variable parameter = Evaluate();
                 parameters.Add(parameter);
             }
+
+            return parameters;
+        }
+
+        private Variable CallFuntion(string name)
+        {
+            Variable result;
+           
+            List<Variable> parameters = GetParameters(true,')');
 
             if (_process.Functions.ContainsKey(name)) // User defined function
             {
@@ -208,7 +243,7 @@ namespace MathX.Primitives
             return opers.Contains(oper);
         }
 
-        private string ReadName(out bool isFunction)
+        private string ReadName(out bool isFunction, out bool hasIndexer)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(_expression[_position]);
@@ -219,21 +254,14 @@ namespace MathX.Primitives
             }
 
             isFunction = _expression.Length > (_position + 1) && _expression[_position + 1] == '(';
+            hasIndexer = _expression.Length > (_position + 1) && _expression[_position + 1] == '[';
 
             return sb.ToString();
         }
 
         private Vector ReadVector()
         {
-            List<Variable> components = new List<Variable>();
-
-            while (_expression.Length > _position && _expression[_position] != ']')
-            {
-                if (_position + 1 < _expression.Length && _expression[_position + 1] == ',') _position++;
-                Variable component = Evaluate();
-                components.Add(component);
-            }
-
+            List<Variable> components = GetParameters(false,']');
             return new Vector(components.ToArray());
         }
 

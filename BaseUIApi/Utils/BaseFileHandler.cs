@@ -53,6 +53,7 @@ namespace Base.UI.Api.Utils
             Form = form;
             Encoding = encoding;
             Filter = filter;
+            UpdateTitleText();
         }
 
         private void UpdateTitleText()

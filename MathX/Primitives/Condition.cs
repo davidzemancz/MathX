@@ -31,7 +31,7 @@ namespace MathX.Primitives
         {
             Result = false;
             Variable variable = new Expression(process, Expression).Evaluate(out status);
-            if(variable is null)
+            if (variable.Value  == null)
             {
                 Result = false;
             }

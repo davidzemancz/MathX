@@ -55,6 +55,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\Scripts\bubblesort.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Scripts\primes.script">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

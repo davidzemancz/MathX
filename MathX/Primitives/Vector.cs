@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathX.Primitives.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +7,29 @@ using System.Threading.Tasks;
 
 namespace MathX.Primitives
 {
-    public class Vector
+    public class Vector : IVariableValue
     {
+        public string Type => nameof(Vector);
+
         public Variable[] Components { get; set; }
 
         public int Dimension => Components.Length;
                 
-        public Variable this[int i]
+        public Variable this[int index]
         {
-            get => i < Dimension ? Components[i] : null;
-            set => Components[i] = value;
+            get => index < Dimension ? Components[index] :  new Variable();
+            set
+            {
+                Components[index].DataType = value.DataType;
+                Components[index].Name = "_";
+                Components[index].Value = value.Value;
+            }
         }
-            
+           
+        public Vector()
+        {
+
+        }
 
         public Vector(int dimension)
         {
@@ -54,7 +66,7 @@ namespace MathX.Primitives
         public static Variable operator *(Vector a, Vector b)
         {
             int dim = Math.Max(a.Dimension, b.Dimension);
-            Variable c = null;
+            Variable c = new Variable();
             for (int i = 0; i < dim; i++)
             {
                 c = c + (a[i] * b[i]);
@@ -65,7 +77,7 @@ namespace MathX.Primitives
         public override string ToString()
         {
             string vector = "[";
-            foreach (object component in Components)
+            foreach (Variable component in Components)
             {
                 vector += component.ToString() + ",";
             }
