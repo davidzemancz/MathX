@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using MathX.Primitives.Interfaces;
 
 namespace MathX.Primitives
 {
-    public struct Variable
+    public struct Variable : IVariableValue
     {
+        public string Type => nameof(Vector);
+   
         private object _value;
 
         public string Name { get; set; }
@@ -27,6 +30,10 @@ namespace MathX.Primitives
                         if (type == nameof(Vector))
                         {
                             value = JsonSerializer.Deserialize<Vector>(jsonElement.GetRawText());
+                        }
+                        else if (type == nameof(Variable))
+                        {
+                            value = JsonSerializer.Deserialize<Variable>(jsonElement.GetRawText());
                         }
                     }
                 }

@@ -41,6 +41,7 @@
 	* (i)ncrement([expression])
 	* (pow)er([expressionBase],[expressionExponent])
 	* sin([expression])
+	* sqrt([expression])
 	* print([expression])
 ## User defined functions
 ### Inline

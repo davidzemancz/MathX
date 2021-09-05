@@ -43,7 +43,7 @@ namespace MathX.UI.Forms
         private void LoadStateData(byte[] data)
         {
             if (data == null) return;
-            ProcessManager.Processes = JsonSerializer.Deserialize<Dictionary<string, Process>>(data);
+            ProcessManager.Processes = JsonSerializer.Deserialize<BaseDictionary<string, Process>>(data);
             LoadProcesses();
         }
 
@@ -76,8 +76,22 @@ namespace MathX.UI.Forms
             foreach (KeyValuePair<string, Process> kvp in ProcessManager.Processes)
             {
                 lbProcesses.Items.Add(kvp.Value);
+
+                kvp.Value.Variables.ItemAdded -= UnsavedChanges;
+                kvp.Value.Variables.ItemAdded += UnsavedChanges;
+
+                kvp.Value.Functions.ItemAdded -= UnsavedChanges;
+                kvp.Value.Functions.ItemAdded += UnsavedChanges;
             }
             if(lbProcesses.Items.Count > 0) lbProcesses.SelectedIndex = 0;
+
+            ProcessManager.Processes.ItemAdded -= UnsavedChanges;
+            ProcessManager.Processes.ItemAdded += UnsavedChanges;
+        }
+
+        private void UnsavedChanges(string key)
+        {
+            FileHandler.UnsavedChanges = true;
         }
 
         #endregion

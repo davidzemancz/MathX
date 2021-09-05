@@ -56,7 +56,7 @@ namespace Base.UI.Api.Utils
             UpdateTitleText();
         }
 
-        private void UpdateTitleText()
+        public void UpdateTitleText()
         {
             Form.Text = (UnsavedChanges ? "*" : "")
                        + (string.IsNullOrEmpty(FileName) ? "Untitled" : Path.GetFileName(FileName))

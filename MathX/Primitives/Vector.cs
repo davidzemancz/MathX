@@ -28,7 +28,7 @@ namespace MathX.Primitives
            
         public Vector()
         {
-
+            Components = new Variable[0];
         }
 
         public Vector(int dimension)

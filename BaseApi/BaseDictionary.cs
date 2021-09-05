@@ -43,10 +43,15 @@ namespace Base.Api
 
         #region INDEXERS
 
-        public TValue this[TKey key] 
-        { 
-            get => _dictionary[key]; 
-            set => _dictionary[key] = value; 
+        public TValue this[TKey key]
+        {
+            get => _dictionary[key];
+            set
+            {
+                if (_dictionary.ContainsKey(key))
+                    _dictionary[key] = value;
+                else Add(key, value);
+            }
         }
 
         #endregion
@@ -56,7 +61,7 @@ namespace Base.Api
         public void Add(TKey key, TValue value)
         {
             _dictionary.Add(key, value);
-            ItemAdded?.Invoke(this, key);
+            ItemAdded?.Invoke( key);
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -92,7 +97,7 @@ namespace Base.Api
         public bool Remove(TKey key)
         {
             bool removed = _dictionary.Remove(key);
-            ItemRemoved?.Invoke(this, key);
+            ItemRemoved?.Invoke(key);
             return removed;
         }
 
@@ -115,7 +120,7 @@ namespace Base.Api
 
         #region EVENTS & DELEGS
 
-        public delegate void ItemHandler(IDictionary<TKey, TValue> dictionary, TKey key);
+        public delegate void ItemHandler(TKey key);
 
         public event ItemHandler ItemAdded;
 
