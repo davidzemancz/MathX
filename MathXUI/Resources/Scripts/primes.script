@@ -1,4 +1,4 @@
-﻿prime=125
+﻿prime=97
 isPrime=1
 div=1
 while div<=sqrt(prime)&isPrime

@@ -1,0 +1,17 @@
+﻿vect=[7,2,5,7,9,6,3,2,4,15,2]
+length=11
+i=0
+while i<length
+	j=i+1
+	while j<(length-1)
+		if vect[i]>vect[j]
+			temp=vect[i]
+			vect[i]=vect[j]
+			vect[j]=temp
+		endif
+		j=i(j)
+	endwhile
+	i=i(i)
+endwhile
+
+vect
