@@ -22,7 +22,7 @@ namespace MathX.UI.Forms
         private int AxisSpace 
         {
             get { return _axisSpace; }
-            set { _axisSpace = value > 0 ? value : 5; }
+            set { _axisSpace = value >= 15 ? value : 15; }
         }
 
         #endregion
@@ -60,96 +60,115 @@ namespace MathX.UI.Forms
         
         private void DrawAxis()
         {
-            int width = pcbContainer.Width;
-            int midWidth = width / 2;
-            int height = pcbContainer.Height;
-            int midHeight = height / 2;
-
-            _btmpGraph = new Bitmap(width, height);
-            _graphics = Graphics.FromImage(_btmpGraph);
-
-            Pen penAxis = new Pen(Color.Gray);
-            Pen penAxisDark = new Pen(Color.DarkGray);
-            Font fontAxis = this.Font;
-            Brush brushAxis = Brushes.White;
-
-            bool drawStrings = AxisSpace >= 15;
-
-            // X-axis
-            int numX = 0;
-            _graphics.DrawLine(penAxis, 0, midHeight, width, midHeight);
-            if (drawStrings) _graphics.DrawString($"{numX}", fontAxis, brushAxis, midWidth, midHeight);
-
-            for (int x = AxisSpace; x <= width / 2; x += AxisSpace)
+            Pen penAxis = null;
+            Pen penAxisDark = null;
+            try
             {
-                _graphics.DrawLine(penAxisDark, midWidth + x, 0, midWidth + x, height);
-                if (drawStrings) _graphics.DrawString($"{++numX}", fontAxis, brushAxis, midWidth + x, midHeight);
+                int width = pcbContainer.Width;
+                int midWidth = width / 2;
+                int height = pcbContainer.Height;
+                int midHeight = height / 2;
 
-                _graphics.DrawLine(penAxisDark, midWidth - x, 0, midWidth - x, height);
-                if (drawStrings) _graphics.DrawString($"{numX}", fontAxis, brushAxis, midWidth - x, midHeight);
+                _btmpGraph = new Bitmap(width, height);
+                _graphics = Graphics.FromImage(_btmpGraph);
+
+                penAxis = new Pen(Color.Gray);
+                penAxisDark = new Pen(Color.DarkGray);
+                Font fontAxis = this.Font;
+                Brush brushAxis = Brushes.White;
+
+                bool drawStrings = AxisSpace >= 15;
+
+                // X-axis
+                int numX = 0;
+                _graphics.DrawLine(penAxis, 0, midHeight, width, midHeight);
+                if (drawStrings) _graphics.DrawString($"{numX}", fontAxis, brushAxis, midWidth, midHeight);
+
+                for (int x = AxisSpace; x <= width / 2; x += AxisSpace)
+                {
+                    _graphics.DrawLine(penAxisDark, midWidth + x, 0, midWidth + x, height);
+                    if (drawStrings) _graphics.DrawString($"{++numX}", fontAxis, brushAxis, midWidth + x, midHeight);
+
+                    _graphics.DrawLine(penAxisDark, midWidth - x, 0, midWidth - x, height);
+                    if (drawStrings) _graphics.DrawString($"{numX}", fontAxis, brushAxis, midWidth - x, midHeight);
+                }
+
+                _xMin = -numX;
+                _xMax = numX;
+
+
+                // Y-axis
+                int numY = 0;
+                _graphics.DrawLine(penAxis, midWidth, 0, midWidth, height);
+
+                for (int y = AxisSpace; y <= height / 2; y += AxisSpace)
+                {
+                    _graphics.DrawLine(penAxisDark, 0, midHeight + y, width, midHeight + y);
+                    if (drawStrings) _graphics.DrawString($"{++numY}", fontAxis, brushAxis, midWidth, midHeight + y);
+
+                    _graphics.DrawLine(penAxisDark, 0, midHeight - y, width, midHeight - y);
+                    if (drawStrings) _graphics.DrawString($"{numY}", fontAxis, brushAxis, midWidth, midHeight - y);
+                }
+
+                _yMin = -numY;
+                _yMax = numY;
             }
-
-            _xMin = -numX;
-            _xMax = numX;
-
-
-            // Y-axis
-            int numY = 0;
-            _graphics.DrawLine(penAxis, midWidth, 0, midWidth, height);
-
-            for (int y = AxisSpace; y <= height / 2; y += AxisSpace)
+            catch(Exception ex)
             {
-                _graphics.DrawLine(penAxisDark, 0, midHeight + y, width, midHeight + y);
-                if (drawStrings) _graphics.DrawString($"{++numY}", fontAxis, brushAxis, midWidth, midHeight + y);
-
-                _graphics.DrawLine(penAxisDark, 0, midHeight - y, width, midHeight - y);
-                if (drawStrings) _graphics.DrawString($"{numY}", fontAxis, brushAxis, midWidth, midHeight - y);
+                throw;
             }
-
-            _yMin = -numY;
-            _yMax = numY;
-
-            
-
-            penAxis.Dispose();
-            penAxisDark.Dispose();
+            finally
+            {
+                penAxis?.Dispose();
+                penAxisDark?.Dispose();
+            }
         }
 
         private void DrawFunction(Function function)
         {
-            int width = pcbContainer.Width;
-            float widthHalf = width / 2;
-            
-            int height = pcbContainer.Height;
-            float heightHalf = height / 2;
-            
-            int xWidth = _xMax - _xMin;
-            float xRatio = (width / xWidth);
-
-            int yHeight = _yMax - _yMin;
-            float yRatio = (height / yHeight);
-
-            Pen penCurve = new Pen(Color.Aquamarine, 2);
-            List<PointF> points = new List<PointF>();
-
-            for (double x = _xMin; x <= _xMax; x += 0.3)
+            Pen penCurve = null;
+            try
             {
-                Variable var = function.Call(new[] { new Variable(Variable.DataTypeEnum.Double, "_", x) }, out BaseStatus status);
-                
-                float value = Convert.ToSingle(x);
-                float result = Convert.ToSingle(var.Value);
+                int width = pcbContainer.Width;
+                float widthHalf = width / 2;
 
-                PointF point = new PointF(widthHalf + (value * xRatio), heightHalf - (result * yRatio));
-                points.Add(point);
+                int height = pcbContainer.Height;
+                float heightHalf = height / 2;
 
-                status.ThrowIfError();
+                int xWidth = _xMax - _xMin;
+                float xRatio = (width / xWidth);
+
+                int yHeight = _yMax - _yMin;
+                float yRatio = (height / yHeight);
+
+                penCurve = new Pen(Color.Aquamarine, 2);
+                List<PointF> points = new List<PointF>();
+
+                for (double x = _xMin; x <= _xMax; x += 0.05)
+                {
+                    Variable var = function.Call(new[] { new Variable(Variable.DataTypeEnum.Double, "_", x) }, out BaseStatus status);
+
+                    float value = Convert.ToSingle(x);
+                    float result = Convert.ToSingle(var.Value);
+
+                    PointF point = new PointF(widthHalf + (value * xRatio), heightHalf - (result * yRatio));
+                    points.Add(point);
+
+                    status.ThrowIfError();
+                }
+
+                _graphics.SmoothingMode = SmoothingMode.HighQuality;
+                _graphics.DrawCurve(penCurve, points.ToArray());
+                _graphics.SmoothingMode = SmoothingMode.Default;
             }
-
-            _graphics.SmoothingMode = SmoothingMode.HighQuality;
-            _graphics.DrawCurve(penCurve, points.ToArray());
-            _graphics.SmoothingMode = SmoothingMode.Default;
-         
-            penCurve.Dispose();
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                penCurve?.Dispose();
+            }
         }
 
         private void LoadProcesses()
@@ -192,7 +211,7 @@ namespace MathX.UI.Forms
             _currentProcess = (Process)cbxProcesses.SelectedItem;
             
             cbxFunctions.Items.Clear();
-            foreach (var function in _currentProcess.Functions)
+            foreach (var function in _currentProcess.Functions.Where(f => f.Value.ParametersNames.Length == 1))
             {
                 cbxFunctions.Items.Add(function.Value);
             }
@@ -205,9 +224,6 @@ namespace MathX.UI.Forms
             Redraw();
         }
 
-        #endregion
-
-        #region Graph
         private void pcbGraph_SizeChanged(object sender, EventArgs e)
         {
             Redraw();
@@ -226,11 +242,8 @@ namespace MathX.UI.Forms
             Redraw();
         }
 
-
         #endregion
 
         #endregion
-
-       
     }
 }

@@ -42,8 +42,19 @@ namespace MathX.UI.Forms
 
         private void LoadStateData(byte[] data)
         {
-            if (data == null) return;
-            ProcessManager.Processes = JsonSerializer.Deserialize<BaseDictionary<string, Process>>(data);
+            if (data == null) // New file
+            {
+                ProcessManager.Processes.Clear();
+                Process defaultProcess = new Process("1");
+                ProcessManager.Processes.Add(defaultProcess.Id, defaultProcess);
+                FileHandler.UnsavedChanges = false;
+            }
+            else // Open file
+            {
+                ProcessManager.Processes = JsonSerializer.Deserialize<BaseDictionary<string, Process>>(data);
+                FileHandler.UnsavedChanges = false;
+            }
+
             LoadProcesses();
         }
 

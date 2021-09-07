@@ -59,16 +59,19 @@ namespace MathX.UI.Forms
             this.pcbGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pcbGraph.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pcbGraph.Location = new System.Drawing.Point(0, 0);
+            this.pcbGraph.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pcbGraph.Location = new System.Drawing.Point(0, 2);
             this.pcbGraph.Name = "pcbGraph";
-            this.pcbGraph.Size = new System.Drawing.Size(951, 470);
+            this.pcbGraph.Size = new System.Drawing.Size(951, 468);
+            this.pcbGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pcbGraph.TabIndex = 8;
             this.pcbGraph.TabStop = false;
             this.pcbGraph.SizeChanged += new System.EventHandler(this.pcbGraph_SizeChanged);
             // 
             // cbxFunctions
             // 
+            this.cbxFunctions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbxFunctions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxFunctions.FormattingEnabled = true;
             this.cbxFunctions.Location = new System.Drawing.Point(76, 504);
             this.cbxFunctions.Name = "cbxFunctions";
@@ -78,6 +81,7 @@ namespace MathX.UI.Forms
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(13, 507);
