@@ -14,15 +14,30 @@ namespace MathX.Primitives
 {
     public class Statement
     {
+        #region FIELDS
+
         private string _statement;
         private Process _process;
 
+        #endregion
+
+        #region CONSTRUCTORS
+        
         public Statement(Process process, string statement)
         {
             _statement = statement;
             _process = process;
         }
 
+        #endregion
+
+        #region PUBLIC METHODS
+
+        /// <summary>
+        /// Gets detail info of statement (is condition, loop ... evaluates them)
+        /// </summary>
+        /// <param name="status">Status of call</param>
+        /// <returns>StatementInfo class</returns>
         public StatementInfo GetInfo(out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
@@ -73,6 +88,11 @@ namespace MathX.Primitives
             return statementInfo;
         }
 
+        /// <summary>
+        /// Executes the statement
+        /// </summary>
+        /// <param name="statementInfo">Statement info</param>
+        /// <param name="status">Status of call</param>
         public void Execute(StatementInfo statementInfo, out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
@@ -187,6 +207,8 @@ namespace MathX.Primitives
                 status = new BaseStatus(BaseStatus.StateEnum.Error, $"[Invalid statement] {ex.Message}", ex);
             }
         }
+
+        #endregion
     }
 
 }

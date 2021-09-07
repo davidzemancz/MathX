@@ -51,7 +51,7 @@ namespace MathXExample
              * S promennymi lze provadet bezne aritmeticke operace a porovnani
              */
             Console.WriteLine($"Součet výrazů: {result1 + result2}");
-            Console.WriteLine($"Porovnání výrazů: {result1 >= result2}");
+            Console.WriteLine($"Je první větší rovno než druhý: {result1 >= result2}");
 
             #endregion
 
@@ -69,7 +69,7 @@ namespace MathXExample
             Statement statement1 = new Statement(process, strStat1);
             
             /*
-             * Informace o prikazu rika, zda jde o zacatek ci konec cyklu, podminky...
+             * Informace o prikazu rika, zda jde o zacatek ci konec cyklu, podminky... a vyhodnoti je
              */
             StatementInfo statement1Info = statement1.GetInfo(out status);
             status.ThrowIfError();
@@ -91,6 +91,7 @@ namespace MathXExample
             #region Funkce
 
             Function function = new Function(process, "f", "x^2", new[] {"x"});
+            Console.WriteLine(function.ToString());
             Variable result = function.Call(new []{ (Variable)5.0 }, out status);
             Console.WriteLine($"f(5)={result.Value}");
             status.ThrowIfError();
@@ -110,13 +111,13 @@ namespace MathXExample
              * Vstupni stream procesu
              *  - Do nej lze zapisovat prikazy, ktere se nasledne vykonaji zavolanim funkce Run()
              *  - Zapis probiha obvykle pomoci tridy StreamWriter
-             *  - POZOR, stream nesmim zavrit, tedy nutno nastavit parametr leaveOpen=true
+             *  - POZOR, stream nesmim zavrit, tedy nutno nastavit parameter leaveOpen=true
             */
             MemoryStream inputStream = process.Input;
             using (StreamWriter streamWriter = new StreamWriter(inputStream, null, -1, true))
             {
-                streamWriter.WriteLine("x=6");
-                streamWriter.WriteLine("y=7");
+                streamWriter.WriteLine("x=6*2");
+                streamWriter.WriteLine("y=7-(4*3)");
                 streamWriter.WriteLine("add(a,b)=a+b");
                 streamWriter.WriteLine("z=add(x,y)");
             }

@@ -159,9 +159,13 @@ namespace MathX.UI.Forms
 
         private void menuStrip_ItemClicked(object sender, System.EventArgs e)
         {
-            if (sender == consoleToolStripMenuItem)
+            if (sender == tsmiConsole)
             {
                 ShowConsoleForm();
+            }
+            if (sender == tsmiGraph)
+            {
+                ShowGraphForm();
             }
             else if (sender == tsmiFileNew)
             {

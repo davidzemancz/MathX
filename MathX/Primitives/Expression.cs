@@ -11,10 +11,15 @@ namespace MathX.Primitives
 {
     public class Expression
     {
+        #region FIELDS
+
         private string _expression;
         private int _position;
         private Process _process;
 
+        #endregion
+
+        #region CONSTURCOTRS
 
         public Expression(Process process, string expression)
         {
@@ -23,6 +28,15 @@ namespace MathX.Primitives
             _process = process;
         }
 
+        #endregion
+
+        #region PUBLIC METHODS
+
+        /// <summary>
+        /// Evaluate the expression
+        /// </summary>
+        /// <param name="status">Status of call</param>
+        /// <returns>Result of expression</returns>
         public Variable Evaluate(out BaseStatus status)
         {
             status = new BaseStatus(BaseStatus.StateEnum.Ok, "");
@@ -38,6 +52,10 @@ namespace MathX.Primitives
             }
             return result;
         }
+
+        #endregion
+
+        #region PRIVATE METHODS
 
         private Variable Evaluate(int operatorPriority = 0)
         {
@@ -309,5 +327,7 @@ namespace MathX.Primitives
             return 0;
         }
 
+
+        #endregion
     }
 }

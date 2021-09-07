@@ -35,9 +35,8 @@ namespace MathX.UI.Forms
             this.tsmiFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.lbProcesses = new System.Windows.Forms.ListBox();
             this.gbProcesses = new System.Windows.Forms.GroupBox();
             this.tlpProcesses = new System.Windows.Forms.TableLayoutPanel();
@@ -49,6 +48,9 @@ namespace MathX.UI.Forms
             this.tsBtnAddProcess = new System.Windows.Forms.ToolStripButton();
             this.tsBtnDelProcess = new System.Windows.Forms.ToolStripButton();
             this.gbShortcuts = new System.Windows.Forms.GroupBox();
+            this.btnShortcutSave = new System.Windows.Forms.Button();
+            this.btnShortcutOpen = new System.Windows.Forms.Button();
+            this.btnShortcutNew = new System.Windows.Forms.Button();
             this.btnGraph = new System.Windows.Forms.Button();
             this.btnShortcutOpenScript = new System.Windows.Forms.Button();
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
@@ -61,9 +63,7 @@ namespace MathX.UI.Forms
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
-            this.btnShortcutNew = new System.Windows.Forms.Button();
-            this.btnShortcutOpen = new System.Windows.Forms.Button();
-            this.btnShortcutSave = new System.Windows.Forms.Button();
+            this.tsmiGraph = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -78,7 +78,6 @@ namespace MathX.UI.Forms
             this.mainMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
             this.viewToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
@@ -126,30 +125,24 @@ namespace MathX.UI.Forms
             this.tsmiFileSaveAs.Text = "Save As [Ctrl+Shift+S]";
             this.tsmiFileSaveAs.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.consoleToolStripMenuItem});
+            this.tsmiConsole,
+            this.tsmiGraph});
             this.viewToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
             this.viewToolStripMenuItem.Text = "View";
             // 
-            // consoleToolStripMenuItem
+            // tsmiConsole
             // 
-            this.consoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(73)))), ((int)(((byte)(171)))));
-            this.consoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.consoleToolStripMenuItem.Text = "Console";
-            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.menuStrip_ItemClicked);
+            this.tsmiConsole.BackColor = System.Drawing.SystemColors.Control;
+            this.tsmiConsole.ForeColor = System.Drawing.Color.Black;
+            this.tsmiConsole.Name = "tsmiConsole";
+            this.tsmiConsole.Size = new System.Drawing.Size(180, 22);
+            this.tsmiConsole.Text = "Console";
+            this.tsmiConsole.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
             // lbProcesses
             // 
@@ -312,6 +305,39 @@ namespace MathX.UI.Forms
             this.gbShortcuts.TabStop = false;
             this.gbShortcuts.Text = "Shortcuts";
             // 
+            // btnShortcutSave
+            // 
+            this.btnShortcutSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutSave.Location = new System.Drawing.Point(17, 78);
+            this.btnShortcutSave.Name = "btnShortcutSave";
+            this.btnShortcutSave.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutSave.TabIndex = 7;
+            this.btnShortcutSave.Text = "Save";
+            this.btnShortcutSave.UseVisualStyleBackColor = true;
+            this.btnShortcutSave.Click += new System.EventHandler(this.shortcutButton_Click);
+            // 
+            // btnShortcutOpen
+            // 
+            this.btnShortcutOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutOpen.Location = new System.Drawing.Point(17, 49);
+            this.btnShortcutOpen.Name = "btnShortcutOpen";
+            this.btnShortcutOpen.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutOpen.TabIndex = 6;
+            this.btnShortcutOpen.Text = "Open";
+            this.btnShortcutOpen.UseVisualStyleBackColor = true;
+            this.btnShortcutOpen.Click += new System.EventHandler(this.shortcutButton_Click);
+            // 
+            // btnShortcutNew
+            // 
+            this.btnShortcutNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutNew.Location = new System.Drawing.Point(17, 20);
+            this.btnShortcutNew.Name = "btnShortcutNew";
+            this.btnShortcutNew.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutNew.TabIndex = 5;
+            this.btnShortcutNew.Text = "New";
+            this.btnShortcutNew.UseVisualStyleBackColor = true;
+            this.btnShortcutNew.Click += new System.EventHandler(this.shortcutButton_Click);
+            // 
             // btnGraph
             // 
             this.btnGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -451,38 +477,12 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
             // 
-            // btnShortcutNew
+            // tsmiGraph
             // 
-            this.btnShortcutNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutNew.Location = new System.Drawing.Point(17, 20);
-            this.btnShortcutNew.Name = "btnShortcutNew";
-            this.btnShortcutNew.Size = new System.Drawing.Size(143, 23);
-            this.btnShortcutNew.TabIndex = 5;
-            this.btnShortcutNew.Text = "New";
-            this.btnShortcutNew.UseVisualStyleBackColor = true;
-            this.btnShortcutNew.Click += new System.EventHandler(this.shortcutButton_Click);
-            // 
-            // btnShortcutOpen
-            // 
-            this.btnShortcutOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutOpen.Location = new System.Drawing.Point(17, 49);
-            this.btnShortcutOpen.Name = "btnShortcutOpen";
-            this.btnShortcutOpen.Size = new System.Drawing.Size(143, 23);
-            this.btnShortcutOpen.TabIndex = 6;
-            this.btnShortcutOpen.Text = "Open";
-            this.btnShortcutOpen.UseVisualStyleBackColor = true;
-            this.btnShortcutOpen.Click += new System.EventHandler(this.shortcutButton_Click);
-            // 
-            // btnShortcutSave
-            // 
-            this.btnShortcutSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutSave.Location = new System.Drawing.Point(17, 78);
-            this.btnShortcutSave.Name = "btnShortcutSave";
-            this.btnShortcutSave.Size = new System.Drawing.Size(143, 23);
-            this.btnShortcutSave.TabIndex = 7;
-            this.btnShortcutSave.Text = "Save";
-            this.btnShortcutSave.UseVisualStyleBackColor = true;
-            this.btnShortcutSave.Click += new System.EventHandler(this.shortcutButton_Click);
+            this.tsmiGraph.Name = "tsmiGraph";
+            this.tsmiGraph.Size = new System.Drawing.Size(180, 22);
+            this.tsmiGraph.Text = "Graph";
+            this.tsmiGraph.Click += new System.EventHandler(this.menuStrip_ItemClicked);
             // 
             // FormMathXMain
             // 
@@ -519,9 +519,8 @@ namespace MathX.UI.Forms
         #endregion
 
         private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiConsole;
         private System.Windows.Forms.ListBox lbProcesses;
         private System.Windows.Forms.GroupBox gbProcesses;
         private System.Windows.Forms.GroupBox gbShortcuts;
@@ -553,6 +552,7 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.Button btnShortcutSave;
         private System.Windows.Forms.Button btnShortcutOpen;
         private System.Windows.Forms.Button btnShortcutNew;
+        private System.Windows.Forms.ToolStripMenuItem tsmiGraph;
     }
 }
 

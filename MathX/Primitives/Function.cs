@@ -13,6 +13,8 @@ namespace MathX.Primitives
 {
     public class Function
     {
+        #region CONSTS
+
         public const string Increment = "increment";
         public const string IncrementShort = "i";
         public const string Power = "power";
@@ -21,14 +23,26 @@ namespace MathX.Primitives
         public const string Sinus = "sin";
         public const string Sqrt = "sqrt";
 
+        #endregion
+
+        #region PROPS
+
         public string Name { get; set; }
         public string Expression { get; set; }
         public string[] ParametersNames { get; set; }
       
         [JsonIgnore]
         public Process Process { get; set; }
-        
+
+        #endregion
+
+        #region FIELDS
+
         private Variable[] _parameters;
+
+        #endregion
+
+        #region CONSTRUCTORS
 
         public Function()
         {
@@ -49,11 +63,26 @@ namespace MathX.Primitives
             _parameters = parameters;
         }
 
+        #endregion
+
+        #region PUBLIC METHODS
+
+        /// <summary>
+        /// Calls the function
+        /// </summary>
+        /// <param name="status">Status of call</param>
+        /// <returns>Result of function expression</returns>
         public Variable Call(out BaseStatus status)
         {
             return Call(_parameters, out status);
         }
 
+        /// <summary>
+        /// Calls the function and passes parameters
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="status">Status of call</param>
+        /// <returns>Result of function expression</returns>
         public Variable Call(Variable[] parameters, out BaseStatus status)
         {
             _parameters = parameters;
@@ -161,7 +190,7 @@ namespace MathX.Primitives
         }
 
         public override string ToString()
-{
+        {
             string paramsNames = "";
             if (ParametersNames != null)
             {
@@ -175,5 +204,7 @@ namespace MathX.Primitives
 
             return $"{Name}({paramsNames}) = {Expression}";
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,8 @@
-﻿# MathX
+﻿﻿# MathX
+
+## Úvodem
+
+MathX je prográmek, který poskytuje API pro interpretaci vlastního "programovacího/skriptovacího" jazyka.K tomu poskytuje obecné API, pro práci s výrazy, funkcemi. V nich mohou figurovat v podobě proměnných čísla či vektory (do budoucna snad i matice). Příklady členěné do sekcí s komentáří naleznete projektu MathXExamples. Pro "koncového" uživatele je pak projekt MathXUI, který je nad API postaven a zastřešuje správu procesů, zpracování příkazů ze souboru či kreslení jednoduchých grafů (alfa verze).
 
 ## Třídy a struktury
 
@@ -101,6 +105,16 @@
 * print([expression])
 
 # Uživatelské rozhraní MathXUI
+
+ ## Hlavní okno
+
+* V sekci **Processes** je zobrazen seznam procesů, jejich proměnné a definované funkce
+* V sekci **Shortcuts** jsou tlačítka pro rychlé spuštění (... víc funkcí vlastně program stejně nenabízí :)
+  * Tlačítkem Save lze uložit aktuální stav programu do .json souboru, tlačítkem Open jej pak lze otevřít
+  * Tlačítkem NewScript lze v jednoduchém textovém editoru vytvářet a upravovat kód
+  * Tlačítko **Graph** otevírá okno pro zobrazování grafů
+  * Tlačítko **Console** otevírá okno s jednoduchou konzolí
+* V sekci **Examples** pak najdete jednoduché příklady
 
 
 

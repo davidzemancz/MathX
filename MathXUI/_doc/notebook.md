@@ -9,8 +9,9 @@
 
 # TODO
 * **Desetinna cisla**
-* Klavesove zkratky
-* Pripravit priklady programu
+* Porovnani vektoru
+* Mazani promenych a funkci procesu z UI
+* Nejkay zpusob jak ziskat props vektoru (delka apod...)
 * Podminka ElseIf
 * Dodelat funkce pro logaritmy, taky konstanty jako pi, e
 * Ruzne typy Exception, jako UndefinedVariableException, NullVariableException atp...
