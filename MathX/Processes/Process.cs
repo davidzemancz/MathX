@@ -12,9 +12,7 @@ namespace MathX.Processes
 {
     public class Process : IDisposable
     {
-
-        private BaseDictionary<string, Function> _functions;
-
+        #region PROPS
         public string Id { get; set; }
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
@@ -38,12 +36,26 @@ namespace MathX.Processes
         [JsonIgnore]
         public MemoryStream Input { get; set; }
 
+        #endregion
+
+        #region FIELDS
+
+        private BaseDictionary<string, Function> _functions;
+
+        #endregion
+
+        #region ENUMS
+
         public enum StateEnum
         {
             Pending = 1,
             Running = 2,
             Stopped = 3
         }
+
+        #endregion
+
+        #region CONSTRUCTORS
 
         public Process()
         {
@@ -58,7 +70,15 @@ namespace MathX.Processes
         {
             Id = id;
         }
-        
+
+        #endregion
+
+        #region PUBLIC METHODS
+
+        /// <summary>
+        /// Execute statements read form Input stream
+        /// </summary>
+        /// <param name="status">Status of call</param>
         public void Run(out BaseStatus status)
         {
             State = StateEnum.Running;
@@ -174,6 +194,10 @@ namespace MathX.Processes
             }
         }
 
+        /// <summary>
+        /// Push text line to end of Input stream
+        /// </summary>
+        /// <param name="line">Text line</param>
         public void PushInput(string line)
         {
             if (line == null) return;
@@ -189,6 +213,10 @@ namespace MathX.Processes
             Input.Seek(position, SeekOrigin.Begin);
         }
 
+        /// <summary>
+        /// Push text line to end of Input stream
+        /// </summary>
+        /// <param name="line">Text line</param>
         public void PushOutput(string line)
         {
             if (line == null) return;
@@ -204,12 +232,18 @@ namespace MathX.Processes
             Output.Seek(position, SeekOrigin.Begin);
         }
 
+        /// <summary>
+        /// Create new instance of Input stream
+        /// </summary>
         public void ClearInput()
         {
             Input.Dispose();
             Input = new MemoryStream();
         }
 
+        /// <summary>
+        /// Create new instance of Output stream
+        /// </summary>
         public void ClearOutput()
         {
             Output.Dispose();
@@ -226,5 +260,7 @@ namespace MathX.Processes
         {
             return $"Process {Id} [State {State}]";
         }
+
+        #endregion
     }
 }

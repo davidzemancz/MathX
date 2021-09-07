@@ -11,10 +11,9 @@ namespace MathX.Primitives
 {
     public struct Variable : IVariableValue
     {
+        #region PROPS
         public string Type => nameof(Variable);
    
-        private object _value;
-
         public string Name { get; set; }
 
         public object Value 
@@ -46,6 +45,16 @@ namespace MathX.Primitives
 
         public DataTypeEnum DataType { get; set; }
 
+        #endregion
+
+        #region FIELDS
+
+        private object _value;
+
+        #endregion
+
+        #region ENUMS
+
         public enum DataTypeEnum
         {
             None = 0,
@@ -53,6 +62,10 @@ namespace MathX.Primitives
             Boolean = 2,
             Vector = 3,
         }
+
+        #endregion
+
+        #region CONSTRUCTORS
 
         public Variable(DataTypeEnum dataType, string name)
         {
@@ -65,6 +78,20 @@ namespace MathX.Primitives
         {
             Value = value;
         }
+
+        #endregion
+
+        #region PUBLIC METHODS
+        
+        public override string ToString()
+        {
+            if (Temporary) return Value?.ToString();
+            return $"{Name} = {Value?.ToString()}";
+        }
+
+        #endregion
+
+        #region OPERATORS
 
         public static Variable operator +(Variable a, Variable b)
         {
@@ -199,11 +226,8 @@ namespace MathX.Primitives
             return new (DataTypeEnum.Double, "_", number);
         }
 
-        public override string ToString()
-        {
-            if (Temporary) return Value?.ToString();
-            return $"{Name} = {Value?.ToString()}";
-        }
+        #endregion
+
 
     }
 }
