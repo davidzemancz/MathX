@@ -45,6 +45,6 @@
 	* print([expression])
 ## User defined functions
 ### Inline
-	* [functionName]([paramName1],...)=[expression]
+	* [functionName([paramName1],...)]=[expression]
 	* If paramName is same as variable name, during function call variable value is replaced by paramValue, then restored
 

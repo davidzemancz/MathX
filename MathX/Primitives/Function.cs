@@ -3,7 +3,9 @@ using MathX.Processes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -19,11 +21,14 @@ namespace MathX.Primitives
         public const string Sinus = "sin";
         public const string Sqrt = "sqrt";
 
-        private string _name;
-        private string _expression;
-        private string[] _parametersNames;
+        public string Name { get; set; }
+        public string Expression { get; set; }
+        public string[] ParametersNames { get; set; }
+      
+        [JsonIgnore]
+        public Process Process { get; set; }
+        
         private Variable[] _parameters;
-        private Process _process;
 
         public Function()
         {
@@ -31,16 +36,16 @@ namespace MathX.Primitives
 
         public Function(Process process, string name, string expression, string[] parametersNames)
         {
-            _process = process;
-            _name = name.ToLower();
-            _expression = expression;
-            _parametersNames = parametersNames;
+            Process = process;
+            Name = name.ToLower();
+            Expression = expression;
+            ParametersNames = parametersNames;
         }
 
         public Function(Process process, string name, Variable[] parameters)
         {
-            _process = process;
-            _name = name.ToLower();
+            Process = process;
+            Name = name.ToLower();
             _parameters = parameters;
         }
 
@@ -57,84 +62,84 @@ namespace MathX.Primitives
 
             try
             {
-                if (_name == Increment || _name == IncrementShort)
+                if (Name == Increment || Name == IncrementShort)
                 {
                     if (!ArgumentsValid(1)) return result;
 
                     result = _parameters[0] + 1.0;
                 }
-                else if (_name == Power || _name == PowerShort)
+                else if (Name == Power || Name == PowerShort)
                 {
                     if (!ArgumentsValid(2)) return result;
                     else if (_parameters[0].DataType == Variable.DataTypeEnum.Double && _parameters[1].DataType == Variable.DataTypeEnum.Double)
                     {
                         result = Math.Pow((double)_parameters[0].Value, (double)_parameters[1].Value);
                     }
-                    else throw new Exception($"Both arguments of {_name} function must be numbers");
+                    else throw new Exception($"Both arguments of {Name} function must be numbers");
                 }
-                else if (_name == Print)
+                else if (Name == Print)
                 {
                     if (!ArgumentsValid(1)) return result;
                     string exprStr = _parameters[0].Value?.ToString();
-                    Expression expression = new Expression(_process, exprStr);
+                    Expression expression = new Expression(Process, exprStr);
                     Variable expResult = expression.Evaluate(out status);
                     status.ThrowIfError();
-                    _process.PushOutput(expResult.Value?.ToString());
+                    Process.PushOutput(expResult.Value?.ToString());
                 }
-                else if (_name == Sinus)
+                else if (Name == Sinus)
                 {
                     if (!ArgumentsValid(1)) return result;
                     else if (_parameters[0].DataType == Variable.DataTypeEnum.Double)
                     {
                         result = Math.Sin((double)_parameters[0].Value);
                     }
-                    else throw new Exception($"First argument of {_name} function must be a number");
+                    else throw new Exception($"First argument of {Name} function must be a number");
                 }
-                else if(_name == Sqrt)
+                else if(Name == Sqrt)
                 {
                     if (!ArgumentsValid(1)) return result;
                     if (_parameters[0].DataType == Variable.DataTypeEnum.Double)
                     {
                         result = Math.Sqrt((double)_parameters[0].Value);
                     }
-                    else throw new Exception($"Argument of {_name} function must be number");
+                    else throw new Exception($"Argument of {Name} function must be number");
                 }
-                else if (_process.Functions.ContainsKey(_name))
+                else if (Process.Functions.ContainsKey(Name))
                 {
-                    if (!ArgumentsValid(_parametersNames.Length)) return result;
+                    if (!ArgumentsValid(ParametersNames.Length)) return result;
 
                     // Save function params to process variables
                     Dictionary<string, Variable> tempVariablesStorage = new Dictionary<string, Variable>();
                     int i = 0;
-                    foreach(string parameterName in _parametersNames)
+                    foreach(string parameterName in ParametersNames)
                     {
-                        if (_process.Variables.ContainsKey(parameterName)) 
+                        if (Process.Variables.ContainsKey(parameterName)) 
                         {
-                            tempVariablesStorage[parameterName] = _process.Variables[parameterName];
+                            tempVariablesStorage[parameterName] = Process.Variables[parameterName];
                         }
-                        _process.Variables[parameterName] = _parameters[i++];
+                        Process.Variables[parameterName] = _parameters[i++];
                     }
 
                     // Evaluate function expression
-                    result = new Expression(_process, _expression).Evaluate(out status);
+                    result = new Expression(Process, Expression).Evaluate(out status);
                     status.ThrowIfError();
 
                     // Restore process variables
                     foreach(KeyValuePair<string, Variable> kvp in tempVariablesStorage)
                     {
-                        _process.Variables[kvp.Key] = kvp.Value;
+                        Process.Variables[kvp.Key] = kvp.Value;
                     }
                 }
                 else 
                 {
-                    if (!string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_expression))
+                    if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Expression))
                     {
-                        _process.Functions[_name] = this;
-                        result = _process.Functions[_name].Call(out status);
+                        Process.Functions[Name] = this;
+                        result = Process.Functions[Name].Call(out status);
                     }
                     else
                     {
-                        throw new Exception($"Invalid function name {_name}");
+                        throw new Exception($"Invalid function name {Name}");
                     }
                 }
             }
@@ -150,7 +155,7 @@ namespace MathX.Primitives
             if (maximumAllowedArgs == -1) maximumAllowedArgs = minimumAllowedArgs;
             if (_parameters.Length < minimumAllowedArgs || _parameters.Length > maximumAllowedArgs)
             {
-                throw new Exception($"Invalid arguments for function {_name}");
+                throw new Exception($"Invalid arguments for function {Name}");
             }
             return true;
         }
@@ -158,12 +163,17 @@ namespace MathX.Primitives
         public override string ToString()
 {
             string paramsNames = "";
-            foreach (string paramName in _parametersNames)
+            if (ParametersNames != null)
             {
-                paramsNames += paramName + ",";
+                foreach (string paramName in ParametersNames)
+                {
+                    paramsNames += paramName + ",";
+                }
+
+                if (paramsNames?.Length > 0) paramsNames = paramsNames.Substring(0, paramsNames.Length - 1);
             }
-            if (paramsNames.Length > 0) paramsNames = paramsNames.Substring(0, paramsNames.Length - 1);
-            return $"{_name}({paramsNames}) = {_expression}";
+
+            return $"{Name}({paramsNames}) = {Expression}";
         }
     }
 }

@@ -31,10 +31,11 @@ namespace MathX.UI.Forms
         {
             this.pcbContainer = new System.Windows.Forms.PictureBox();
             this.pcbGraph = new System.Windows.Forms.PictureBox();
-            this.mainMenu = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bwCoordinates = new System.ComponentModel.BackgroundWorker();
+            this.cbxFunctions = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.cbxProcesses = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pcbContainer)).BeginInit();
             this.pcbContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbGraph)).BeginInit();
@@ -66,32 +67,43 @@ namespace MathX.UI.Forms
             this.pcbGraph.TabStop = false;
             this.pcbGraph.SizeChanged += new System.EventHandler(this.pcbGraph_SizeChanged);
             // 
+            // cbxFunctions
+            // 
+            this.cbxFunctions.FormattingEnabled = true;
+            this.cbxFunctions.Location = new System.Drawing.Point(76, 504);
+            this.cbxFunctions.Name = "cbxFunctions";
+            this.cbxFunctions.Size = new System.Drawing.Size(249, 23);
+            this.cbxFunctions.TabIndex = 8;
+            this.cbxFunctions.SelectedIndexChanged += new System.EventHandler(this.cbxFunctions_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(13, 507);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 15);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Function:";
+            // 
             // mainMenu
             // 
             this.mainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(73)))), ((int)(((byte)(171)))));
             this.mainMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.processToolStripMenuItem});
+            this.cbxProcesses});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(975, 25);
-            this.mainMenu.TabIndex = 7;
+            this.mainMenu.Size = new System.Drawing.Size(975, 27);
+            this.mainMenu.TabIndex = 10;
             this.mainMenu.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
+            // cbxProcesses
             // 
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // processToolStripMenuItem
-            // 
-            this.processToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.processToolStripMenuItem.Name = "processToolStripMenuItem";
-            this.processToolStripMenuItem.Size = new System.Drawing.Size(65, 21);
-            this.processToolStripMenuItem.Text = "Process";
+            this.cbxProcesses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxProcesses.Name = "cbxProcesses";
+            this.cbxProcesses.Size = new System.Drawing.Size(200, 23);
+            this.cbxProcesses.SelectedIndexChanged += new System.EventHandler(this.cbxProcesses_SelectedIndexChanged);
             // 
             // FormMathXGraph
             // 
@@ -99,9 +111,12 @@ namespace MathX.UI.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(975, 538);
             this.Controls.Add(this.mainMenu);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cbxFunctions);
             this.Controls.Add(this.pcbContainer);
             this.Name = "FormMathXGraph";
             this.Text = "Graph";
+            this.Activated += new System.EventHandler(this.FormMathXGraph_Activated);
             this.Load += new System.EventHandler(this.FormMathXGraph_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pcbContainer)).EndInit();
             this.pcbContainer.ResumeLayout(false);
@@ -116,10 +131,11 @@ namespace MathX.UI.Forms
         #endregion
 
         private System.Windows.Forms.PictureBox pcbContainer;
-        private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
         private System.Windows.Forms.PictureBox pcbGraph;
         private System.ComponentModel.BackgroundWorker bwCoordinates;
+        private System.Windows.Forms.ComboBox cbxFunctions;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.MenuStrip mainMenu;
+        private System.Windows.Forms.ToolStripComboBox cbxProcesses;
     }
 }

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using MathX.Datatypes;
 using MathX.Primitives.Interfaces;
 
 namespace MathX.Primitives
 {
     public struct Variable : IVariableValue
     {
-        public string Type => nameof(Vector);
+        public string Type => nameof(Variable);
    
         private object _value;
 
@@ -41,7 +42,7 @@ namespace MathX.Primitives
             }
         }
 
-        public bool Temporary => Name.StartsWith("_");
+        public bool Temporary => Name?.StartsWith("_") ?? true;
 
         public DataTypeEnum DataType { get; set; }
 

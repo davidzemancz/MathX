@@ -12,10 +12,26 @@ namespace MathX.Processes
 {
     public class Process : IDisposable
     {
+
+        private BaseDictionary<string, Function> _functions;
+
         public string Id { get; set; }
         public StateEnum State { get; set; }
         public BaseDictionary<string, Variable> Variables { get; set; }
-        public BaseDictionary<string, Function> Functions { get; set; }
+
+        public BaseDictionary<string, Function> Functions
+        {
+            get => _functions;
+            set
+            {
+                _functions = value;
+                foreach (KeyValuePair<string, Function> kvp in _functions)
+                {
+                    kvp.Value.Process = this;
+                }
+                _functions.ItemAdded += key => { Functions[key].Process = this; };
+            }
+        }
         
         [JsonIgnore]
         public MemoryStream Output { get; set; }
@@ -29,14 +45,18 @@ namespace MathX.Processes
             Stopped = 3
         }
 
-        public Process(string id)
+        public Process()
         {
-            Id = id;
             Variables = new BaseDictionary<string, Variable>();
             Functions = new BaseDictionary<string, Function>();
             Output = new MemoryStream();
             Input = new MemoryStream();
-            State = StateEnum.Running;
+            State = StateEnum.Pending;
+        }
+
+        public Process(string id) : this()
+        {
+            Id = id;
         }
         
         public void Run(out BaseStatus status)

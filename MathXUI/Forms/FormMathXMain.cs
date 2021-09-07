@@ -83,7 +83,7 @@ namespace MathX.UI.Forms
                 kvp.Value.Functions.ItemAdded -= UnsavedChanges;
                 kvp.Value.Functions.ItemAdded += UnsavedChanges;
             }
-            if(lbProcesses.Items.Count > 0) lbProcesses.SelectedIndex = 0;
+            if (lbProcesses.Items.Count > 0) lbProcesses.SelectedIndex = 0;
 
             ProcessManager.Processes.ItemAdded -= UnsavedChanges;
             ProcessManager.Processes.ItemAdded += UnsavedChanges;
@@ -186,25 +186,33 @@ namespace MathX.UI.Forms
 
         private void shortcutButton_Click(object sender, System.EventArgs e)
         {
-            if (sender == btnShortcutConsole)
+            if (sender == btnShortcutNew)
             {
-                this.ShowConsoleForm();
+                tsmiFileNew.PerformClick();
+            }
+            else if (sender == btnShortcutOpen)
+            {
+               tsmiFileOpen.PerformClick();
+            }
+            else if (sender == btnShortcutSave)
+            {
+                tsmiFileSave.PerformClick();
+            }
+            else if (sender == btnShortcutConsole)
+            {
+                ShowConsoleForm();
             }
             else if (sender == btnShortcutNewScript)
             {
-                this.ShowScriptEditorForm(false);
+                ShowScriptEditorForm(false);
             }
             else if (sender == btnShortcutOpenScript)
             {
-                this.ShowScriptEditorForm(true);
-            }
-            else if (sender == btnShortcutLastScript)
-            {
-                this.ShowScriptEditorForm(false);
+                ShowScriptEditorForm(true);
             }
             else if (sender == btnGraph)
             {
-                this.ShowGraphForm();
+                ShowGraphForm();
             }
         }
 

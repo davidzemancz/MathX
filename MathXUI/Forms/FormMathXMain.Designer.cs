@@ -51,17 +51,19 @@ namespace MathX.UI.Forms
             this.gbShortcuts = new System.Windows.Forms.GroupBox();
             this.btnGraph = new System.Windows.Forms.Button();
             this.btnShortcutOpenScript = new System.Windows.Forms.Button();
-            this.btnShortcutLastScript = new System.Windows.Forms.Button();
             this.btnShortcutNewScript = new System.Windows.Forms.Button();
             this.btnShortcutConsole = new System.Windows.Forms.Button();
             this.gbExamples = new System.Windows.Forms.GroupBox();
+            this.btnExamplesBubblesort = new System.Windows.Forms.Button();
             this.btnExamplePrimes = new System.Windows.Forms.Button();
             this.btnExamplesVectors = new System.Windows.Forms.Button();
             this.btnExamplesFunctions = new System.Windows.Forms.Button();
             this.btnExamplesLoops = new System.Windows.Forms.Button();
             this.btnExamplesConditions = new System.Windows.Forms.Button();
             this.btnExamplesVariables = new System.Windows.Forms.Button();
-            this.btnExamplesBubblesort = new System.Windows.Forms.Button();
+            this.btnShortcutNew = new System.Windows.Forms.Button();
+            this.btnShortcutOpen = new System.Windows.Forms.Button();
+            this.btnShortcutSave = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.gbProcesses.SuspendLayout();
             this.tlpProcesses.SuspendLayout();
@@ -295,15 +297,17 @@ namespace MathX.UI.Forms
             // 
             this.gbShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbShortcuts.Controls.Add(this.btnShortcutSave);
+            this.gbShortcuts.Controls.Add(this.btnShortcutOpen);
+            this.gbShortcuts.Controls.Add(this.btnShortcutNew);
             this.gbShortcuts.Controls.Add(this.btnGraph);
             this.gbShortcuts.Controls.Add(this.btnShortcutOpenScript);
-            this.gbShortcuts.Controls.Add(this.btnShortcutLastScript);
             this.gbShortcuts.Controls.Add(this.btnShortcutNewScript);
             this.gbShortcuts.Controls.Add(this.btnShortcutConsole);
             this.gbShortcuts.ForeColor = System.Drawing.Color.White;
             this.gbShortcuts.Location = new System.Drawing.Point(12, 288);
             this.gbShortcuts.Name = "gbShortcuts";
-            this.gbShortcuts.Size = new System.Drawing.Size(513, 115);
+            this.gbShortcuts.Size = new System.Drawing.Size(479, 114);
             this.gbShortcuts.TabIndex = 3;
             this.gbShortcuts.TabStop = false;
             this.gbShortcuts.Text = "Shortcuts";
@@ -322,7 +326,7 @@ namespace MathX.UI.Forms
             // btnShortcutOpenScript
             // 
             this.btnShortcutOpenScript.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutOpenScript.Location = new System.Drawing.Point(17, 49);
+            this.btnShortcutOpenScript.Location = new System.Drawing.Point(166, 49);
             this.btnShortcutOpenScript.Name = "btnShortcutOpenScript";
             this.btnShortcutOpenScript.Size = new System.Drawing.Size(143, 23);
             this.btnShortcutOpenScript.TabIndex = 3;
@@ -330,21 +334,10 @@ namespace MathX.UI.Forms
             this.btnShortcutOpenScript.UseVisualStyleBackColor = true;
             this.btnShortcutOpenScript.Click += new System.EventHandler(this.shortcutButton_Click);
             // 
-            // btnShortcutLastScript
-            // 
-            this.btnShortcutLastScript.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutLastScript.Location = new System.Drawing.Point(17, 78);
-            this.btnShortcutLastScript.Name = "btnShortcutLastScript";
-            this.btnShortcutLastScript.Size = new System.Drawing.Size(143, 23);
-            this.btnShortcutLastScript.TabIndex = 2;
-            this.btnShortcutLastScript.Text = "Last script";
-            this.btnShortcutLastScript.UseVisualStyleBackColor = true;
-            this.btnShortcutLastScript.Click += new System.EventHandler(this.shortcutButton_Click);
-            // 
             // btnShortcutNewScript
             // 
             this.btnShortcutNewScript.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutNewScript.Location = new System.Drawing.Point(17, 20);
+            this.btnShortcutNewScript.Location = new System.Drawing.Point(166, 20);
             this.btnShortcutNewScript.Name = "btnShortcutNewScript";
             this.btnShortcutNewScript.Size = new System.Drawing.Size(143, 23);
             this.btnShortcutNewScript.TabIndex = 1;
@@ -355,7 +348,7 @@ namespace MathX.UI.Forms
             // btnShortcutConsole
             // 
             this.btnShortcutConsole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShortcutConsole.Location = new System.Drawing.Point(166, 20);
+            this.btnShortcutConsole.Location = new System.Drawing.Point(315, 49);
             this.btnShortcutConsole.Name = "btnShortcutConsole";
             this.btnShortcutConsole.Size = new System.Drawing.Size(143, 23);
             this.btnShortcutConsole.TabIndex = 0;
@@ -374,17 +367,28 @@ namespace MathX.UI.Forms
             this.gbExamples.Controls.Add(this.btnExamplesConditions);
             this.gbExamples.Controls.Add(this.btnExamplesVariables);
             this.gbExamples.ForeColor = System.Drawing.Color.White;
-            this.gbExamples.Location = new System.Drawing.Point(533, 288);
+            this.gbExamples.Location = new System.Drawing.Point(497, 288);
             this.gbExamples.Name = "gbExamples";
-            this.gbExamples.Size = new System.Drawing.Size(437, 172);
+            this.gbExamples.Size = new System.Drawing.Size(473, 114);
             this.gbExamples.TabIndex = 4;
             this.gbExamples.TabStop = false;
             this.gbExamples.Text = "Examples";
             // 
+            // btnExamplesBubblesort
+            // 
+            this.btnExamplesBubblesort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExamplesBubblesort.Location = new System.Drawing.Point(315, 51);
+            this.btnExamplesBubblesort.Name = "btnExamplesBubblesort";
+            this.btnExamplesBubblesort.Size = new System.Drawing.Size(143, 23);
+            this.btnExamplesBubblesort.TabIndex = 10;
+            this.btnExamplesBubblesort.Text = "Bubble sort";
+            this.btnExamplesBubblesort.UseVisualStyleBackColor = true;
+            this.btnExamplesBubblesort.Click += new System.EventHandler(this.exampleButton_Click);
+            // 
             // btnExamplePrimes
             // 
             this.btnExamplePrimes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplePrimes.Location = new System.Drawing.Point(166, 22);
+            this.btnExamplePrimes.Location = new System.Drawing.Point(315, 22);
             this.btnExamplePrimes.Name = "btnExamplePrimes";
             this.btnExamplePrimes.Size = new System.Drawing.Size(143, 23);
             this.btnExamplePrimes.TabIndex = 9;
@@ -395,18 +399,18 @@ namespace MathX.UI.Forms
             // btnExamplesVectors
             // 
             this.btnExamplesVectors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesVectors.Location = new System.Drawing.Point(17, 136);
+            this.btnExamplesVectors.Location = new System.Drawing.Point(166, 51);
             this.btnExamplesVectors.Name = "btnExamplesVectors";
             this.btnExamplesVectors.Size = new System.Drawing.Size(143, 23);
             this.btnExamplesVectors.TabIndex = 8;
-            this.btnExamplesVectors.Text = "Vectors && matrices";
+            this.btnExamplesVectors.Text = "Vectors";
             this.btnExamplesVectors.UseVisualStyleBackColor = true;
             this.btnExamplesVectors.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // btnExamplesFunctions
             // 
             this.btnExamplesFunctions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesFunctions.Location = new System.Drawing.Point(17, 109);
+            this.btnExamplesFunctions.Location = new System.Drawing.Point(166, 22);
             this.btnExamplesFunctions.Name = "btnExamplesFunctions";
             this.btnExamplesFunctions.Size = new System.Drawing.Size(143, 23);
             this.btnExamplesFunctions.TabIndex = 7;
@@ -447,23 +451,45 @@ namespace MathX.UI.Forms
             this.btnExamplesVariables.UseVisualStyleBackColor = true;
             this.btnExamplesVariables.Click += new System.EventHandler(this.exampleButton_Click);
             // 
-            // btnExamplesBubblesort
+            // btnShortcutNew
             // 
-            this.btnExamplesBubblesort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExamplesBubblesort.Location = new System.Drawing.Point(166, 51);
-            this.btnExamplesBubblesort.Name = "btnExamplesBubblesort";
-            this.btnExamplesBubblesort.Size = new System.Drawing.Size(143, 23);
-            this.btnExamplesBubblesort.TabIndex = 10;
-            this.btnExamplesBubblesort.Text = "Bubble sort";
-            this.btnExamplesBubblesort.UseVisualStyleBackColor = true;
-            this.btnExamplesBubblesort.Click += new System.EventHandler(this.exampleButton_Click);
+            this.btnShortcutNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutNew.Location = new System.Drawing.Point(17, 20);
+            this.btnShortcutNew.Name = "btnShortcutNew";
+            this.btnShortcutNew.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutNew.TabIndex = 5;
+            this.btnShortcutNew.Text = "New";
+            this.btnShortcutNew.UseVisualStyleBackColor = true;
+            this.btnShortcutNew.Click += new System.EventHandler(this.shortcutButton_Click);
+            // 
+            // btnShortcutOpen
+            // 
+            this.btnShortcutOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutOpen.Location = new System.Drawing.Point(17, 49);
+            this.btnShortcutOpen.Name = "btnShortcutOpen";
+            this.btnShortcutOpen.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutOpen.TabIndex = 6;
+            this.btnShortcutOpen.Text = "Open";
+            this.btnShortcutOpen.UseVisualStyleBackColor = true;
+            this.btnShortcutOpen.Click += new System.EventHandler(this.shortcutButton_Click);
+            // 
+            // btnShortcutSave
+            // 
+            this.btnShortcutSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShortcutSave.Location = new System.Drawing.Point(17, 78);
+            this.btnShortcutSave.Name = "btnShortcutSave";
+            this.btnShortcutSave.Size = new System.Drawing.Size(143, 23);
+            this.btnShortcutSave.TabIndex = 7;
+            this.btnShortcutSave.Text = "Save";
+            this.btnShortcutSave.UseVisualStyleBackColor = true;
+            this.btnShortcutSave.Click += new System.EventHandler(this.shortcutButton_Click);
             // 
             // FormMathXMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.ClientSize = new System.Drawing.Size(982, 561);
+            this.ClientSize = new System.Drawing.Size(982, 411);
             this.Controls.Add(this.gbExamples);
             this.Controls.Add(this.gbShortcuts);
             this.Controls.Add(this.gbProcesses);
@@ -501,7 +527,6 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.GroupBox gbShortcuts;
         private System.Windows.Forms.Button btnShortcutConsole;
         private System.Windows.Forms.Button btnShortcutNewScript;
-        private System.Windows.Forms.Button btnShortcutLastScript;
         private System.Windows.Forms.Button btnShortcutOpenScript;
         private System.Windows.Forms.GroupBox gbExamples;
         private System.Windows.Forms.Button btnExamplesFunctions;
@@ -525,6 +550,9 @@ namespace MathX.UI.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
         private System.Windows.Forms.Button btnExamplePrimes;
         private System.Windows.Forms.Button btnExamplesBubblesort;
+        private System.Windows.Forms.Button btnShortcutSave;
+        private System.Windows.Forms.Button btnShortcutOpen;
+        private System.Windows.Forms.Button btnShortcutNew;
     }
 }
 

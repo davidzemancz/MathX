@@ -22,7 +22,7 @@ namespace MathX.UI
 
         #endregion
 
-        #region PROPS
+        #region FIELDS
 
         private Process _currentProcess;
 
@@ -122,10 +122,10 @@ namespace MathX.UI
 
 
 
-        #endregion
 
         #endregion
 
-       
+        #endregion
+
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MathX.Processes;
 using MathX.Primitives.Utils;
 using System.Numerics;
+using Vector = MathX.Datatypes.Vector;
 
 namespace MathX.Primitives
 {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,8 @@ namespace MathX.UI.Forms
         private Bitmap _btmpGraph;
         private Graphics _graphics;
 
+        private Process _currentProcess;
+
         #endregion
 
         #region CONTRUCTORS
@@ -53,6 +56,8 @@ namespace MathX.UI.Forms
 
         #region PRIVATE METHODS
 
+        #region Actions
+        
         private void DrawAxis()
         {
             int width = pcbContainer.Width;
@@ -140,34 +145,64 @@ namespace MathX.UI.Forms
                 status.ThrowIfError();
             }
 
-            _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            _graphics.SmoothingMode = SmoothingMode.HighQuality;
             _graphics.DrawCurve(penCurve, points.ToArray());
-            _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+            _graphics.SmoothingMode = SmoothingMode.Default;
          
             penCurve.Dispose();
         }
 
+        private void LoadProcesses()
+        {
+            cbxProcesses.Items.Clear();
+            foreach (KeyValuePair<string, Process> kvp in ProcessManager.Processes)
+            {
+                cbxProcesses.Items.Add(kvp.Value);
+            }
+            if (cbxProcesses.Items.Count > 0) cbxProcesses.SelectedIndex = 0;
+        }
+
+        private void Redraw()
+        {
+            DrawAxis();
+            if (cbxFunctions.SelectedItem != null)
+            {
+                DrawFunction((Function)cbxFunctions.SelectedItem);
+            }
+            pcbGraph.Image = _btmpGraph;
+        }
 
         #endregion
 
-        #region FORM
-
         #region Form
+
+        private void FormMathXGraph_Activated(object sender, EventArgs e)
+        {
+            LoadProcesses();
+        }
 
         private void FormMathXGraph_Load(object sender, EventArgs e)
         {
-            Process pocess = new Process("1");
-
-            DrawAxis();
-            DrawFunction(new Function(pocess, "f", "x^2-x^3+2*x", new[] { "x" }));
-
-            pcbGraph.Image = _btmpGraph;
-
+            LoadProcesses();
+            Redraw();
         }
 
-        private void FormMathXGraph_FormClosing(object sender, FormClosingEventArgs e)
+        private void cbxProcesses_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _currentProcess = (Process)cbxProcesses.SelectedItem;
+            
+            cbxFunctions.Items.Clear();
+            foreach (var function in _currentProcess.Functions)
+            {
+                cbxFunctions.Items.Add(function.Value);
+            }
 
+            if (cbxFunctions.Items.Count > 0) cbxFunctions.SelectedIndex = 0;
+        }
+
+        private void cbxFunctions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Redraw();
         }
 
         #endregion
@@ -175,23 +210,7 @@ namespace MathX.UI.Forms
         #region Graph
         private void pcbGraph_SizeChanged(object sender, EventArgs e)
         {
-            Process pocess = new Process("1");
-
-            DrawAxis();
-            DrawFunction(new Function(pocess, "f", "x^2-x^3+2*x", new[] { "x" }));
-
-
-            pcbGraph.Image = _btmpGraph;
-        }
-
-        private void pcbGraph_MouseUp(object sender, MouseEventArgs e)
-        {
-           
-        }
-
-        private void pcbGraph_MouseDown(object sender, MouseEventArgs e)
-        {
-           
+            Redraw();
         }
 
         private void pcbGraph_MouseWheel(object sender, MouseEventArgs e)
@@ -204,16 +223,14 @@ namespace MathX.UI.Forms
             {
                 AxisSpace -= 5;
             }
-            this.DrawAxis();
+            Redraw();
         }
 
 
-
-
         #endregion
 
         #endregion
 
-        
+       
     }
 }

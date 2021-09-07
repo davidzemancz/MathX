@@ -90,7 +90,10 @@ namespace MathXExample
 
             #region Funkce
 
-
+            Function function = new Function(process, "f", "x^2", new[] {"x"});
+            Variable result = function.Call(new []{ (Variable)5.0 }, out status);
+            Console.WriteLine($"f(5)={result.Value}");
+            status.ThrowIfError();
 
             #endregion
 

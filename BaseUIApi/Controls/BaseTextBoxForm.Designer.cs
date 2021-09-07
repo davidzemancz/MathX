@@ -67,8 +67,10 @@ namespace Base.UI.Api.Controls
             // 
             // BaseTextBoxForm
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(427, 78);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
