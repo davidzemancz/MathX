@@ -29,7 +29,7 @@ namespace MathXExample
             #region Vyrazy
 
             Console.WriteLine("Zadej první výraz");
-            string strExpr1 = Console.ReadLine();
+            string strExpr1 = Console.ReadLine(); // Vyraz typu 5+2
 
             /*
              * Vyraz je posloupnost znaku, ktera se vyhodnoti a nabude tim hodnoty

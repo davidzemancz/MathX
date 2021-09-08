@@ -1,8 +1,97 @@
-﻿﻿# MathX
+﻿﻿﻿# MathX
 
 ## Úvodem
 
-MathX je prográmek, který poskytuje API pro interpretaci vlastního "programovacího/skriptovacího" jazyka.K tomu poskytuje obecné API, pro práci s výrazy, funkcemi. V nich mohou figurovat v podobě proměnných čísla či vektory (do budoucna snad i matice). Příklady členěné do sekcí s komentáří naleznete projektu MathXExamples. Pro "koncového" uživatele je pak projekt MathXUI, který je nad API postaven a zastřešuje správu procesů, zpracování příkazů ze souboru či kreslení jednoduchých grafů (alfa verze).
+MathX je prográmek, který poskytuje API pro interpretaci vlastního "programovacího/skriptovacího" jazyka pro práci s výrazy a funkcemi. V nich mohou figurovat proměnné typu číslo či vektor (do budoucna i matice). Příklady členěné do sekcí s komentáři naleznete projektu MathXExamples. Pro "koncového" uživatele je pak projekt MathXUI, který je nad API postaven a zastřešuje správu procesů, zpracování příkazů ze souboru či kreslení jednoduchých grafů (alfa verze).
+
+## Uživatelské rozhraní MathXUI
+
+* Práci s procesy zajišťuje třída ProcessManager, jejímž jediným atributem je slovník procesů, kde klíčem je Id procesu
+
+### Hlavní okno
+
+* V sekci **Processes** je zobrazen seznam procesů, jejich proměnné a definované funkce
+* V sekci **Shortcuts** jsou tlačítka pro rychlé spuštění (... víc funkcí vlastně program stejně nenabízí :)
+  * Tlačítkem Save lze uložit aktuální stav programu do .json souboru, tlačítkem Open jej pak lze otevřít
+  * Tlačítkem NewScript lze v jednoduchém textovém editoru vytvářet a upravovat kód
+  * Tlačítko **Graph** otevírá okno pro zobrazování grafů
+  * Tlačítko **Console** otevírá okno s jednoduchou konzolí
+* V sekci **Examples** pak najdete jednoduché příklady
+
+### Editor skriptů
+
+* V horní části je combobox pro výběru procesu -> s jeho proměnnými a funkcemi bude skript pracovat
+* Umožňuje zapisování scriptů s jednoduchým zvýzrazěním syntaxe
+* Skript lze spustit klávesou F5 nebo v Actions -> Run
+* V dolní čási je sekce Output, do níž je vypysován výstup skriptu
+
+### Konzole
+
+* V horní části je combobox pro výběru procesu -> s jeho promennými a funkcemi bude konzole pracovat
+* Jednoduché konzolové prostředí
+
+## Interpretovaný jazyk MathX
+
+* Definice proměnné: [variableName]=[expression]
+
+    * Definice čísla: [variableName]=205
+
+    * Definice vektoru: [variableName]=[1,2,5,7]
+
+* Rozpoznání typu probíhá automaticky, podporované typy jsou **Boolean**, **Double** a **Vector**
+
+* Aritmetické operace s čísly
+
+    * Sčítání: [expression1]+[expresson2]
+    * Odčítání: [expression1]-[expresson2]
+    * Násobení: [expression1]*[expresson2]
+    * Dělení: [expression1]/[expresson2]
+    * Umocňování: [expression1]^[expresson2]
+
+* Operace s vektory
+
+  * Sčítání: [expression1]+[expresson2]
+  * Odčítání: [expression1]-[expresson2]
+  * Skalární součin: [expression1]*[expresson2]
+
+* Podmínka: 
+
+  if [expression]
+
+  ...
+
+  else
+
+  ...
+  endif
+
+  * Výraz v podmínce může být typu Boolean, nebo Double (True ~ >0)
+
+* Cyklus:
+
+  while  [expression]
+
+  ...
+  endwhile
+
+  * Výraz v podmínce opět může být typu Boolean, nebo Double (True ~ >0)
+
+* Logické operátory
+  * & - AND
+  * | - OR
+  
+* Definice inline funkce: [functionName([paramName1],...)]=[expression]
+
+* Volání funkce: functionName(paramValue1,...)
+
+#### Výchozí funkce
+
+* (i)ncrement([expression])
+* (pow)er([expressionBase],[expressionExponent])
+* sin([expression])
+* sqrt([expression])
+* print([expression])
+
 
 ## Třídy a struktury
 
@@ -48,73 +137,26 @@ MathX je prográmek, který poskytuje API pro interpretaci vlastního "programov
 * Třída pro reprezentaci datového typu vektor
 * Může posloužit zároveň jako pole (viz příklad BubbleSort)
 
-## Interpretovaný jazyk MathX
+## Možná rozšíření
 
-- Definice proměnné: [variableName]=[expression]
+* Doplnit klíčové slovo elseIf - k tomu by bylo nutno překopat třídu Statement
+* Umožnit komentování kódu
+* Umožnit nějak načítání dat do Programu ... jeden input pro kód, druhý pro data
+* Umožnit paralelizaci procesů (v .net by neměl být problém)
+* Rozšíření práce s vektory (porovnávání, kolmost ...)
+* Datový typ Matrix a API pro práci s maticemi
 
-- Rozpoznání typu probíhá automaticky, podporované typy jsou **Boolean**, **Double** a **Vector**
+## Závěr
 
-- Aritmetické operace s čísly
+Program se hodí pro zpracování výrazů či pro tvorbu skriptů na zpracování dat. Uživatelské rozhraní slouží spíše jako ukázka možností, než-li prakticky použitelný program. 
 
-  - Sčítání: [expression1]+[expresson2]
-  * Odčítání: [expression1]-[expresson2]
-  - Násobení: [expression1]*[expresson2]
-  - Dělení: [expression1]/[expresson2]
-  - Umocňování: [expression1]^[expresson2]
 
-- Operace s vektory
 
-  - Sčítání: [expression1]+[expresson2]
-  - Odčítání: [expression1]-[expresson2]
-  - Skalární součin: [expression1]*[expresson2]
 
-- Podmínka: 
 
-  if [expression]
 
-  ...
 
-  else
 
-  ...
-  endif
-
-  * Výraz v podmínce může být typu Boolean, nebo Double (True ~ >0)
-
-- Cyklus:
-
-  while  [expression]
-
-  ...
-  endwhile
-
-  * Výraz v podmínce opět může být typu Boolean, nebo Double (True ~ >0)
-
-* Logické operátory
-  * & - AND
-  * | - OR
-* Definice inline funkce: [functionName([paramName1],...)]=[expression]
-* Volání funkce: functionName(paramValue1,...)
-
-#### Výchozí funkce
-
-* (i)ncrement([expression])
-* (pow)er([expressionBase],[expressionExponent])
-* sin([expression])
-* sqrt([expression])
-* print([expression])
-
-# Uživatelské rozhraní MathXUI
-
- ## Hlavní okno
-
-* V sekci **Processes** je zobrazen seznam procesů, jejich proměnné a definované funkce
-* V sekci **Shortcuts** jsou tlačítka pro rychlé spuštění (... víc funkcí vlastně program stejně nenabízí :)
-  * Tlačítkem Save lze uložit aktuální stav programu do .json souboru, tlačítkem Open jej pak lze otevřít
-  * Tlačítkem NewScript lze v jednoduchém textovém editoru vytvářet a upravovat kód
-  * Tlačítko **Graph** otevírá okno pro zobrazování grafů
-  * Tlačítko **Console** otevírá okno s jednoduchou konzolí
-* V sekci **Examples** pak najdete jednoduché příklady
 
 
 

@@ -8,7 +8,6 @@
 	* Je to dusledek sekvencniho vyhodnocovani -> nutno s tim neco vymyslet
 
 # TODO
-* **Desetinna cisla**
 * Porovnani vektoru
 * Mazani promenych a funkci procesu z UI
 * Nejkay zpusob jak ziskat props vektoru (delka apod...)

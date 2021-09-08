@@ -24,7 +24,7 @@ namespace MathX.Primitives
         public Expression(Process process, string expression)
         {
             _expression = expression;
-            _position = -1;
+            _position = -1; // ++_position in the begining of evaluation
             _process = process;
         }
 
@@ -287,12 +287,30 @@ namespace MathX.Primitives
         private double ReadNumber()
         {
             bool minus = _expression[_position] == '-';
+            bool isDecimal = false;
+            int decimalDigits = 0;
             double result = minus ? 0 : char.GetNumericValue(_expression[_position]); ;
-            while (_position + 1 < _expression.Length && char.IsNumber(_expression[_position + 1]))
+            while (_position + 1 < _expression.Length && (char.IsNumber(_expression[_position + 1]) || _expression[_position + 1] == '.'))
             {
                 _position++;
-                double num = char.GetNumericValue(_expression[_position]);
-                result = 10 * result + num;
+                if (_expression[_position] == '.')
+                {
+                    isDecimal = true;
+                }
+                else
+                {
+                    if (isDecimal)
+                    {
+                        double num = char.GetNumericValue(_expression[_position]);
+                        result = result + Math.Pow(10, -(++decimalDigits)) * num;
+                    }
+                    else
+                    {
+                        double num = char.GetNumericValue(_expression[_position]);
+                        result = 10 * result + num;
+                    }
+                }
+                
             }
             if (minus) result = result * -1;
             return result;
