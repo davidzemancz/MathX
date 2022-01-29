@@ -1,4 +1,4 @@
-﻿﻿﻿﻿# MathX
+﻿﻿﻿# MathX
 
 ## Úvodem
 
@@ -20,16 +20,6 @@ MathX je prográmek, který poskytuje API pro interpretaci vlastního "programov
   * Tlačítko **Graph** otevírá okno pro zobrazování grafů
   * Tlačítko **Console** otevírá okno s jednoduchou konzolí
 * V sekci **Examples** pak najdete jednoduché příklady
-
-#### Životní cyklus hlavního okna
-
-* Načtení (Form.Load)
-  * Vytvoří se výchozí Process s Id=1 a vloží se do slovníku procesů ve statické třídě ProcessManager
-* Aktivace (Form.Activate)
-  * Ze třídy ProcessManager se načtou procesy a jejich proměnné a funkce do ListBoxu
-  * Slovníkům Functions a Variables všech procesů se přiřadí událost UnsavedChanges - když přidám novou proměnnou či funkci, program mě před zavřením vyzve k uložení
-* Zavírání (Form.Closing)
-  * Před zavřením se program dotáže na uložení stavu, došlo-li ke změnám
 
 ### Editor skriptů
 
@@ -110,6 +100,7 @@ MathX je prográmek, který poskytuje API pro interpretaci vlastního "programov
 ## Struktura programu
 
 * Celý program je členěn na tyto čási
+
   * BaseApi - obecné třídy jako BaseStatus (reprezentace stavu) či BaseDictionary (slovní s eventy na přidání či odebrání)
   * BaseApiUI - obecné třídy uživatelské rozhraní
     * BaseForm - parent všech formulářů
@@ -118,6 +109,18 @@ MathX je prográmek, který poskytuje API pro interpretaci vlastního "programov
   * MathX - samotná knihovna, obsahuje namespaces Primitives (tj. Expression, Statement ...), Processes (tj. Process), Utils (pomocné třídy)
   * MathXExamples - příklady pro potenciálního uživatele
   * MathXUI - WinForms uživatelské rozhraní
+
+  
+
+  ### Životní cyklus hlavního okna
+
+  * Načtení (Form.Load)
+    * Vytvoří se výchozí Process s Id=1 a vloží se do slovníku procesů ve statické třídě ProcessManager
+  * Aktivace (Form.Activate)
+    * Ze třídy ProcessManager se načtou procesy a jejich proměnné a funkce do ListBoxu
+    * Slovníkům Functions a Variables všech procesů se přiřadí událost UnsavedChanges - když přidám novou proměnnou či funkci, program mě před zavřením vyzve k uložení
+  * Zavírání (Form.Closing)
+    * Před zavřením se program dotáže na uložení stavu, došlo-li ke změnám
 
 ## Třídy a struktury
 
@@ -175,18 +178,3 @@ MathX je prográmek, který poskytuje API pro interpretaci vlastního "programov
 ## Závěr
 
 Program se hodí pro zpracování výrazů či pro tvorbu skriptů na zpracování dat. Uživatelské rozhraní slouží spíše jako ukázka možností, nežli prakticky použitelný program. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-​	
-
